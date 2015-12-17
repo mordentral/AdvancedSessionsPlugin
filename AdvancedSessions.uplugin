@@ -1,0 +1,21 @@
+{
+    "FileVersion" : 3,
+ 
+    "FriendlyName" : "Advanced Sessions",
+    "Version" : 1.9,
+    "VersionName": "1.9",
+    "EngineVersion" : 1579795,
+    "Description" : "Adds new blueprint functions to handle more advanced session operations.",
+    "Category" : "Advanced Sessions Plugin",
+    "CreatedBy" : "Joshua Statzer",
+    "CreatedByURL" : "N/A",
+ 
+    "Modules" :
+    [
+        {
+            "Name" : "AdvancedSessions",
+            "Type" : "RunTime",
+			"LoadingPhase" : "PreDefault"
+        } 
+    ]
+}
