@@ -66,7 +66,7 @@ void UCreateSessionCallbackProxyAdvanced::Activate()
 			if (PlayerControllerWeakPtr.IsValid() && Helper.UserID.IsValid())
 				Sessions->CreateSession(*Helper.UserID, GameSessionName, Settings);
 			else
-				Sessions->CreateSession(NULL, GameSessionName, Settings);
+				Sessions->CreateSession(0, GameSessionName, Settings);
 
 			// OnCreateCompleted will get called, nothing more to do now
 			return;

@@ -7,11 +7,11 @@ DEFINE_LOG_CATEGORY(AdvancedFriendsInterfaceLog);
 
 UAdvancedFriendsGameInstance::UAdvancedFriendsGameInstance(const FObjectInitializer& ObjectInitializer) 
 	: Super(ObjectInitializer)
-	, SessionInviteAcceptedDelegate(FOnSessionUserInviteAcceptedDelegate::CreateUObject(this, &ThisClass::OnSessionInviteAcceptedMaster))
 	, bCallFriendInterfaceEventsOnPlayerControllers(true)
-	, PlayerTalkingStateChangedDelegate(FOnPlayerTalkingStateChangedDelegate::CreateUObject(this, &ThisClass::OnPlayerTalkingStateChangedMaster))
-	, bEnableTalkingStatusDelegate(true)
 	, bCallVoiceInterfaceEventsOnPlayerControllers(true)
+	, bEnableTalkingStatusDelegate(true)
+	, SessionInviteAcceptedDelegate(FOnSessionUserInviteAcceptedDelegate::CreateUObject(this, &ThisClass::OnSessionInviteAcceptedMaster))
+	, PlayerTalkingStateChangedDelegate(FOnPlayerTalkingStateChangedDelegate::CreateUObject(this, &ThisClass::OnPlayerTalkingStateChangedMaster))
 {
 }
 
