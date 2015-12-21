@@ -13,7 +13,7 @@ UCreateSessionCallbackProxyAdvanced::UCreateSessionCallbackProxyAdvanced(const F
 {
 }
 
-UCreateSessionCallbackProxyAdvanced* UCreateSessionCallbackProxyAdvanced::CreateAdvancedSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair> &ExtraSettings, class APlayerController* PlayerController, int32 PublicConnections, bool bUseLAN, bool bAllowInvites, bool bIsDedicatedServer)
+UCreateSessionCallbackProxyAdvanced* UCreateSessionCallbackProxyAdvanced::CreateAdvancedSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair> &ExtraSettings, class APlayerController* PlayerController, int32 PublicConnections, bool bUseLAN, bool bAllowInvites, bool bIsDedicatedServer, bool bUsePresence, bool bAllowJoinViaPresence, bool bAllowJoinViaPresenceFriendsOnly, bool bAntiCheatProtected, bool bUsesStats, bool bShouldAdvertise)
 {
 	UCreateSessionCallbackProxyAdvanced* Proxy = NewObject<UCreateSessionCallbackProxyAdvanced>();
 	Proxy->PlayerControllerWeakPtr = PlayerController;
@@ -23,7 +23,12 @@ UCreateSessionCallbackProxyAdvanced* UCreateSessionCallbackProxyAdvanced::Create
 	Proxy->bAllowInvites = bAllowInvites;
 	Proxy->ExtraSettings = ExtraSettings;
 	Proxy->bDedicatedServer = bIsDedicatedServer;
-
+	Proxy->bUsePresence = bUsePresence;
+	Proxy->bAllowJoinViaPresence = bAllowJoinViaPresence;
+	Proxy->bAllowJoinViaPresenceFriendsOnly = bAllowJoinViaPresenceFriendsOnly;
+	Proxy->bAntiCheatProtected = bAntiCheatProtected;
+	Proxy->bUsesStats = bUsesStats;
+	Proxy->bShouldAdvertise = bShouldAdvertise;
 	return Proxy;
 }
 
@@ -46,9 +51,13 @@ void UCreateSessionCallbackProxyAdvanced::Activate()
 			Settings.bShouldAdvertise = true;
 			Settings.bAllowJoinInProgress = true;
 			Settings.bIsLANMatch = bUseLAN;
-			Settings.bUsesPresence = true;
+			Settings.bUsesPresence = bUsePresence;
 			Settings.bAllowJoinViaPresence = true;
 			Settings.bIsDedicated = bDedicatedServer;
+			Settings.bAllowJoinViaPresenceFriendsOnly = bAllowJoinViaPresenceFriendsOnly;
+			Settings.bAntiCheatProtected = bAntiCheatProtected;
+			Settings.bUsesStats = bUsesStats;
+			Settings.bShouldAdvertise = bShouldAdvertise;
 
 			// These are about the only changes over the standard Create Sessions Node
 			Settings.bAllowInvites = bAllowInvites;

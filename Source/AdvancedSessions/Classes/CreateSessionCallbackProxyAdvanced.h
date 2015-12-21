@@ -20,7 +20,7 @@ class UCreateSessionCallbackProxyAdvanced : public UOnlineBlueprintCallProxyBase
 
 	// Creates a session with the default online subsystem with advanced optional inputs
 	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject",AutoCreateRefTerm="ExtraSettings"), Category = "Online|AdvancedSessions")
-		static UCreateSessionCallbackProxyAdvanced* CreateAdvancedSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair> &ExtraSettings, class APlayerController* PlayerController = NULL, int32 PublicConnections = 100, bool bUseLAN = false, bool bAllowInvites = true, bool bIsDedicatedServer = false);
+	static UCreateSessionCallbackProxyAdvanced* CreateAdvancedSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair> &ExtraSettings, class APlayerController* PlayerController = NULL, int32 PublicConnections = 100, bool bUseLAN = false, bool bAllowInvites = true, bool bIsDedicatedServer = false, bool bUsePresence = true, bool bAllowJoinViaPresence = true, bool bAllowJoinViaPresenceFriendsOnly = false, bool bAntiCheatProtected = false, bool bUsesStats = false, bool bShouldAdvertise = true);
 
 	// UOnlineBlueprintCallProxyBase interface
 	virtual void Activate() override;
@@ -57,6 +57,24 @@ private:
 
 	// Whether this is a dedicated server or not
 	bool bDedicatedServer;
+
+	// Whether to use the presence option
+	bool bUsePresence;
+
+	// Whether to allow joining via presence
+	bool bAllowJoinViaPresence;
+
+	// Allow joining via presence for friends only
+	bool bAllowJoinViaPresenceFriendsOnly;
+
+	// Delcare the server to be anti cheat protected
+	bool bAntiCheatProtected;
+
+	// Record Stats
+	bool bUsesStats;
+
+	// Should advertise server?
+	bool bShouldAdvertise;
 
 	// Store extra settings
 	TArray<FSessionPropertyKeyPair> ExtraSettings;
