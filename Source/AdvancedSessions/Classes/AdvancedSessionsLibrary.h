@@ -30,7 +30,7 @@ public:
 
 		// Adds or modifies session settings in an existing array depending on if they exist already or not
 		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions|SessionInfo")
-		static void AddOrModifyExtraSettings(const TArray<FSessionPropertyKeyPair> & SettingsArray, const TArray<FSessionPropertyKeyPair> & NewOrChangedSettings, TArray<FSessionPropertyKeyPair> & ModifiedSettingsArray);
+		static void AddOrModifyExtraSettings(UPARAM(ref)  TArray<FSessionPropertyKeyPair> & SettingsArray, UPARAM(ref)  TArray<FSessionPropertyKeyPair> & NewOrChangedSettings, TArray<FSessionPropertyKeyPair> & ModifiedSettingsArray);
 
 		// Get an array of the session settings from a session search result
 		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions|SessionInfo")

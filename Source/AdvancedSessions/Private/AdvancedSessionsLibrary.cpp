@@ -15,7 +15,7 @@ void UAdvancedSessionsLibrary::GetUniqueBuildID(FBlueprintSessionResult SessionR
 	UniqueBuildId = SessionResult.OnlineResult.Session.SessionSettings.BuildUniqueId;
 }
 
-void UAdvancedSessionsLibrary::AddOrModifyExtraSettings(const TArray<FSessionPropertyKeyPair> & SettingsArray, const TArray<FSessionPropertyKeyPair> & NewOrChangedSettings, TArray<FSessionPropertyKeyPair> & ModifiedSettingsArray)
+void UAdvancedSessionsLibrary::AddOrModifyExtraSettings(UPARAM(ref) TArray<FSessionPropertyKeyPair> & SettingsArray, UPARAM(ref) TArray<FSessionPropertyKeyPair> & NewOrChangedSettings, TArray<FSessionPropertyKeyPair> & ModifiedSettingsArray)
 {
 	ModifiedSettingsArray = SettingsArray;
 
@@ -25,7 +25,7 @@ void UAdvancedSessionsLibrary::AddOrModifyExtraSettings(const TArray<FSessionPro
 	{
 		bFoundSetting = false;
 
-		for (FSessionPropertyKeyPair itr : ModifiedSettingsArray)
+		for (FSessionPropertyKeyPair & itr : ModifiedSettingsArray)
 		{
 			// Manually comparing the keys
 			if (itr.Key == Setting.Key)
