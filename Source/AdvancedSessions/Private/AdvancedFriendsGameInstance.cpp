@@ -29,7 +29,7 @@ void UAdvancedFriendsGameInstance::Shutdown()
 	{
 		// Clear all of the delegate handles here
 		SessionInterface->ClearOnSessionUserInviteAcceptedDelegate_Handle(SessionInviteAcceptedDelegateHandle);
-
+		SessionInterface->ClearOnSessionInviteReceivedDelegate_Handle(SessionInviteReceivedDelegateHandle);
 	}
 
 
@@ -63,6 +63,7 @@ void UAdvancedFriendsGameInstance::Init()
 		// Multiple logins either (IE: Steam)
 		SessionInviteAcceptedDelegateHandle = SessionInterface->AddOnSessionUserInviteAcceptedDelegate_Handle(SessionInviteAcceptedDelegate);
 
+		SessionInviteReceivedDelegateHandle = SessionInterface->AddOnSessionInviteReceivedDelegate_Handle(SessionInviteReceivedDelegate);
 	}
 	else
 	{
@@ -157,7 +158,7 @@ void UAdvancedFriendsGameInstance::OnPlayerTalkingStateChangedMaster(TSharedRef<
 	}
 }
 
-void UAdvancedFriendsGameInstance::OnSessionInviteReceivedMaster(TSharedPtr<const FUniqueNetId> PersonInvited, TSharedPtr<const FUniqueNetId> PersonInviting, const FOnlineSessionSearchResult& SessionToJoin)
+void UAdvancedFriendsGameInstance::OnSessionInviteReceivedMaster(const FUniqueNetId & PersonInvited, const FUniqueNetId & PersonInviting, const FString& AppId, const FOnlineSessionSearchResult& SessionToJoin)
 {
 	if (SessionToJoin.IsValid())
 	{
@@ -165,10 +166,10 @@ void UAdvancedFriendsGameInstance::OnSessionInviteReceivedMaster(TSharedPtr<cons
 		BluePrintResult.OnlineResult = SessionToJoin;
 
 		FBPUniqueNetId PInvited;
-		PInvited.SetUniqueNetId(PersonInvited);
+		PInvited.SetUniqueNetId(&PersonInvited);
 
 		FBPUniqueNetId PInviting;
-		PInviting.SetUniqueNetId(PersonInviting);
+		PInviting.SetUniqueNetId(&PersonInviting);
 
 
 		TArray<APlayerController*> PlayerList;
@@ -177,17 +178,17 @@ void UAdvancedFriendsGameInstance::OnSessionInviteReceivedMaster(TSharedPtr<cons
 		APlayerController* Player = NULL;
 
 		int32 LocalPlayer = 0;
-		for (int i = 0; i < PlayerList->Num(); i++)
+		for (int i = 0; i < PlayerList.Num(); i++)
 		{
-			if (PlayerList[i]->PlayerState->UniqueId == PersonInvited)
+			if (*PlayerList[i]->PlayerState->UniqueId.GetUniqueNetId() == PersonInvited)
 			{
-				PlayerNum = i;
+				LocalPlayer = i;
 				Player = PlayerList[i];
 				break;
 			}
 		}
 
-		OnSessionInviteReceived(LocalPlayer, PInviting, BluePrintResult);
+		OnSessionInviteReceived(LocalPlayer, PInviting, AppId, BluePrintResult);
 
 		IAdvancedFriendsInterface* TheInterface = NULL;
 

@@ -46,11 +46,12 @@ public:
 	FOnSessionInviteReceivedDelegate SessionInviteReceivedDelegate;
 	FDelegateHandle SessionInviteReceivedDelegateHandle;
 
-	void OnSessionInviteReceivedMaster(TSharedPtr<const FUniqueNetId> PersonInvited, TSharedPtr<const FUniqueNetId> PersonInviting, const FOnlineSessionSearchResult& SessionToJoin);
+	//const FUniqueNetId& /*UserId*/, const FUniqueNetId& /*FromId*/, const FString& /*AppId*/, const FOnlineSessionSearchResult& /*InviteResult*/
+	void OnSessionInviteReceivedMaster(const FUniqueNetId & PersonInvited, const FUniqueNetId & PersonInviting, const FString & AppId, const FOnlineSessionSearchResult& SessionToJoin);
 
 	// After a session invite has been accepted by the local player this event is triggered, call JoinSession on the session result to join it
 	UFUNCTION(BlueprintImplementableEvent, Category = "AdvancedFriends")
-	void OnSessionInviteReceived(int32 LocalPlayerNum, FBPUniqueNetId PersonInviting, const FBlueprintSessionResult& SessionToJoin);
+	void OnSessionInviteReceived(int32 LocalPlayerNum, FBPUniqueNetId PersonInviting, const FString& AppId, const FBlueprintSessionResult& SessionToJoin);
 
 	//*** Session invite accepted by local ***//
 	FOnSessionUserInviteAcceptedDelegate SessionInviteAcceptedDelegate;

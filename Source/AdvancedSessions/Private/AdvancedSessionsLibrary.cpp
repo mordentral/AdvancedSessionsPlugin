@@ -374,7 +374,7 @@ void UAdvancedSessionsLibrary::GetPlayerName(APlayerController *PlayerController
 	}
 }
 
-void UAdvancedSessionsLibrary::GetNumberOfNetworkPlayers(int32 &NumNetPlayers)
+void UAdvancedSessionsLibrary::GetNumberOfNetworkPlayers(UObject* WorldContextObject, int32 &NumNetPlayers)
 {
 	//Get an actor to GetWorld() from
 	/*TObjectIterator<AActor> Itr;
@@ -386,7 +386,7 @@ void UAdvancedSessionsLibrary::GetNumberOfNetworkPlayers(int32 &NumNetPlayers)
 	//~~~~~~~~~~~~
 
 	//Get World
-	UWorld* TheWorld = GEngine->GetWorldFromContextObject(WorldContextObject)
+	UWorld* TheWorld = GEngine->GetWorldFromContextObject(WorldContextObject);
 
 	if (!TheWorld)
 	{
