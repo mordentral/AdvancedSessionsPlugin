@@ -10,6 +10,7 @@ UAdvancedFriendsGameInstance::UAdvancedFriendsGameInstance(const FObjectInitiali
 	, bCallFriendInterfaceEventsOnPlayerControllers(true)
 	, bCallVoiceInterfaceEventsOnPlayerControllers(true)
 	, bEnableTalkingStatusDelegate(true)
+	, SessionInviteReceivedDelegate(FOnSessionInviteReceivedDelegate::CreateUObject(this, &ThisClass::OnSessionInviteReceivedMaster))
 	, SessionInviteAcceptedDelegate(FOnSessionUserInviteAcceptedDelegate::CreateUObject(this, &ThisClass::OnSessionInviteAcceptedMaster))
 	, PlayerTalkingStateChangedDelegate(FOnPlayerTalkingStateChangedDelegate::CreateUObject(this, &ThisClass::OnPlayerTalkingStateChangedMaster))
 {
@@ -153,6 +154,59 @@ void UAdvancedFriendsGameInstance::OnPlayerTalkingStateChangedMaster(TSharedRef<
 				UE_LOG(AdvancedFriendsInterfaceLog, Warning, TEXT("UAdvancedFriendsInstance Failed to get a controller with the specified index in OnVoiceStateChanged!"));
 			}
 		}
+	}
+}
+
+void UAdvancedFriendsGameInstance::OnSessionInviteReceivedMaster(TSharedPtr<const FUniqueNetId> PersonInvited, TSharedPtr<const FUniqueNetId> PersonInviting, const FOnlineSessionSearchResult& SessionToJoin)
+{
+	if (SessionToJoin.IsValid())
+	{
+		FBlueprintSessionResult BluePrintResult;
+		BluePrintResult.OnlineResult = SessionToJoin;
+
+		FBPUniqueNetId PInvited;
+		PInvited.SetUniqueNetId(PersonInvited);
+
+		FBPUniqueNetId PInviting;
+		PInviting.SetUniqueNetId(PersonInviting);
+
+
+		TArray<APlayerController*> PlayerList;
+		GEngine->GetAllLocalPlayerControllers(PlayerList);
+
+		APlayerController* Player = NULL;
+
+		int32 LocalPlayer = 0;
+		for (int i = 0; i < PlayerList->Num(); i++)
+		{
+			if (PlayerList[i]->PlayerState->UniqueId == PersonInvited)
+			{
+				PlayerNum = i;
+				Player = PlayerList[i];
+				break;
+			}
+		}
+
+		OnSessionInviteReceived(LocalPlayer, PInviting, BluePrintResult);
+
+		IAdvancedFriendsInterface* TheInterface = NULL;
+
+		if (Player != NULL)
+		{
+			//Run the Event specific to the actor, if the actor has the interface, otherwise ignore
+			if (Player->GetClass()->ImplementsInterface(UAdvancedFriendsInterface::StaticClass()))
+			{
+				IAdvancedFriendsInterface::Execute_OnSessionInviteReceived(Player, PInviting, BluePrintResult);
+			}
+		}
+		else
+		{
+			UE_LOG(AdvancedFriendsInterfaceLog, Warning, TEXT("UAdvancedFriendsInstance Failed to get a controller with the specified index in OnSessionInviteReceived!"));
+		}
+	}
+	else
+	{
+		UE_LOG(AdvancedFriendsInterfaceLog, Warning, TEXT("UAdvancedFriendsInstance Return a bad search result in OnSessionInviteReceived!"));
 	}
 }
 

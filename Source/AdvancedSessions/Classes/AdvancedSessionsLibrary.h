@@ -128,7 +128,7 @@ public:
 		//********** Misc Player Info Functions *********//
 
 		// Get the number of network players
-		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|PlayerInfo|Misc")
+		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|PlayerInfo|Misc", meta = (bIgnoreSelf = "true", WorldContext = "WorldContextObject", DisplayName = "GetNumNetworkPlayers"))
 		static void GetNumberOfNetworkPlayers(int32 &NumNetPlayers);
 
 		// Get the network player index of the given controller

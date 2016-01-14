@@ -42,6 +42,16 @@ public:
 	virtual void Shutdown() override;
 	virtual void Init() override;
 
+	//*** Session invite received by local ***//
+	FOnSessionInviteReceivedDelegate SessionInviteReceivedDelegate;
+	FDelegateHandle SessionInviteReceivedDelegateHandle;
+
+	void OnSessionInviteReceivedMaster(TSharedPtr<const FUniqueNetId> PersonInvited, TSharedPtr<const FUniqueNetId> PersonInviting, const FOnlineSessionSearchResult& SessionToJoin);
+
+	// After a session invite has been accepted by the local player this event is triggered, call JoinSession on the session result to join it
+	UFUNCTION(BlueprintImplementableEvent, Category = "AdvancedFriends")
+	void OnSessionInviteReceived(int32 LocalPlayerNum, FBPUniqueNetId PersonInviting, const FBlueprintSessionResult& SessionToJoin);
+
 	//*** Session invite accepted by local ***//
 	FOnSessionUserInviteAcceptedDelegate SessionInviteAcceptedDelegate;
 	FDelegateHandle SessionInviteAcceptedDelegateHandle;

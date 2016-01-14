@@ -30,6 +30,10 @@ public:
 	
 	// Called when the designated LocalUser has accepted a session invite, use JoinSession on result to connect
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnSessionInviteAccepted"))
+	void OnSessionInviteReceived(FBPUniqueNetId PersonInviting, const FBlueprintSessionResult& SearchResult);
+
+	// Called when the designated LocalUser has accepted a session invite, use JoinSession on result to connect
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnSessionInviteAccepted"))
 	void OnSessionInviteAccepted(FBPUniqueNetId PersonInviting, const FBlueprintSessionResult& SearchResult);
 
 	// Called when the designated LocalUser has accepted a session invite, use JoinSession on result to connect

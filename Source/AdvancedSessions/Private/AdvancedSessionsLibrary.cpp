@@ -377,16 +377,17 @@ void UAdvancedSessionsLibrary::GetPlayerName(APlayerController *PlayerController
 void UAdvancedSessionsLibrary::GetNumberOfNetworkPlayers(int32 &NumNetPlayers)
 {
 	//Get an actor to GetWorld() from
-	TObjectIterator<AActor> Itr;
+	/*TObjectIterator<AActor> Itr;
 	if (!Itr)
 	{
 		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetNumberOfNetworkPlayers Failed to get iterator!"));
 		return;
-	}
+	}*/
 	//~~~~~~~~~~~~
 
 	//Get World
-	UWorld* TheWorld = Itr->GetWorld();
+	UWorld* TheWorld = GEngine->GetWorldFromContextObject(WorldContextObject)
+
 	if (!TheWorld)
 	{
 		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetNumberOfNetworkPlayers Failed to get World()!"));
