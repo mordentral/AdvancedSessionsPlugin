@@ -20,6 +20,14 @@
 //General Advanced Sessions Log
 DECLARE_LOG_CATEGORY_EXTERN(AdvancedFriendsLog, Log, All);
 
+UENUM(Blueprintable)
+enum SteamAvatarSize
+{
+	SteamAvatar_Small = 1,
+	SteamAvatar_Medium = 2,
+	SteamAvatar_Large = 3
+};
+
 
 UCLASS()
 class UAdvancedFriendsLibrary : public UBlueprintFunctionLibrary
@@ -52,5 +60,9 @@ public:
 	// Check if a UniqueNetId is a friend
 	UFUNCTION(BlueprintPure, Category = "Online|AdvancedFriends|FriendsList")
 	static void IsAFriend(APlayerController *PlayerController, const FBPUniqueNetId UniqueNetId, bool &IsFriend);
+
+	// Get a texture of a valid friends avatar, STEAM ONLY
+	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedFriends|SteamAPI")
+	static UTexture2D * GetSteamFriendAvatar(APlayerController *PlayerController, const FBPUniqueNetId UniqueNetId, SteamAvatarSize AvatarSize = SteamAvatarSize::SteamAvatar_Medium);
 
 };	

@@ -1,9 +1,94 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "OnlineSubSystemHeader.h"
 #include "AdvancedFriendsLibrary.h"
+#include <steam/steam_api.h>
 
 //General Log
 DEFINE_LOG_CATEGORY(AdvancedFriendsLog);
+
+
+UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(APlayerController *PlayerController, const FBPUniqueNetId UniqueNetId, SteamAvatarSize AvatarSize)
+{
+	if (!PlayerController)
+	{
+		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Had a bad Player Controller!"));
+		return nullptr;
+	}
+
+	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid())
+	{
+		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Had a bad UniqueNetId!"));
+		return nullptr;
+	}
+
+	uint32 Width = 0;
+	uint32 Height = 0;
+
+	if (SteamAPI_Init())
+	{
+		//Getting the PictureID from the SteamAPI and getting the Size with the ID
+
+		uint64 id = *((uint64*)UniqueNetId.UniqueNetId->GetBytes());
+		int Picture = 0;
+
+		switch(AvatarSize)
+		{
+		case SteamAvatarSize::SteamAvatar_Small: Picture = SteamFriends()->GetSmallFriendAvatar(id); break;
+		case SteamAvatarSize::SteamAvatar_Medium: Picture = SteamFriends()->GetMediumFriendAvatar(id); break;
+		case SteamAvatarSize::SteamAvatar_Large: Picture = SteamFriends()->GetLargeFriendAvatar(id); break;
+		default: break;
+		}
+
+		SteamUtils()->GetImageSize(Picture, &Width, &Height);
+
+		// STOLEN FROM ANSWERHUB :p
+
+		if (Width > 0 && Height > 0)
+		{
+			//Creating the buffer "oAvatarRGBA" and then filling it with the RGBA Stream from the Steam Avatar
+			BYTE *oAvatarRGBA = new BYTE[Width * Height * 4];
+
+
+			//Filling the buffer with the RGBA Stream from the Steam Avatar and creating a UTextur2D to parse the RGBA Steam in
+			SteamUtils()->GetImageRGBA(Picture, (uint8*)oAvatarRGBA, 4 * Height * Width * sizeof(char));
+
+			//Swap R and B channels because for some reason the games whack
+			for (uint32 i = 0; i < (Width * Height * 4); i += 4)
+			{
+				uint8 Temp = oAvatarRGBA[i + 0];
+				oAvatarRGBA[i + 0] = oAvatarRGBA[i + 2];
+				oAvatarRGBA[i + 2] = Temp;
+			}
+			UTexture2D* Avatar = UTexture2D::CreateTransient(Width, Height, PF_B8G8R8A8);
+
+			//MAGIC!
+			uint8* MipData = (uint8*)Avatar->PlatformData->Mips[0].BulkData.Lock(LOCK_READ_WRITE);
+			FMemory::Memcpy(MipData, (void*)oAvatarRGBA, Height * Width * 4);
+			Avatar->PlatformData->Mips[0].BulkData.Unlock();
+
+			// Original implementation was missing this!!
+			delete[] oAvatarRGBA;
+
+			//Setting some Parameters for the Texture and finally returning it
+			Avatar->PlatformData->NumSlices = 1;
+			Avatar->NeverStream = true;
+			//Avatar->CompressionSettings = TC_EditorIcon;
+
+			Avatar->UpdateResource();
+
+			return Avatar;
+		}
+		else
+		{
+			UE_LOG(AdvancedFriendsLog, Warning, TEXT("Bad Height / Width with steam avatar!"));
+		}
+
+		return nullptr;
+	}
+
+	UE_LOG(AdvancedFriendsLog, Warning, TEXT("STEAM Couldn't be verified as initialized"));
+	return nullptr;
+}
 
 void UAdvancedFriendsLibrary::SendSessionInviteToFriends(APlayerController *PlayerController, const TArray<FBPUniqueNetId> &Friends, TEnumAsByte<EBlueprintResultSwitch::Type> &Result)
 {
