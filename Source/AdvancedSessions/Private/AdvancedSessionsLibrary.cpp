@@ -127,7 +127,7 @@ FSessionsSearchSetting UAdvancedSessionsLibrary::MakeLiteralSessionSearchPropert
 	return setting;
 }
 
-FSessionPropertyKeyPair UAdvancedSessionsLibrary::MakeLiteralSessionPropertyByte(FName Key, uint8 Value)
+FSessionPropertyKeyPair UAdvancedSessionsLibrary::MakeLiteralSessionPropertyByte(FName Ket8 Value)
 {
 	FSessionPropertyKeyPair Prop;
 	Prop.Key = Key;
@@ -312,8 +312,8 @@ void UAdvancedSessionsLibrary::UniqueNetIdToString(const FBPUniqueNetId& UniqueN
 		UE_LOG(AdvancedSessionsLog, Warning, TEXT("UniqueNetIdToString received a bad UniqueNetId!"));
 		String = "ERROR, BAD UNIQUE NET ID";
 	}
-
-	String = ID->ToString();
+	else
+		String = ID->ToString();
 }
 
 
