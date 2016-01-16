@@ -52,14 +52,18 @@ UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(APlayerController *Pl
 			//Filling the buffer with the RGBA Stream from the Steam Avatar and creating a UTextur2D to parse the RGBA Steam in
 			SteamUtils()->GetImageRGBA(Picture, (uint8*)oAvatarRGBA, 4 * Height * Width * sizeof(char));
 
+
+			// Removed as I changed the image bit code to be RGB
+			/*
 			//Swap R and B channels because for some reason the games whack
 			for (uint32 i = 0; i < (Width * Height * 4); i += 4)
 			{
 				uint8 Temp = oAvatarRGBA[i + 0];
 				oAvatarRGBA[i + 0] = oAvatarRGBA[i + 2];
 				oAvatarRGBA[i + 2] = Temp;
-			}
-			UTexture2D* Avatar = UTexture2D::CreateTransient(Width, Height, PF_B8G8R8A8);
+			}*/
+
+			UTexture2D* Avatar = UTexture2D::CreateTransient(Width, Height, PF_R8G8B8A8);
 
 			//MAGIC!
 			uint8* MipData = (uint8*)Avatar->PlatformData->Mips[0].BulkData.Lock(LOCK_READ_WRITE);
@@ -67,6 +71,7 @@ UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(APlayerController *Pl
 			Avatar->PlatformData->Mips[0].BulkData.Unlock();
 
 			// Original implementation was missing this!!
+			// the hell man......
 			delete[] oAvatarRGBA;
 
 			//Setting some Parameters for the Texture and finally returning it
