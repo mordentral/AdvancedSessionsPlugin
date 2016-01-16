@@ -127,7 +127,7 @@ FSessionsSearchSetting UAdvancedSessionsLibrary::MakeLiteralSessionSearchPropert
 	return setting;
 }
 
-FSessionPropertyKeyPair UAdvancedSessionsLibrary::MakeLiteralSessionPropertyByte(FName Ket8 Value)
+FSessionPropertyKeyPair UAdvancedSessionsLibrary::MakeLiteralSessionPropertyByte(FName Key, uint8 Value)
 {
 	FSessionPropertyKeyPair Prop;
 	Prop.Key = Key;
