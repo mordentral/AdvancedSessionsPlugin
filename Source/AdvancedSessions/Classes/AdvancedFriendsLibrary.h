@@ -65,4 +65,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedFriends|SteamAPI")
 	static UTexture2D * GetSteamFriendAvatar(APlayerController *PlayerController, const FBPUniqueNetId UniqueNetId, SteamAvatarSize AvatarSize = SteamAvatarSize::SteamAvatar_Medium);
 
+	// Preloads the avatar and name of a steam friend, return whether it is already available or not, STEAM ONLY
+	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedFriends|SteamAPI")
+	static bool RequestSteamFriendInfo(APlayerController *PlayerController, const FBPUniqueNetId UniqueNetId);
+	
+	// Gets the level of a friends steam account, STEAM ONLY
+	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedFriends|SteamAPI")
+	static int32 GetFriendSteamLevel(APlayerController *PlayerController, const FBPUniqueNetId UniqueNetId);
+
 };	

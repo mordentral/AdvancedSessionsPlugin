@@ -7,6 +7,57 @@
 DEFINE_LOG_CATEGORY(AdvancedFriendsLog);
 
 
+int32 UAdvancedFriendsLibrary::GetFriendSteamLevel(APlayerController *PlayerController, const FBPUniqueNetId UniqueNetId)
+{
+
+	if (!PlayerController)
+	{
+		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Had a bad Player Controller!"));
+		return 0;
+	}
+
+	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid())
+	{
+		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Had a bad UniqueNetId!"));
+		return 0;
+	}
+
+	if (SteamAPI_Init())
+	{
+		uint64 id = *((uint64*)UniqueNetId.UniqueNetId->GetBytes());
+
+		return SteamFriends()->GetFriendSteamLevel(id);
+	}
+
+	return 0;
+
+
+}
+
+bool UAdvancedFriendsLibrary::RequestSteamFriendInfo(APlayerController *PlayerController, const FBPUniqueNetId UniqueNetId)
+{
+	if (!PlayerController)
+	{
+		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Had a bad Player Controller!"));
+		return nullptr;
+	}
+
+	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid())
+	{
+		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Had a bad UniqueNetId!"));
+		return nullptr;
+	}
+
+	if (SteamAPI_Init())
+	{
+		uint64 id = *((uint64*)UniqueNetId.UniqueNetId->GetBytes());
+
+		return !SteamFriends()->RequestUserInformation(id, false);
+	}
+
+	return false;
+}
+
 UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(APlayerController *PlayerController, const FBPUniqueNetId UniqueNetId, SteamAvatarSize AvatarSize)
 {
 	if (!PlayerController)
@@ -27,10 +78,12 @@ UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(APlayerController *Pl
 	if (SteamAPI_Init())
 	{
 		//Getting the PictureID from the SteamAPI and getting the Size with the ID
+		//virtual bool RequestUserInformation( CSteamID steamIDUser, bool bRequireNameOnly ) = 0;
 
+		
 		uint64 id = *((uint64*)UniqueNetId.UniqueNetId->GetBytes());
 		int Picture = 0;
-
+		
 		switch(AvatarSize)
 		{
 		case SteamAvatarSize::SteamAvatar_Small: Picture = SteamFriends()->GetSmallFriendAvatar(id); break;
@@ -38,6 +91,9 @@ UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(APlayerController *Pl
 		case SteamAvatarSize::SteamAvatar_Large: Picture = SteamFriends()->GetLargeFriendAvatar(id); break;
 		default: break;
 		}
+
+		if (Picture == -1)
+			return NULL;
 
 		SteamUtils()->GetImageSize(Picture, &Width, &Height);
 
