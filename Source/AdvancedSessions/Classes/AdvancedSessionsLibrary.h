@@ -111,6 +111,10 @@ public:
 		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|PlayerInfo|PlayerID")
 		static void GetUniqueNetID(APlayerController *PlayerController, FBPUniqueNetId &UniqueNetId);
 
+		// Get the unique net id of a network player who is assigned the the given player state
+		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|PlayerInfo|PlayerID")
+		static void GetUniqueNetIDFromPlayerState(APlayerState *PlayerState, FBPUniqueNetId &UniqueNetId);
+
 		// Check if a UniqueNetId is a friend
 		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|UniqueNetId")
 		static void UniqueNetIdToString(const FBPUniqueNetId &UniqueNetId, FString &String);

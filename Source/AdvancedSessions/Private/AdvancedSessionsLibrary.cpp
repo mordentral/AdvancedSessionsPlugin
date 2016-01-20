@@ -336,6 +336,22 @@ void UAdvancedSessionsLibrary::GetUniqueNetID(APlayerController *PlayerControlle
 	}
 }
 
+void UAdvancedSessionsLibrary::GetUniqueNetIDFromPlayerState(APlayerState *PlayerState, FBPUniqueNetId &UniqueNetId)
+{
+	if (!PlayerState)
+	{
+		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetUniqueNetIdFromPlayerState received a bad PlayerState!"));
+		return;
+	}
+
+	UniqueNetId.SetUniqueNetId(PlayerState->UniqueId.GetUniqueNetId());
+	if (!UniqueNetId.IsValid())
+	{
+		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetUniqueNetIdFromPlayerState couldn't get the player uniquenetid!"));
+	}
+	return;
+}
+
 void UAdvancedSessionsLibrary::SetPlayerName(APlayerController *PlayerController, FString PlayerName)
 {
 	if (!PlayerController)
