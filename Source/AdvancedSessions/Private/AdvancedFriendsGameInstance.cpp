@@ -190,7 +190,7 @@ void UAdvancedFriendsGameInstance::OnSessionInviteReceivedMaster(const FUniqueNe
 
 		OnSessionInviteReceived(LocalPlayer, PInviting, AppId, BluePrintResult);
 
-		IAdvancedFriendsInterface* TheInterface = NULL;
+		//IAdvancedFriendsInterface* TheInterface = NULL;
 
 		if (Player != NULL)
 		{
@@ -228,7 +228,7 @@ void UAdvancedFriendsGameInstance::OnSessionInviteAcceptedMaster(const bool bWas
 
 			APlayerController* Player = UGameplayStatics::GetPlayerController(GetWorld(), LocalPlayer);
 
-			IAdvancedFriendsInterface* TheInterface = NULL;
+			//IAdvancedFriendsInterface* TheInterface = NULL;
 
 			if (Player != NULL)
 			{
