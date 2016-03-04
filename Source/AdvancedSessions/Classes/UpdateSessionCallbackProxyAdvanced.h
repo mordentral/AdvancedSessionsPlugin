@@ -18,9 +18,9 @@ class UUpdateSessionCallbackProxyAdvanced : public UOnlineBlueprintCallProxyBase
 	UPROPERTY(BlueprintAssignable)
 	FEmptyOnlineDelegate OnFailure;
 
-	// Creates a session with the default online subsystem with advanced optional inputs
+	// Creates a session with the default online subsystem with advanced optional inputs, you MUST fill in all categories or it will pass in values that you didn't want as default values
 	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject",AutoCreateRefTerm="ExtraSettings"), Category = "Online|AdvancedSessions")
-	static UUpdateSessionCallbackProxyAdvanced* UpdateSession(UObject* WorldContextObject, int32 PublicConnections, bool bUseLAN, bool bAllowInvites, bool bAllowJoinInProgress, const TArray<FSessionPropertyKeyPair> &ExtraSettings, bool bRefreshOnlineData = true, bool bIsDedicatedServer = false);
+	static UUpdateSessionCallbackProxyAdvanced* UpdateSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair> &ExtraSettings, int32 PublicConnections = 100, int32 PrivateConnections = 0, bool bUseLAN = false, bool bAllowInvites = false, bool bAllowJoinInProgress = false, bool bRefreshOnlineData = true, bool bIsDedicatedServer = false);
 
 	// UOnlineBlueprintCallProxyBase interface
 	virtual void Activate() override;
@@ -38,6 +38,9 @@ private:
 
 	// Number of public connections
 	int NumPublicConnections;
+
+	// Number of private connections
+	int NumPrivateConnections;
 
 	// Whether or not to search LAN
 	bool bUseLAN;

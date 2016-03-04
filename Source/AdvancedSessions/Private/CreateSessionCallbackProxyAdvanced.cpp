@@ -13,11 +13,12 @@ UCreateSessionCallbackProxyAdvanced::UCreateSessionCallbackProxyAdvanced(const F
 {
 }
 
-UCreateSessionCallbackProxyAdvanced* UCreateSessionCallbackProxyAdvanced::CreateAdvancedSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair> &ExtraSettings, class APlayerController* PlayerController, int32 PublicConnections, bool bUseLAN, bool bAllowInvites, bool bIsDedicatedServer, bool bUsePresence, bool bAllowJoinViaPresence, bool bAllowJoinViaPresenceFriendsOnly, bool bAntiCheatProtected, bool bUsesStats, bool bShouldAdvertise)
+UCreateSessionCallbackProxyAdvanced* UCreateSessionCallbackProxyAdvanced::CreateAdvancedSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair> &ExtraSettings, class APlayerController* PlayerController, int32 PublicConnections, int32 PrivateConnections, bool bUseLAN, bool bAllowInvites, bool bIsDedicatedServer, bool bUsePresence, bool bAllowJoinViaPresence, bool bAllowJoinViaPresenceFriendsOnly, bool bAntiCheatProtected, bool bUsesStats, bool bShouldAdvertise)
 {
 	UCreateSessionCallbackProxyAdvanced* Proxy = NewObject<UCreateSessionCallbackProxyAdvanced>();
 	Proxy->PlayerControllerWeakPtr = PlayerController;
 	Proxy->NumPublicConnections = PublicConnections;
+	Proxy->NumPrivateConnections = PrivateConnections;
 	Proxy->bUseLAN = bUseLAN;
 	Proxy->WorldContextObject = WorldContextObject;
 	Proxy->bAllowInvites = bAllowInvites;
@@ -48,6 +49,7 @@ void UCreateSessionCallbackProxyAdvanced::Activate()
 			
 			FOnlineSessionSettings Settings;
 			Settings.NumPublicConnections = NumPublicConnections;
+			Settings.NumPrivateConnections = NumPrivateConnections;
 			Settings.bShouldAdvertise = true;
 			Settings.bAllowJoinInProgress = true;
 			Settings.bIsLANMatch = bUseLAN;

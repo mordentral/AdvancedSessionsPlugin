@@ -12,10 +12,11 @@ UUpdateSessionCallbackProxyAdvanced::UUpdateSessionCallbackProxyAdvanced(const F
 {
 }	
 
-UUpdateSessionCallbackProxyAdvanced* UUpdateSessionCallbackProxyAdvanced::UpdateSession(UObject* WorldContextObject, int32 PublicConnections, bool bUseLAN, bool bAllowInvites, bool bAllowJoinInProgress, const TArray<FSessionPropertyKeyPair> &ExtraSettings, bool bRefreshOnlineData, bool bIsDedicatedServer)
+UUpdateSessionCallbackProxyAdvanced* UUpdateSessionCallbackProxyAdvanced::UpdateSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair> &ExtraSettings, int32 PublicConnections, int32 PrivateConnections, bool bUseLAN, bool bAllowInvites, bool bAllowJoinInProgress, bool bRefreshOnlineData, bool bIsDedicatedServer)
 {
 	UUpdateSessionCallbackProxyAdvanced* Proxy = NewObject<UUpdateSessionCallbackProxyAdvanced>();
 	Proxy->NumPublicConnections = PublicConnections;
+	Proxy->NumPrivateConnections = PrivateConnections;
 	Proxy->bUseLAN = bUseLAN;
 	Proxy->WorldContextObject = WorldContextObject;
 	Proxy->bAllowInvites = bAllowInvites;
@@ -57,6 +58,7 @@ void UUpdateSessionCallbackProxyAdvanced::Activate()
 	//	FOnlineSessionSettings Settings;
 		//Settings->BuildUniqueId = GetBuildUniqueId();
 		Settings->NumPublicConnections = NumPublicConnections;
+		Settings->NumPrivateConnections = NumPrivateConnections;
 		//Settings->bShouldAdvertise = true;
 		Settings->bAllowJoinInProgress = bAllowJoinInProgress;
 		Settings->bIsLANMatch = bUseLAN;

@@ -175,6 +175,32 @@ public:
 		FString LastSeen;
 };
 
+
+USTRUCT(BlueprintType)
+struct FBPFriendPresenceInfo
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
+		bool bIsOnline;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
+		bool bIsPlaying;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
+		bool bIsPlayingThisGame;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
+	bool bIsJoinable;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
+		bool bHasVoiceSupport;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
+	TEnumAsByte<EBPOnlinePresenceState::Type> PresenceState;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
+		FString StatusString;
+};
+
+
+
 USTRUCT(BlueprintType)
 struct FBPFriendInfo
 {
@@ -192,6 +218,8 @@ public:
 	FBPUniqueNetId UniqueNetId;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
 	bool bIsPlayingSameGame;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
+	FBPFriendPresenceInfo PresenceInfo;
 };
 
 /** The types of comparison operations for a given search query */

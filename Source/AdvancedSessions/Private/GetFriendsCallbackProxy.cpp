@@ -67,6 +67,15 @@ void UGetFriendsCallbackProxy::OnReadFriendsListCompleted(int32 LocalUserNum, bo
 				BPF.DisplayName = Friend->GetDisplayName();
 				BPF.RealName = Friend->GetRealName();
 				BPF.UniqueNetId.SetUniqueNetId(Friend->GetUserId());
+				BPF.bIsPlayingSameGame = Friend->GetPresence().bIsPlayingThisGame;
+
+				BPF.PresenceInfo.bIsOnline = Friend->GetPresence().bIsOnline;
+				BPF.PresenceInfo.bIsPlaying = Friend->GetPresence().bIsPlaying;
+				BPF.PresenceInfo.PresenceState = ((EBPOnlinePresenceState::Type)((int32)Friend->GetPresence().Status.State));
+				BPF.PresenceInfo.StatusString = Friend->GetPresence().Status.StatusStr;
+				BPF.PresenceInfo.bIsJoinable = Friend->GetPresence().bIsJoinable;
+				BPF.PresenceInfo.bIsPlayingThisGame = Friend->GetPresence().bIsPlayingThisGame;
+
 				FriendsListOut.Add(BPF);
 			}
 
