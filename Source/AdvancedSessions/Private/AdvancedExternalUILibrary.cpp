@@ -49,6 +49,9 @@ void UAdvancedExternalUILibrary::ShowWebURLUI(FString URLToShow, TEnumAsByte<EBl
 		return;
 	}
 
+	URLToShow = URLToShow.Replace(TEXT("http://"), TEXT(""));
+	URLToShow = URLToShow.Replace(TEXT("https://"), TEXT(""));
+
 	ExternalUIInterface->ShowWebURL(URLToShow);
 	Result = EBlueprintResultSwitch::Type::OnSuccess;
 }

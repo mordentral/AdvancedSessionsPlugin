@@ -68,7 +68,7 @@ void UAdvancedSessionsLibrary::GetSessionState(TEnumAsByte<EBPOnlineSessionState
 	SessionState = ((EBPOnlineSessionState::Type)SessionInterface->GetSessionState(GameSessionName));
 }
 
-void UAdvancedSessionsLibrary::GetSessionSettings(int32 &NumConnections, bool &bIsLAN, bool &bIsDedicated, bool &bIsAnticheatEnabled, int32 &BuildUniqueID, TArray<FSessionPropertyKeyPair> &ExtraSettings, TEnumAsByte<EBlueprintResultSwitch::Type> &Result)
+void UAdvancedSessionsLibrary::GetSessionSettings(int32 &NumConnections, int32 &NumPrivateConnections, bool &bIsLAN, bool &bIsDedicated, bool &bIsAnticheatEnabled, int32 &BuildUniqueID, TArray<FSessionPropertyKeyPair> &ExtraSettings, TEnumAsByte<EBlueprintResultSwitch::Type> &Result)
 {
 	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface();
 
@@ -86,8 +86,10 @@ void UAdvancedSessionsLibrary::GetSessionSettings(int32 &NumConnections, bool &b
 		Result = EBlueprintResultSwitch::Type::OnFailure;
 		return;
 	}
+
 	BuildUniqueID = settings->BuildUniqueId;
 	NumConnections = settings->NumPublicConnections;
+	NumPrivateConnections = settings->NumPrivateConnections;
 	bIsLAN = settings->bIsLANMatch;
 	bIsDedicated = settings->bIsDedicated;
 	bIsAnticheatEnabled = settings->bAntiCheatProtected;
