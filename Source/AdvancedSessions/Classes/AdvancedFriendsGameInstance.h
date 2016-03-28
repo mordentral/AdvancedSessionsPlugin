@@ -22,7 +22,7 @@
 DECLARE_LOG_CATEGORY_EXTERN(AdvancedFriendsInterfaceLog, Log, All);
 
 UCLASS()
-class UAdvancedFriendsGameInstance : public UGameInstance
+class ADVANCEDSESSIONS_API UAdvancedFriendsGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 public:
