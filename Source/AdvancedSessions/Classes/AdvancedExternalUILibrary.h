@@ -42,8 +42,13 @@ public:
 	static void ShowLeaderBoardUI(FString LeaderboardName, TEnumAsByte<EBlueprintResultSwitch::Type> &Result);
 
 	// Show the UI that shows a web URL
-	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedExternalUI", meta = (ExpandEnumAsExecs = "Result"))
-	static void ShowWebURLUI(FString URLToShow, TEnumAsByte<EBlueprintResultSwitch::Type> &Result);
+	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedExternalUI", meta = (ExpandEnumAsExecs = "Result", AutoCreateRefTerm = "AllowedDomains"))
+	static void ShowWebURLUI(FString URLToShow, TEnumAsByte<EBlueprintResultSwitch::Type> &Result, TArray<FString>& AllowedDomains, bool bEmbedded = false , bool bShowBackground = false, bool bShowCloseButton = false, int32 OffsetX = 0, int32 OffsetY = 0, int32 SizeX = 0, int32 SizeY = 0);
+
+	// Show the UI that shows a web URL
+	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedExternalUI")
+	static void CloseWebURLUI();
+
 
 	// Show the UI that shows the profile of a uniquenetid
 	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedExternalUI", meta = (ExpandEnumAsExecs = "Result"))

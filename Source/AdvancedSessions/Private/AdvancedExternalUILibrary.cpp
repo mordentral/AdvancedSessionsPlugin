@@ -38,7 +38,7 @@ void UAdvancedExternalUILibrary::ShowProfileUI(const FBPUniqueNetId PlayerViewin
 
 
 
-void UAdvancedExternalUILibrary::ShowWebURLUI(FString URLToShow, TEnumAsByte<EBlueprintResultSwitch::Type> &Result)
+void UAdvancedExternalUILibrary::ShowWebURLUI(FString URLToShow, TEnumAsByte<EBlueprintResultSwitch::Type> &Result, TArray<FString>& AllowedDomains, bool bEmbedded, bool bShowBackground, bool bShowCloseButton, int32 OffsetX, int32 OffsetY, int32 SizeX, int32 SizeY)
 {
 	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface();
 
@@ -52,8 +52,31 @@ void UAdvancedExternalUILibrary::ShowWebURLUI(FString URLToShow, TEnumAsByte<EBl
 	URLToShow = URLToShow.Replace(TEXT("http://"), TEXT(""));
 	URLToShow = URLToShow.Replace(TEXT("https://"), TEXT(""));
 
-	ExternalUIInterface->ShowWebURL(URLToShow);
+	FShowWebUrlParams Params;
+	Params.AllowedDomains = AllowedDomains;
+	Params.bEmbedded = bEmbedded;
+	Params.bShowBackground = bShowBackground;
+	Params.bShowCloseButton = bShowCloseButton;
+	Params.OffsetX = OffsetX;
+	Params.OffsetY = OffsetY;
+	Params.SizeX = SizeX;
+	Params.SizeY = SizeY;
+
+	ExternalUIInterface->ShowWebURL(URLToShow, Params);
 	Result = EBlueprintResultSwitch::Type::OnSuccess;
+}
+
+void UAdvancedExternalUILibrary::CloseWebURLUI()
+{
+	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface();
+
+	if (!ExternalUIInterface.IsValid())
+	{
+		UE_LOG(AdvancedExternalUILog, Warning, TEXT("CloseWebURLUI Failed to get External UI interface!"));
+		return;
+	}
+
+	ExternalUIInterface->CloseWebURL();
 }
 
 void UAdvancedExternalUILibrary::ShowLeaderBoardUI(FString LeaderboardName, TEnumAsByte<EBlueprintResultSwitch::Type> &Result)
