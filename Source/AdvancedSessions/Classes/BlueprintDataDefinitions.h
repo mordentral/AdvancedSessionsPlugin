@@ -44,6 +44,18 @@ namespace EBlueprintResultSwitch
 	};
 }
 
+// This is to define server type searches
+UENUM(BlueprintType)
+namespace EBPServerPresenceSearchType
+{
+	enum Type
+	{
+		AllServers,
+		ClientServersOnly,
+		DedicatedServersOnly
+	};
+}
+
 
 // Wanted this to be switchable in the editor
 UENUM(BlueprintType)

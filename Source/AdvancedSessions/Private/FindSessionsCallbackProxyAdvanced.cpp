@@ -14,7 +14,7 @@ UFindSessionsCallbackProxyAdvanced::UFindSessionsCallbackProxyAdvanced(const FOb
 {
 }
 
-UFindSessionsCallbackProxyAdvanced* UFindSessionsCallbackProxyAdvanced::FindSessionsAdvanced(UObject* WorldContextObject, class APlayerController* PlayerController, int MaxResults, bool bUseLAN, const TArray<FSessionsSearchSetting> &Filters)
+UFindSessionsCallbackProxyAdvanced* UFindSessionsCallbackProxyAdvanced::FindSessionsAdvanced(UObject* WorldContextObject, class APlayerController* PlayerController, int MaxResults, bool bUseLAN, TEnumAsByte<EBPServerPresenceSearchType::Type> ServerTypeToSearch, const TArray<FSessionsSearchSetting> &Filters)
 {
 	UFindSessionsCallbackProxyAdvanced* Proxy = NewObject<UFindSessionsCallbackProxyAdvanced>();	
 	Proxy->PlayerControllerWeakPtr = PlayerController;
@@ -22,7 +22,7 @@ UFindSessionsCallbackProxyAdvanced* UFindSessionsCallbackProxyAdvanced::FindSess
 	Proxy->MaxResults = MaxResults;
 	Proxy->WorldContextObject = WorldContextObject;
 	Proxy->SearchSettings = Filters;
-	Procy->bUseDedicated = bUseDedicated;
+	Proxy->ServerSearchType = ServerTypeToSearch;
 	return Proxy;
 }
 
@@ -46,9 +46,21 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 			// Create temp filter variable, because I had to re-define a blueprint version of this, it is required.
 			FOnlineSearchSettingsEx tem;
 
-			if (!bUseDedicated) 
+			switch (ServerSearchType)
 			{
+
+			case EBPServerPresenceSearchType::ClientServersOnly:
 				tem.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
+				break;
+
+			case EBPServerPresenceSearchType::DedicatedServersOnly:
+				tem.Set(SEARCH_PRESENCE, false, EOnlineComparisonOp::Equals);
+				break;
+
+			case EBPServerPresenceSearchType::AllServers:
+			default:
+				break;
+
 			}
 
 			// Filter results

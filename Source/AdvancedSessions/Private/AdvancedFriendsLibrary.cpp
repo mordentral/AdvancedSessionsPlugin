@@ -60,13 +60,13 @@ bool UAdvancedFriendsLibrary::RequestSteamFriendInfo(APlayerController *PlayerCo
 	if (!PlayerController)
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Had a bad Player Controller!"));
-		return nullptr;
+		return false;
 	}
 
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid())
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Had a bad UniqueNetId!"));
-		return nullptr;
+		return false;
 	}
 
 	if (SteamAPI_Init())
