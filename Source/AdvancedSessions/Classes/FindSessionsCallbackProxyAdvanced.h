@@ -21,7 +21,7 @@ class UFindSessionsCallbackProxyAdvanced : public UOnlineBlueprintCallProxyBase
 
 	// Searches for advertised sessions with the default online subsystem and includes an array of filters
 	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject", AutoCreateRefTerm="Filters"), Category = "Online|AdvancedSessions")
-	static UFindSessionsCallbackProxyAdvanced* FindSessionsAdvanced(UObject* WorldContextObject, class APlayerController* PlayerController, int32 MaxResults, bool bUseLAN, const TArray<FSessionsSearchSetting> &Filters);
+	static UFindSessionsCallbackProxyAdvanced* FindSessionsAdvanced(UObject* WorldContextObject, class APlayerController* PlayerController, int32 MaxResults, bool bUseLAN, bool bSearchDedicated, const TArray<FSessionsSearchSetting> &Filters);
 
 	static bool CompareVariants(const FVariantData &A, const FVariantData &B, EOnlineComparisonOpRedux::Type Comparator);
 	
@@ -66,6 +66,9 @@ private:
 
 	// Whether or not to search LAN
 	bool bUseLAN;
+
+	// Whether or not to search for dedicated servers
+	bool bUseDedicated;
 
 	// Maximum number of results to return
 	int MaxResults;

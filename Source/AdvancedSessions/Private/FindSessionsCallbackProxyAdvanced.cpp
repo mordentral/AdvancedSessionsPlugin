@@ -22,6 +22,7 @@ UFindSessionsCallbackProxyAdvanced* UFindSessionsCallbackProxyAdvanced::FindSess
 	Proxy->MaxResults = MaxResults;
 	Proxy->WorldContextObject = WorldContextObject;
 	Proxy->SearchSettings = Filters;
+	Procy->bUseDedicated = bUseDedicated;
 	return Proxy;
 }
 
@@ -36,7 +37,7 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 		if (Sessions.IsValid())
 		{
 			DelegateHandle = Sessions->AddOnFindSessionsCompleteDelegate_Handle(Delegate);
-			
+
 			SearchObject = MakeShareable(new FOnlineSessionSearch);
 			SearchObject->MaxSearchResults = MaxResults;
 			SearchObject->bIsLanQuery = bUseLAN;
@@ -44,7 +45,11 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 
 			// Create temp filter variable, because I had to re-define a blueprint version of this, it is required.
 			FOnlineSearchSettingsEx tem;
-			tem.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
+
+			if (!bUseDedicated) 
+			{
+				tem.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
+			}
 
 			// Filter results
 			if (SearchSettings.Num() > 0)
