@@ -50,7 +50,6 @@ namespace EBPServerPresenceSearchType
 {
 	enum Type
 	{
-		AllServers,
 		ClientServersOnly,
 		DedicatedServersOnly
 	};

@@ -50,14 +50,12 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 			{
 
 			case EBPServerPresenceSearchType::ClientServersOnly:
+			{
 				tem.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
-				break;
+			}
+			break;
 
 			case EBPServerPresenceSearchType::DedicatedServersOnly:
-				tem.Set(SEARCH_PRESENCE, false, EOnlineComparisonOp::Equals);
-				break;
-
-			case EBPServerPresenceSearchType::AllServers:
 			default:
 				break;
 
