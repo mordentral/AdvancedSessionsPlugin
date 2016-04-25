@@ -28,15 +28,8 @@
 DEFINE_LOG_CATEGORY(AdvancedFriendsLog);
 
 
-int32 UAdvancedFriendsLibrary::GetFriendSteamLevel(APlayerController *PlayerController, const FBPUniqueNetId UniqueNetId)
+int32 UAdvancedFriendsLibrary::GetFriendSteamLevel(const FBPUniqueNetId UniqueNetId)
 {
-
-	if (!PlayerController)
-	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Had a bad Player Controller!"));
-		return 0;
-	}
-
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid())
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Had a bad UniqueNetId!"));
@@ -55,17 +48,11 @@ int32 UAdvancedFriendsLibrary::GetFriendSteamLevel(APlayerController *PlayerCont
 
 }
 
-bool UAdvancedFriendsLibrary::RequestSteamFriendInfo(APlayerController *PlayerController, const FBPUniqueNetId UniqueNetId)
+bool UAdvancedFriendsLibrary::RequestSteamFriendInfo(const FBPUniqueNetId UniqueNetId)
 {
-	if (!PlayerController)
-	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Had a bad Player Controller!"));
-		return false;
-	}
-
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid())
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Had a bad UniqueNetId!"));
+		UE_LOG(AdvancedFriendsLog, Warning, TEXT("RequestSteamFriendInfo Had a bad UniqueNetId!"));
 		return false;
 	}
 
@@ -79,17 +66,11 @@ bool UAdvancedFriendsLibrary::RequestSteamFriendInfo(APlayerController *PlayerCo
 	return false;
 }
 
-UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(APlayerController *PlayerController, const FBPUniqueNetId UniqueNetId, SteamAvatarSize AvatarSize)
+UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueNetId UniqueNetId, SteamAvatarSize AvatarSize)
 {
-	if (!PlayerController)
-	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Had a bad Player Controller!"));
-		return nullptr;
-	}
-
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid())
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Had a bad UniqueNetId!"));
+		UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetSteamFriendAvatar Had a bad UniqueNetId!"));
 		return nullptr;
 	}
 
@@ -118,7 +99,7 @@ UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(APlayerController *Pl
 
 		SteamUtils()->GetImageSize(Picture, &Width, &Height);
 
-		// STOLEN FROM ANSWERHUB :p
+		// STOLEN FROM ANSWERHUB :p, then fixed because answerhub wasn't releasing the memory O.o
 
 		if (Width > 0 && Height > 0)
 		{
@@ -130,7 +111,7 @@ UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(APlayerController *Pl
 			SteamUtils()->GetImageRGBA(Picture, (uint8*)oAvatarRGBA, 4 * Height * Width * sizeof(char));
 
 
-			// Removed as I changed the image bit code to be RGB
+			// Removed as I changed the image bit code to be RGB, I think the original author was unaware that there were different pixel formats
 			/*
 			//Swap R and B channels because for some reason the games whack
 			for (uint32 i = 0; i < (Width * Height * 4); i += 4)
@@ -142,6 +123,7 @@ UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(APlayerController *Pl
 
 			UTexture2D* Avatar = UTexture2D::CreateTransient(Width, Height, PF_R8G8B8A8);
 
+			// Switched to a Memcpy instead of byte by byte transer
 			uint8* MipData = (uint8*)Avatar->PlatformData->Mips[0].BulkData.Lock(LOCK_READ_WRITE);
 			FMemory::Memcpy(MipData, (void*)oAvatarRGBA, Height * Width * 4);
 			Avatar->PlatformData->Mips[0].BulkData.Unlock();
