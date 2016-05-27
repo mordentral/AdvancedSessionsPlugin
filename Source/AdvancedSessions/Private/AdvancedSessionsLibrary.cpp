@@ -68,7 +68,7 @@ void UAdvancedSessionsLibrary::GetSessionState(TEnumAsByte<EBPOnlineSessionState
 	SessionState = ((EBPOnlineSessionState::Type)SessionInterface->GetSessionState(GameSessionName));
 }
 
-void UAdvancedSessionsLibrary::GetSessionSettings(int32 &NumConnections, int32 &NumPrivateConnections, bool &bIsLAN, bool &bIsDedicated, bool &bIsAnticheatEnabled, int32 &BuildUniqueID, TArray<FSessionPropertyKeyPair> &ExtraSettings, TEnumAsByte<EBlueprintResultSwitch::Type> &Result)
+void UAdvancedSessionsLibrary::GetSessionSettings(int32 &NumConnections, int32 &NumPrivateConnections, bool &bIsLAN, bool &bIsDedicated, bool &bAllowInvites, bool &bAllowJoinInProgress, bool &bIsAnticheatEnabled, int32 &BuildUniqueID, TArray<FSessionPropertyKeyPair> &ExtraSettings, TEnumAsByte<EBlueprintResultSwitch::Type> &Result)
 {
 	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface();
 
@@ -93,7 +93,9 @@ void UAdvancedSessionsLibrary::GetSessionSettings(int32 &NumConnections, int32 &
 	bIsLAN = settings->bIsLANMatch;
 	bIsDedicated = settings->bIsDedicated;
 	bIsAnticheatEnabled = settings->bAntiCheatProtected;
-	
+	bAllowInvites = settings->bAllowInvites;
+	bAllowJoinInProgress = settings->bAllowJoinInProgress;
+
 	FSessionPropertyKeyPair NewSetting;
 
 	for (auto& Elem : settings->Settings)
