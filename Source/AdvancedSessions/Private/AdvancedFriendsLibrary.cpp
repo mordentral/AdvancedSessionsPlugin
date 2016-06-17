@@ -12,12 +12,16 @@
 #pragma warning(disable:4996)
 #endif
 
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+
 #pragma push_macro("ARRAY_COUNT")
 #undef ARRAY_COUNT
 
 #include <steam/steam_api.h>
 
 #pragma pop_macro("ARRAY_COUNT")
+
+#endif
 
 // @todo Steam: See above
 #ifdef _MSC_VER
@@ -27,7 +31,7 @@
 //General Log
 DEFINE_LOG_CATEGORY(AdvancedFriendsLog);
 
-
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 int32 UAdvancedFriendsLibrary::GetFriendSteamLevel(const FBPUniqueNetId UniqueNetId)
 {
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid())
@@ -152,6 +156,7 @@ UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueNetId 
 	UE_LOG(AdvancedFriendsLog, Warning, TEXT("STEAM Couldn't be verified as initialized"));
 	return nullptr;
 }
+#endif
 
 void UAdvancedFriendsLibrary::SendSessionInviteToFriends(APlayerController *PlayerController, const TArray<FBPUniqueNetId> &Friends, TEnumAsByte<EBlueprintResultSwitch::Type> &Result)
 {
