@@ -31,9 +31,11 @@
 //General Log
 DEFINE_LOG_CATEGORY(AdvancedFriendsLog);
 
-#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+
 int32 UAdvancedFriendsLibrary::GetFriendSteamLevel(const FBPUniqueNetId UniqueNetId)
 {
+
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid())
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Had a bad UniqueNetId!"));
@@ -46,6 +48,7 @@ int32 UAdvancedFriendsLibrary::GetFriendSteamLevel(const FBPUniqueNetId UniqueNe
 
 		return SteamFriends()->GetFriendSteamLevel(id);
 	}
+#endif
 
 	return 0;
 
@@ -54,6 +57,7 @@ int32 UAdvancedFriendsLibrary::GetFriendSteamLevel(const FBPUniqueNetId UniqueNe
 
 bool UAdvancedFriendsLibrary::RequestSteamFriendInfo(const FBPUniqueNetId UniqueNetId)
 {
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid())
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("RequestSteamFriendInfo Had a bad UniqueNetId!"));
@@ -66,12 +70,14 @@ bool UAdvancedFriendsLibrary::RequestSteamFriendInfo(const FBPUniqueNetId Unique
 
 		return !SteamFriends()->RequestUserInformation(id, false);
 	}
+#endif
 
 	return false;
 }
 
 UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueNetId UniqueNetId, SteamAvatarSize AvatarSize)
 {
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid())
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetSteamFriendAvatar Had a bad UniqueNetId!"));
@@ -152,11 +158,11 @@ UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueNetId 
 
 		return nullptr;
 	}
+#endif
 
 	UE_LOG(AdvancedFriendsLog, Warning, TEXT("STEAM Couldn't be verified as initialized"));
 	return nullptr;
 }
-#endif
 
 void UAdvancedFriendsLibrary::SendSessionInviteToFriends(APlayerController *PlayerController, const TArray<FBPUniqueNetId> &Friends, TEnumAsByte<EBlueprintResultSwitch::Type> &Result)
 {
