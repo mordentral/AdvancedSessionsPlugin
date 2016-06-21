@@ -294,11 +294,20 @@ void UAdvancedFriendsLibrary::GetFriend(APlayerController *PlayerController, con
 	TSharedPtr<FOnlineFriend> fr = FriendsInterface->GetFriend(Player->GetControllerId(), *FriendUniqueNetId.GetUniqueNetId(), EFriendsLists::ToString(EFriendsLists::Type::Default));
 	if (fr.IsValid())
 	{
+		FOnlineUserPresence pres = fr->GetPresence();
 		Friend.DisplayName = fr->GetDisplayName();
-		Friend.OnlineState = ((EBPOnlinePresenceState::Type)((int32)fr->GetPresence().Status.State));
+		Friend.OnlineState = ((EBPOnlinePresenceState::Type)((int32)pres.Status.State));
 		Friend.RealName = fr->GetRealName();
 		Friend.UniqueNetId.SetUniqueNetId(fr->GetUserId());
-		Friend.bIsPlayingSameGame = fr->GetPresence().bIsPlayingThisGame;
+		Friend.bIsPlayingSameGame = pres.bIsPlayingThisGame;
+
+		Friend.PresenceInfo.bHasVoiceSupport = pres.bHasVoiceSupport;
+		Friend.PresenceInfo.bIsJoinable = pres.bIsJoinable;
+		Friend.PresenceInfo.bIsOnline = pres.bIsOnline;
+		Friend.PresenceInfo.bIsPlaying = pres.bIsPlaying;
+		Friend.PresenceInfo.bIsPlayingThisGame = pres.bIsPlayingThisGame;
+		Friend.PresenceInfo.PresenceState = ((EBPOnlinePresenceState::Type)((int32)pres.Status.State));
+		Friend.PresenceInfo.StatusString = pres.Status.StatusStr;
 	}
 }
 
@@ -400,19 +409,21 @@ void UAdvancedFriendsLibrary::GetStoredFriendsList(APlayerController *PlayerCont
 	{
 		TSharedRef<FOnlineFriend> Friend = FriendList[i];
 		FBPFriendInfo BPF;
+		FOnlineUserPresence pres = Friend->GetPresence();
 
-		BPF.OnlineState = ((EBPOnlinePresenceState::Type)((int32)Friend->GetPresence().Status.State));
+		BPF.OnlineState = ((EBPOnlinePresenceState::Type)((int32)pres.Status.State));
 		BPF.DisplayName = Friend->GetDisplayName();
 		BPF.RealName = Friend->GetRealName();
 		BPF.UniqueNetId.SetUniqueNetId(Friend->GetUserId());
-		BPF.bIsPlayingSameGame = Friend->GetPresence().bIsPlayingThisGame;
+		BPF.bIsPlayingSameGame = pres.bIsPlayingThisGame;
 
-		BPF.PresenceInfo.bIsOnline = Friend->GetPresence().bIsOnline;
-		BPF.PresenceInfo.bIsPlaying = Friend->GetPresence().bIsPlaying;
-		BPF.PresenceInfo.PresenceState = ((EBPOnlinePresenceState::Type)((int32)Friend->GetPresence().Status.State));
-		BPF.PresenceInfo.StatusString = Friend->GetPresence().Status.StatusStr;
-		BPF.PresenceInfo.bIsJoinable = Friend->GetPresence().bIsJoinable;
-		BPF.PresenceInfo.bIsPlayingThisGame = Friend->GetPresence().bIsPlayingThisGame;
+		BPF.PresenceInfo.bIsOnline = pres.bIsOnline;
+		BPF.PresenceInfo.bHasVoiceSupport = pres.bHasVoiceSupport;
+		BPF.PresenceInfo.bIsPlaying = pres.bIsPlaying;
+		BPF.PresenceInfo.PresenceState = ((EBPOnlinePresenceState::Type)((int32)pres.Status.State));
+		BPF.PresenceInfo.StatusString = pres.Status.StatusStr;
+		BPF.PresenceInfo.bIsJoinable = pres.bIsJoinable;
+		BPF.PresenceInfo.bIsPlayingThisGame = pres.bIsPlayingThisGame;
 
 		FriendsList.Add(BPF);
 	}

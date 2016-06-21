@@ -201,11 +201,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
 		bool bIsPlayingThisGame;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
-	bool bIsJoinable;
+		bool bIsJoinable;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
 		bool bHasVoiceSupport;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
-	TEnumAsByte<EBPOnlinePresenceState::Type> PresenceState;
+		TEnumAsByte<EBPOnlinePresenceState::Type> PresenceState;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
 		FString StatusString;
 };
