@@ -58,9 +58,11 @@ void UFindFriendSessionCallbackProxy::Activate()
 
 		FindFriendSessionCompleteDelegateHandle = Sessions->AddOnFindFriendSessionCompleteDelegate_Handle(Player->GetControllerId(), OnFindFriendSessionCompleteDelegate);
 
-		Sessions->FindFriendSession(Player->GetControllerId(),*cUniqueNetId.GetUniqueNetId());
+		Sessions->FindFriendSession(Player->GetControllerId(), *cUniqueNetId.GetUniqueNetId());
+
 		return;
 	}
+
 	// Fail immediately
 	FBlueprintSessionResult EmptyResult;
 	OnFailure.Broadcast(EmptyResult);
@@ -77,7 +79,13 @@ void UFindFriendSessionCallbackProxy::OnFindFriendSessionCompleted(int32 LocalPl
 	{ 
 		FBlueprintSessionResult Result;
 		Result.OnlineResult = SessionInfo;
-		OnSuccess.Broadcast(Result);
+		if(Result.OnlineResult.IsValid())
+			OnSuccess.Broadcast(Result);
+		else
+		{
+			UE_LOG(AdvancedFindFriendSessionLog, Warning, TEXT("FindFriendSession Failed, returned an invalid session."));
+			OnFailure.Broadcast(Result);
+		}
 	}
 	else
 	{

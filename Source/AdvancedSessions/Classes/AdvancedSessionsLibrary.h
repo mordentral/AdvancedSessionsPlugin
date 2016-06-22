@@ -55,6 +55,10 @@ public:
 
 		//********* Session Information Functions ***********//
 
+		// Check if a session result is valid or not
+		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|SessionInfo")
+		static bool IsValidSession(const FBlueprintSessionResult & SessionResult);
+
 		// Get the Unique Current Build ID
 		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|SessionInfo")
 		static void GetCurrentUniqueBuildID(int32 &UniqueBuildId);

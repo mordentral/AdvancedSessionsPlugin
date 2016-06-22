@@ -30,7 +30,6 @@ UUpdateSessionCallbackProxyAdvanced* UUpdateSessionCallbackProxyAdvanced::Update
 void UUpdateSessionCallbackProxyAdvanced::Activate()
 {
 
-
 	IOnlineSessionPtr Sessions = Online::GetSessionInterface();
 
 	if (Sessions.IsValid())

@@ -5,6 +5,11 @@
 //General Log
 DEFINE_LOG_CATEGORY(AdvancedSessionsLog);
 
+bool UAdvancedSessionsLibrary::IsValidSession(const FBlueprintSessionResult & SessionResult)
+{
+	return SessionResult.OnlineResult.IsValid();
+}
+
 void UAdvancedSessionsLibrary::GetCurrentUniqueBuildID(int32 &UniqueBuildId)
 {
 	UniqueBuildId = GetBuildUniqueId();
