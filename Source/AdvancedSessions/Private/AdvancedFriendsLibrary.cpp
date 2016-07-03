@@ -72,6 +72,7 @@ bool UAdvancedFriendsLibrary::RequestSteamFriendInfo(const FBPUniqueNetId Unique
 	}
 #endif
 
+	UE_LOG(AdvancedFriendsLog, Warning, TEXT("RequestSteamFriendInfo Couldn't init steamAPI!"));
 	return false;
 }
 
