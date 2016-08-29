@@ -29,7 +29,7 @@ class IAdvancedFriendsInterface
 public:
 	
 	// Called when the designated LocalUser has accepted a session invite, use JoinSession on result to connect
-	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnSessionInviteAccepted"))
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnSessionInviteReceived"))
 	void OnSessionInviteReceived(FBPUniqueNetId PersonInviting, const FBlueprintSessionResult& SearchResult);
 
 	// Called when the designated LocalUser has accepted a session invite, use JoinSession on result to connect
