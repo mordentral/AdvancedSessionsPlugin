@@ -14,7 +14,7 @@ UFindSessionsCallbackProxyAdvanced::UFindSessionsCallbackProxyAdvanced(const FOb
 {
 }
 
-UFindSessionsCallbackProxyAdvanced* UFindSessionsCallbackProxyAdvanced::FindSessionsAdvanced(UObject* WorldContextObject, class APlayerController* PlayerController, int MaxResults, bool bUseLAN, TEnumAsByte<EBPServerPresenceSearchType::Type> ServerTypeToSearch, const TArray<FSessionsSearchSetting> &Filters)
+UFindSessionsCallbackProxyAdvanced* UFindSessionsCallbackProxyAdvanced::FindSessionsAdvanced(UObject* WorldContextObject, class APlayerController* PlayerController, int MaxResults, bool bUseLAN, TEnumAsByte<EBPServerPresenceSearchType::Type> ServerTypeToSearch, const TArray<FSessionsSearchSetting> &Filters, bool bEmptyServersOnly, bool bNonEmptyServersOnly, bool bSecureServersOnly, int MinSlotsAvailable)
 {
 	UFindSessionsCallbackProxyAdvanced* Proxy = NewObject<UFindSessionsCallbackProxyAdvanced>();	
 	Proxy->PlayerControllerWeakPtr = PlayerController;
@@ -23,6 +23,10 @@ UFindSessionsCallbackProxyAdvanced* UFindSessionsCallbackProxyAdvanced::FindSess
 	Proxy->WorldContextObject = WorldContextObject;
 	Proxy->SearchSettings = Filters;
 	Proxy->ServerSearchType = ServerTypeToSearch;
+	Proxy->bEmptyServersOnly = bEmptyServersOnly,
+	Proxy->bNonEmptyServersOnly = bNonEmptyServersOnly;
+	Proxy->bSecureServersOnly = bSecureServersOnly;
+	Proxy->MinSlotsAvailable = MinSlotsAvailable;
 	return Proxy;
 }
 
@@ -46,6 +50,37 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 			// Create temp filter variable, because I had to re-define a blueprint version of this, it is required.
 			FOnlineSearchSettingsEx tem;
 
+	/*		// Search only for dedicated servers (value is true/false) 
+#define SEARCH_DEDICATED_ONLY FName(TEXT("DEDICATEDONLY"))
+			// Search for empty servers only (value is true/false) 
+#define SEARCH_EMPTY_SERVERS_ONLY FName(TEXT("EMPTYONLY"))
+			// Search for non empty servers only (value is true/false) 
+#define SEARCH_NONEMPTY_SERVERS_ONLY FName(TEXT("NONEMPTYONLY"))
+			// Search for secure servers only (value is true/false) 
+#define SEARCH_SECURE_SERVERS_ONLY FName(TEXT("SECUREONLY"))
+			// Search for presence sessions only (value is true/false) 
+#define SEARCH_PRESENCE FName(TEXT("PRESENCESEARCH"))
+			// Search for a match with min player availability (value is int) 
+#define SEARCH_MINSLOTSAVAILABLE FName(TEXT("MINSLOTSAVAILABLE"))
+			// Exclude all matches where any unique ids in a given array are present (value is string of the form "uniqueid1;uniqueid2;uniqueid3") 
+#define SEARCH_EXCLUDE_UNIQUEIDS FName(TEXT("EXCLUDEUNIQUEIDS"))
+			// User ID to search for session of 
+#define SEARCH_USER FName(TEXT("SEARCHUSER"))
+			// Keywords to match in session search 
+#define SEARCH_KEYWORDS FName(TEXT("SEARCHKEYWORDS"))*/
+
+			if(bEmptyServersOnly)
+				tem.Set(SEARCH_EMPTY_SERVERS_ONLY, true, EOnlineComparisonOp::Equals);
+
+			if (bNonEmptyServersOnly)
+				tem.Set(SEARCH_NONEMPTY_SERVERS_ONLY, true, EOnlineComparisonOp::Equals);
+
+			if (bSecureServersOnly)
+				tem.Set(SEARCH_SECURE_SERVERS_ONLY, true, EOnlineComparisonOp::Equals);
+
+			if (MinSlotsAvailable != 0)
+				tem.Set(SEARCH_MINSLOTSAVAILABLE, MinSlotsAvailable, EOnlineComparisonOp::GreaterThanEquals);
+
 			switch (ServerSearchType)
 			{
 
@@ -56,8 +91,18 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 			break;
 
 			case EBPServerPresenceSearchType::DedicatedServersOnly:
+			{
+				tem.Set(SEARCH_DEDICATED_ONLY, true, EOnlineComparisonOp::Equals);
+			}
+			break;
+
+			case EBPServerPresenceSearchType::AllServers:
 			default:
-				break;
+			{
+			//	tem.Set(SEARCH_DEDICATED_ONLY, false, EOnlineComparisonOp::Equals);
+			//	tem.Set(SEARCH_PRESENCE, false, EOnlineComparisonOp::Equals);
+			}
+			break;
 
 			}
 
