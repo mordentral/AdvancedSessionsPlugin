@@ -51,10 +51,10 @@ namespace EBPServerPresenceSearchType
 	enum Type
 	{
 		ClientServersOnly,
-		DedicatedServersOnly
+		DedicatedServersOnly,
+		AllServers
 	};
 }
-
 
 // Wanted this to be switchable in the editor
 UENUM(BlueprintType)
