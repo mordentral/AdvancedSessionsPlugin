@@ -15,85 +15,70 @@
 
 
 UENUM()
-namespace ESessionSettingSearchResult
+enum class ESessionSettingSearchResult : uint8
 {
-	enum Type
-	{
-		// Found the setting
-		Found,
+	// Found the setting
+	Found,
 
-		// Did not find the setting
-		NotFound,
+	// Did not find the setting
+	NotFound,
 
-		// Was not the correct ype
-		WrongType
-	};
-}
+	// Was not the correct ype
+	WrongType
+};
 
 // This makes a lot of the blueprint functions cleaner
 UENUM()
-namespace EBlueprintResultSwitch
+enum class EBlueprintResultSwitch : uint8
 {
-	enum Type
-	{
-		// On Success
-		OnSuccess,
+	// On Success
+	OnSuccess,
 
-		// On Failure
-		OnFailure
-	};
-}
+	// On Failure
+	OnFailure
+};
 
 // This is to define server type searches
 UENUM(BlueprintType)
-namespace EBPServerPresenceSearchType
+enum class EBPServerPresenceSearchType : uint8
 {
-	enum Type
-	{
-		ClientServersOnly,
-		DedicatedServersOnly,
-		AllServers
-	};
-}
+	ClientServersOnly,
+	DedicatedServersOnly,
+	AllServers
+};
 
 // Wanted this to be switchable in the editor
 UENUM(BlueprintType)
-namespace EBPOnlinePresenceState
+enum class EBPOnlinePresenceState : uint8
 {
-	enum Type
-	{
-		Online,
-		Offline,
-		Away,
-		ExtendedAway,
-		DoNotDisturb,
-		Chat
-	};
-}
+	Online,
+	Offline,
+	Away,
+	ExtendedAway,
+	DoNotDisturb,
+	Chat
+};
 
 UENUM(BlueprintType)
-namespace EBPOnlineSessionState
+enum class EBPOnlineSessionState : uint8
 {
-	enum Type
-	{
-		/** An online session has not been created yet */
-		NoSession,
-		/** An online session is in the process of being created */
-		Creating,
-		/** Session has been created but the session hasn't started (pre match lobby) */
-		Pending,
-		/** Session has been asked to start (may take time due to communication with backend) */
-		Starting,
-		/** The current session has started. Sessions with join in progress disabled are no longer joinable */
-		InProgress,
-		/** The session is still valid, but the session is no longer being played (post match lobby) */
-		Ending,
-		/** The session is closed and any stats committed */
-		Ended,
-		/** The session is being destroyed */
-		Destroying
-	};
-}
+	/** An online session has not been created yet */
+	NoSession,
+	/** An online session is in the process of being created */
+	Creating,
+	/** Session has been created but the session hasn't started (pre match lobby) */
+	Pending,
+	/** Session has been asked to start (may take time due to communication with backend) */
+	Starting,
+	/** The current session has started. Sessions with join in progress disabled are no longer joinable */
+	InProgress,
+	/** The session is still valid, but the session is no longer being played (post match lobby) */
+	Ending,
+	/** The session is closed and any stats committed */
+	Ended,
+	/** The session is being destroyed */
+	Destroying
+};
 
 // Boy oh boy is this a dirty hack, but I can't figure out a good way to do it otherwise at the moment
 // The UniqueNetId is an abstract class so I can't exactly re-initialize it to make a shared pointer on some functions
@@ -205,7 +190,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
 		bool bHasVoiceSupport;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
-		TEnumAsByte<EBPOnlinePresenceState::Type> PresenceState;
+		EBPOnlinePresenceState PresenceState;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
 		FString StatusString;
 };
@@ -224,7 +209,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
 	FString RealName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
-	TEnumAsByte<EBPOnlinePresenceState::Type> OnlineState;
+	EBPOnlinePresenceState OnlineState;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
 	FBPUniqueNetId UniqueNetId;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
@@ -236,18 +221,15 @@ public:
 /** The types of comparison operations for a given search query */
 // Used to compare session properties
 UENUM(BlueprintType)
-namespace EOnlineComparisonOpRedux
+enum class EOnlineComparisonOpRedux : uint8
 {
-	enum Type
-	{
-		Equals,
-		NotEquals,
-		GreaterThan,
-		GreaterThanEquals,
-		LessThan,
-		LessThanEquals,
-	};
-}
+	Equals,
+	NotEquals,
+	GreaterThan,
+	GreaterThanEquals,
+	LessThan,
+	LessThanEquals,
+};
 
 
 // Used to store session properties before converting to FVariantData
@@ -271,7 +253,7 @@ struct FSessionsSearchSetting
 
 	// Had to make a copy of this to account for the original not being exposed to blueprints
 	/** How is this session setting compared on the backend searches */
-	TEnumAsByte<EOnlineComparisonOpRedux::Type> ComparisonOp;
+	EOnlineComparisonOpRedux ComparisonOp;
 
 	// The key pair to search for
 	FSessionPropertyKeyPair PropertyKeyPair;
@@ -333,11 +315,11 @@ class FOnlineSearchSettingsEx : public FOnlineSearchSettings
 	*/
 public:
 
-	void HardSet(FName Key, const FVariantData& Value, EOnlineComparisonOpRedux::Type CompOp)
+	void HardSet(FName Key, const FVariantData& Value, EOnlineComparisonOpRedux CompOp)
 	{
 		FOnlineSessionSearchParam* SearchParam = SearchParams.Find(Key);
 
-		EOnlineComparisonOp::Type op;
+		TEnumAsByte<EOnlineComparisonOp::Type> op;
 
 		switch (CompOp)
 		{

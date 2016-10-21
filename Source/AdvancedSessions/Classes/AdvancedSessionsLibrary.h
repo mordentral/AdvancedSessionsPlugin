@@ -38,11 +38,11 @@ public:
 
 		// Get the current session state
 		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions|SessionInfo")
-		static void GetSessionState(TEnumAsByte<EBPOnlineSessionState::Type> &SessionState);
+		static void GetSessionState(EBPOnlineSessionState &SessionState);
 
 		// Get the current session settings
 		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions|SessionInfo", meta = (ExpandEnumAsExecs = "Result"))
-		static void GetSessionSettings(int32 &NumConnections, int32 &NumPrivateConnections, bool &bIsLAN, bool &bIsDedicated, bool &bAllowInvites, bool &bAllowJoinInProgress, bool &bIsAnticheatEnabled, int32 &BuildUniqueID, TArray<FSessionPropertyKeyPair> &ExtraSettings, TEnumAsByte<EBlueprintResultSwitch::Type> &Result);
+		static void GetSessionSettings(int32 &NumConnections, int32 &NumPrivateConnections, bool &bIsLAN, bool &bIsDedicated, bool &bAllowInvites, bool &bAllowJoinInProgress, bool &bIsAnticheatEnabled, int32 &BuildUniqueID, TArray<FSessionPropertyKeyPair> &ExtraSettings, EBlueprintResultSwitch &Result);
 
 		// Check if someone is in the current session
 		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions|SessionInfo")
@@ -50,7 +50,7 @@ public:
 		
 		// Make a literal session search parameter
 		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|SessionInfo|Literals")
-		static FSessionsSearchSetting MakeLiteralSessionSearchProperty(FSessionPropertyKeyPair SessionSearchProperty, EOnlineComparisonOpRedux::Type ComparisonOp);
+		static FSessionsSearchSetting MakeLiteralSessionSearchProperty(FSessionPropertyKeyPair SessionSearchProperty, EOnlineComparisonOpRedux ComparisonOp);
 
 
 		//********* Session Information Functions ***********//
@@ -69,23 +69,23 @@ public:
 
 		// Get session custom information key/value as Byte (For Enums)
 		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions|SessionInfo", meta = (ExpandEnumAsExecs = "SearchResult"))
-		static void GetSessionPropertyByte(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, TEnumAsByte<ESessionSettingSearchResult::Type> &SearchResult, uint8 &SettingValue);
+		static void GetSessionPropertyByte(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, ESessionSettingSearchResult &SearchResult, uint8 &SettingValue);
 
 		// Get session custom information key/value as Bool
 		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions|SessionInfo", meta = (ExpandEnumAsExecs = "SearchResult"))
-		static void GetSessionPropertyBool(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, TEnumAsByte<ESessionSettingSearchResult::Type> &SearchResult, bool &SettingValue);
+		static void GetSessionPropertyBool(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, ESessionSettingSearchResult &SearchResult, bool &SettingValue);
 
 		// Get session custom information key/value as String
 		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions|SessionInfo", meta = (ExpandEnumAsExecs = "SearchResult"))
-		static void GetSessionPropertyString(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, TEnumAsByte<ESessionSettingSearchResult::Type> &SearchResult, FString &SettingValue);
+		static void GetSessionPropertyString(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, ESessionSettingSearchResult &SearchResult, FString &SettingValue);
 
 		// Get session custom information key/value as Int
 		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions|SessionInfo", meta = (ExpandEnumAsExecs = "SearchResult"))
-		static void GetSessionPropertyInt(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, TEnumAsByte<ESessionSettingSearchResult::Type> &SearchResult, int32 &SettingValue);
+		static void GetSessionPropertyInt(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, ESessionSettingSearchResult &SearchResult, int32 &SettingValue);
 
 		// Get session custom information key/value as Float
 		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions|SessionInfo", meta = (ExpandEnumAsExecs = "SearchResult"))
-		static void GetSessionPropertyFloat(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, TEnumAsByte<ESessionSettingSearchResult::Type> &SearchResult, float &SettingValue);
+		static void GetSessionPropertyFloat(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, ESessionSettingSearchResult &SearchResult, float &SettingValue);
 
 
 		// Make a literal session custom information key/value pair from Byte (For Enums)

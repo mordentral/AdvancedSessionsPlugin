@@ -14,7 +14,7 @@ UFindSessionsCallbackProxyAdvanced::UFindSessionsCallbackProxyAdvanced(const FOb
 {
 }
 
-UFindSessionsCallbackProxyAdvanced* UFindSessionsCallbackProxyAdvanced::FindSessionsAdvanced(UObject* WorldContextObject, class APlayerController* PlayerController, int MaxResults, bool bUseLAN, TEnumAsByte<EBPServerPresenceSearchType::Type> ServerTypeToSearch, const TArray<FSessionsSearchSetting> &Filters, bool bEmptyServersOnly, bool bNonEmptyServersOnly, bool bSecureServersOnly, int MinSlotsAvailable)
+UFindSessionsCallbackProxyAdvanced* UFindSessionsCallbackProxyAdvanced::FindSessionsAdvanced(UObject* WorldContextObject, class APlayerController* PlayerController, int MaxResults, bool bUseLAN, EBPServerPresenceSearchType ServerTypeToSearch, const TArray<FSessionsSearchSetting> &Filters, bool bEmptyServersOnly, bool bNonEmptyServersOnly, bool bSecureServersOnly, int MinSlotsAvailable)
 {
 	UFindSessionsCallbackProxyAdvanced* Proxy = NewObject<UFindSessionsCallbackProxyAdvanced>();	
 	Proxy->PlayerControllerWeakPtr = PlayerController;
@@ -232,7 +232,7 @@ void UFindSessionsCallbackProxyAdvanced::FilterSessionResults(const TArray<FBlue
 }
 
 
-bool UFindSessionsCallbackProxyAdvanced::CompareVariants(const FVariantData &A, const FVariantData &B, EOnlineComparisonOpRedux::Type Comparator)
+bool UFindSessionsCallbackProxyAdvanced::CompareVariants(const FVariantData &A, const FVariantData &B, EOnlineComparisonOpRedux Comparator)
 {
 	if (A.GetType() != B.GetType())
 		return false;

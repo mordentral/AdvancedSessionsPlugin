@@ -12,7 +12,7 @@ public class AdvancedSessions : ModuleRules
 
         if ((Target.Platform == UnrealTargetPlatform.Win64) || (Target.Platform == UnrealTargetPlatform.Win32) || (Target.Platform == UnrealTargetPlatform.Linux) || (Target.Platform == UnrealTargetPlatform.Mac))
         {
-            PublicDependencyModuleNames.AddRange(new string[] { "Steamworks"/*"Voice", "OnlineSubsystemSteam"*/ });
+            PublicDependencyModuleNames.AddRange(new string[] { "Steamworks"/*,"Voice", "OnlineSubsystemSteam"*/ });
         }
     }
 }

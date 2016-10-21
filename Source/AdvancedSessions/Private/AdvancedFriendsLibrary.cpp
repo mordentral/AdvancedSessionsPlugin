@@ -165,19 +165,19 @@ UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueNetId 
 	return nullptr;
 }
 
-void UAdvancedFriendsLibrary::SendSessionInviteToFriends(APlayerController *PlayerController, const TArray<FBPUniqueNetId> &Friends, TEnumAsByte<EBlueprintResultSwitch::Type> &Result)
+void UAdvancedFriendsLibrary::SendSessionInviteToFriends(APlayerController *PlayerController, const TArray<FBPUniqueNetId> &Friends, EBlueprintResultSwitch &Result)
 {
 	if (!PlayerController)
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("SendSessionInviteToFriend Had a bad Player Controller!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
 	if (Friends.Num() < 1)
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("SendSessionInviteToFriend Had no friends in invitation array!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
@@ -186,7 +186,7 @@ void UAdvancedFriendsLibrary::SendSessionInviteToFriends(APlayerController *Play
 	if (!SessionInterface.IsValid())
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("SendSessionInviteToFriend Failed to get session interface!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
@@ -195,7 +195,7 @@ void UAdvancedFriendsLibrary::SendSessionInviteToFriends(APlayerController *Play
 	if (!Player)
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("SendSessionInviteToFriend failed to get LocalPlayer!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
@@ -209,27 +209,27 @@ void UAdvancedFriendsLibrary::SendSessionInviteToFriends(APlayerController *Play
 
 	if (SessionInterface->SendSessionInviteToFriends(Player->GetControllerId(), GameSessionName, List))
 	{
-		Result = EBlueprintResultSwitch::Type::OnSuccess;
+		Result = EBlueprintResultSwitch::OnSuccess;
 		return;
 	}
 
-	Result = EBlueprintResultSwitch::Type::OnFailure;
+	Result = EBlueprintResultSwitch::OnFailure;
 	return;
 }
 
-void UAdvancedFriendsLibrary::SendSessionInviteToFriend(APlayerController *PlayerController, const FBPUniqueNetId &FriendUniqueNetId, TEnumAsByte<EBlueprintResultSwitch::Type> &Result)
+void UAdvancedFriendsLibrary::SendSessionInviteToFriend(APlayerController *PlayerController, const FBPUniqueNetId &FriendUniqueNetId, EBlueprintResultSwitch &Result)
 {
 	if (!PlayerController)
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("SendSessionInviteToFriend Had a bad Player Controller!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
 	if (!FriendUniqueNetId.IsValid())
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("SendSessionInviteToFriend Had a bad UniqueNetId!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
@@ -238,7 +238,7 @@ void UAdvancedFriendsLibrary::SendSessionInviteToFriend(APlayerController *Playe
 	if (!SessionInterface.IsValid())
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("SendSessionInviteToFriend Failed to get session interface!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
@@ -247,17 +247,17 @@ void UAdvancedFriendsLibrary::SendSessionInviteToFriend(APlayerController *Playe
 	if (!Player)
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("SendSessionInviteToFriend failed to get LocalPlayer!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
 	if (SessionInterface->SendSessionInviteToFriend(Player->GetControllerId(), GameSessionName, *FriendUniqueNetId.GetUniqueNetId()))
 	{
-		Result = EBlueprintResultSwitch::Type::OnSuccess;
+		Result = EBlueprintResultSwitch::OnSuccess;
 		return;
 	}
 
-	Result = EBlueprintResultSwitch::Type::OnFailure;
+	Result = EBlueprintResultSwitch::OnFailure;
 	return;
 }
 
@@ -292,12 +292,12 @@ void UAdvancedFriendsLibrary::GetFriend(APlayerController *PlayerController, con
 		return;
 	}
 
-	TSharedPtr<FOnlineFriend> fr = FriendsInterface->GetFriend(Player->GetControllerId(), *FriendUniqueNetId.GetUniqueNetId(), EFriendsLists::ToString(EFriendsLists::Type::Default));
+	TSharedPtr<FOnlineFriend> fr = FriendsInterface->GetFriend(Player->GetControllerId(), *FriendUniqueNetId.GetUniqueNetId(), EFriendsLists::ToString(EFriendsLists::Default));
 	if (fr.IsValid())
 	{
 		FOnlineUserPresence pres = fr->GetPresence();
 		Friend.DisplayName = fr->GetDisplayName();
-		Friend.OnlineState = ((EBPOnlinePresenceState::Type)((int32)pres.Status.State));
+		Friend.OnlineState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
 		Friend.RealName = fr->GetRealName();
 		Friend.UniqueNetId.SetUniqueNetId(fr->GetUserId());
 		Friend.bIsPlayingSameGame = pres.bIsPlayingThisGame;
@@ -307,7 +307,7 @@ void UAdvancedFriendsLibrary::GetFriend(APlayerController *PlayerController, con
 		Friend.PresenceInfo.bIsOnline = pres.bIsOnline;
 		Friend.PresenceInfo.bIsPlaying = pres.bIsPlaying;
 		Friend.PresenceInfo.bIsPlayingThisGame = pres.bIsPlayingThisGame;
-		Friend.PresenceInfo.PresenceState = ((EBPOnlinePresenceState::Type)((int32)pres.Status.State));
+		Friend.PresenceInfo.PresenceState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
 		Friend.PresenceInfo.StatusString = pres.Status.StatusStr;
 	}
 }
@@ -342,7 +342,7 @@ void UAdvancedFriendsLibrary::IsAFriend(APlayerController *PlayerController, con
 		return;
 	}
 
-	IsFriend = FriendsInterface->IsFriend(Player->GetControllerId(), *UniqueNetId.GetUniqueNetId(), EFriendsLists::ToString(EFriendsLists::Type::Default));
+	IsFriend = FriendsInterface->IsFriend(Player->GetControllerId(), *UniqueNetId.GetUniqueNetId(), EFriendsLists::ToString(EFriendsLists::Default));
 }
 
 void UAdvancedFriendsLibrary::GetStoredRecentPlayersList(FBPUniqueNetId UniqueNetId, TArray<FBPOnlineRecentPlayer> &PlayersList)
@@ -404,7 +404,7 @@ void UAdvancedFriendsLibrary::GetStoredFriendsList(APlayerController *PlayerCont
 
 
 	TArray< TSharedRef<FOnlineFriend> > FriendList;
-	FriendsInterface->GetFriendsList(Player->GetControllerId(), EFriendsLists::ToString((EFriendsLists::Type::Default)), FriendList);
+	FriendsInterface->GetFriendsList(Player->GetControllerId(), EFriendsLists::ToString((EFriendsLists::Default)), FriendList);
 
 	for (int32 i = 0; i < FriendList.Num(); i++)
 	{
@@ -412,7 +412,7 @@ void UAdvancedFriendsLibrary::GetStoredFriendsList(APlayerController *PlayerCont
 		FBPFriendInfo BPF;
 		FOnlineUserPresence pres = Friend->GetPresence();
 
-		BPF.OnlineState = ((EBPOnlinePresenceState::Type)((int32)pres.Status.State));
+		BPF.OnlineState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
 		BPF.DisplayName = Friend->GetDisplayName();
 		BPF.RealName = Friend->GetRealName();
 		BPF.UniqueNetId.SetUniqueNetId(Friend->GetUserId());
@@ -421,7 +421,7 @@ void UAdvancedFriendsLibrary::GetStoredFriendsList(APlayerController *PlayerCont
 		BPF.PresenceInfo.bIsOnline = pres.bIsOnline;
 		BPF.PresenceInfo.bHasVoiceSupport = pres.bHasVoiceSupport;
 		BPF.PresenceInfo.bIsPlaying = pres.bIsPlaying;
-		BPF.PresenceInfo.PresenceState = ((EBPOnlinePresenceState::Type)((int32)pres.Status.State));
+		BPF.PresenceInfo.PresenceState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
 		BPF.PresenceInfo.StatusString = pres.Status.StatusStr;
 		BPF.PresenceInfo.bIsJoinable = pres.bIsJoinable;
 		BPF.PresenceInfo.bIsPlayingThisGame = pres.bIsPlayingThisGame;

@@ -8,7 +8,7 @@ DEFINE_LOG_CATEGORY(AdvancedVoiceLog);
 void UAdvancedVoiceLibrary::IsHeadsetPresent(bool & bHasHeadset, uint8 LocalPlayerNum)
 {
 	IOnlineVoicePtr VoiceInterface = Online::GetVoiceInterface();
-	
+
 	if (!VoiceInterface.IsValid())
 	{
 		bHasHeadset = false;

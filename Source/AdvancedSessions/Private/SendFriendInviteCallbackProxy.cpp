@@ -52,7 +52,7 @@ void USendFriendInviteCallbackProxy::Activate()
 			return;
 		}
 
-		Friends->SendInvite(Player->GetControllerId(), *cUniqueNetId.GetUniqueNetId(), EFriendsLists::ToString((EFriendsLists::Type::Default)), OnSendInviteCompleteDelegate);
+		Friends->SendInvite(Player->GetControllerId(), *cUniqueNetId.GetUniqueNetId(), EFriendsLists::ToString((EFriendsLists::Default)), OnSendInviteCompleteDelegate);
 		return;
 	}
 	// Fail immediately

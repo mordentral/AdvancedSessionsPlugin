@@ -40,7 +40,7 @@ private:
 
 	// The Type of friends list to get
 	// Removed because all but the facebook interfaces don't even currently support anything but the default friends list.
-	//EBPFriendsLists::Type FriendListToGet;
+	//EBPFriendsLists FriendListToGet;
 
 	// The world context object in which this call is taking place
 	UObject* WorldContextObject;

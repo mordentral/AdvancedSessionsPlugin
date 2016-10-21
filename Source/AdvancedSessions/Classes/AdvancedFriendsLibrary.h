@@ -21,7 +21,7 @@
 DECLARE_LOG_CATEGORY_EXTERN(AdvancedFriendsLog, Log, All);
 
 UENUM(Blueprintable)
-enum SteamAvatarSize
+enum class SteamAvatarSize : uint8
 {
 	SteamAvatar_Small = 1,
 	SteamAvatar_Medium = 2,
@@ -39,11 +39,11 @@ public:
 
 	// Sends an Invite to the current online session to a list of friends
 	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedFriends|FriendsList", meta = (ExpandEnumAsExecs = "Result"))
-	static void SendSessionInviteToFriends(APlayerController *PlayerController, const TArray<FBPUniqueNetId> &Friends, TEnumAsByte<EBlueprintResultSwitch::Type> &Result);
+	static void SendSessionInviteToFriends(APlayerController *PlayerController, const TArray<FBPUniqueNetId> &Friends, EBlueprintResultSwitch &Result);
 
 	// Sends an Invite to the current online session to a friend
 	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedFriends|FriendsList", meta = (ExpandEnumAsExecs = "Result"))
-	static void SendSessionInviteToFriend(APlayerController *PlayerController, const FBPUniqueNetId &FriendUniqueNetId, TEnumAsByte<EBlueprintResultSwitch::Type> &Result);
+	static void SendSessionInviteToFriend(APlayerController *PlayerController, const FBPUniqueNetId &FriendUniqueNetId, EBlueprintResultSwitch &Result);
 
 	// Get a friend from the previously read/saved friends list (Must Call GetFriends first for this to return anything)
 	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedFriends|FriendsList")

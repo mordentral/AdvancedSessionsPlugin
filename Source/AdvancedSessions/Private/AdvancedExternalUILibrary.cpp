@@ -5,22 +5,22 @@
 //General Log
 DEFINE_LOG_CATEGORY(AdvancedExternalUILog);
 
-void UAdvancedExternalUILibrary::ShowAccountUpgradeUI(const FBPUniqueNetId PlayerRequestingAccountUpgradeUI, TEnumAsByte<EBlueprintResultSwitch::Type> &Result)
+void UAdvancedExternalUILibrary::ShowAccountUpgradeUI(const FBPUniqueNetId PlayerRequestingAccountUpgradeUI, EBlueprintResultSwitch &Result)
 {
 	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface();
 
 	if (!ExternalUIInterface.IsValid())
 	{
 		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowAccountUpgradeUI Failed to get External UI interface!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
 	ExternalUIInterface->ShowAccountUpgradeUI(*PlayerRequestingAccountUpgradeUI.GetUniqueNetId());
-	Result = EBlueprintResultSwitch::Type::OnSuccess;
+	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
-void UAdvancedExternalUILibrary::ShowProfileUI(const FBPUniqueNetId PlayerViewingProfile, const FBPUniqueNetId PlayerToViewProfileOf, TEnumAsByte<EBlueprintResultSwitch::Type> &Result)
+void UAdvancedExternalUILibrary::ShowProfileUI(const FBPUniqueNetId PlayerViewingProfile, const FBPUniqueNetId PlayerToViewProfileOf, EBlueprintResultSwitch &Result)
 {
 
 	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface();
@@ -28,24 +28,24 @@ void UAdvancedExternalUILibrary::ShowProfileUI(const FBPUniqueNetId PlayerViewin
 	if (!ExternalUIInterface.IsValid())
 	{
 		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowProfileUI Failed to get External UI interface!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 	
 	ExternalUIInterface->ShowProfileUI(*PlayerViewingProfile.GetUniqueNetId(), *PlayerToViewProfileOf.GetUniqueNetId(), NULL);
-	Result = EBlueprintResultSwitch::Type::OnSuccess;
+	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
 
 
-void UAdvancedExternalUILibrary::ShowWebURLUI(FString URLToShow, TEnumAsByte<EBlueprintResultSwitch::Type> &Result, TArray<FString>& AllowedDomains, bool bEmbedded, bool bShowBackground, bool bShowCloseButton, int32 OffsetX, int32 OffsetY, int32 SizeX, int32 SizeY)
+void UAdvancedExternalUILibrary::ShowWebURLUI(FString URLToShow, EBlueprintResultSwitch &Result, TArray<FString>& AllowedDomains, bool bEmbedded, bool bShowBackground, bool bShowCloseButton, int32 OffsetX, int32 OffsetY, int32 SizeX, int32 SizeY)
 {
 	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface();
 
 	if (!ExternalUIInterface.IsValid())
 	{
 		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowWebURLUI Failed to get External UI interface!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
@@ -63,7 +63,7 @@ void UAdvancedExternalUILibrary::ShowWebURLUI(FString URLToShow, TEnumAsByte<EBl
 	Params.SizeY = SizeY;
 
 	ExternalUIInterface->ShowWebURL(URLToShow, Params);
-	Result = EBlueprintResultSwitch::Type::OnSuccess;
+	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
 void UAdvancedExternalUILibrary::CloseWebURLUI()
@@ -79,29 +79,29 @@ void UAdvancedExternalUILibrary::CloseWebURLUI()
 	ExternalUIInterface->CloseWebURL();
 }
 
-void UAdvancedExternalUILibrary::ShowLeaderBoardUI(FString LeaderboardName, TEnumAsByte<EBlueprintResultSwitch::Type> &Result)
+void UAdvancedExternalUILibrary::ShowLeaderBoardUI(FString LeaderboardName, EBlueprintResultSwitch &Result)
 {
 	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface();
 
 	if (!ExternalUIInterface.IsValid())
 	{
 		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowLeaderboardsUI Failed to get External UI interface!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
 	ExternalUIInterface->ShowLeaderboardUI(LeaderboardName);
-	Result = EBlueprintResultSwitch::Type::OnSuccess;
+	Result = EBlueprintResultSwitch::OnSuccess;
 
 }
 
 
-void UAdvancedExternalUILibrary::ShowInviteUI(APlayerController *PlayerController, TEnumAsByte<EBlueprintResultSwitch::Type> &Result)
+void UAdvancedExternalUILibrary::ShowInviteUI(APlayerController *PlayerController, EBlueprintResultSwitch &Result)
 {
 	if (!PlayerController)
 	{
 		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowInviteUI Had a bad Player Controller!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
@@ -110,7 +110,7 @@ void UAdvancedExternalUILibrary::ShowInviteUI(APlayerController *PlayerControlle
 	if (!ExternalUIInterface.IsValid())
 	{
 		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowInviteUI Failed to get External UI interface!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
@@ -119,20 +119,20 @@ void UAdvancedExternalUILibrary::ShowInviteUI(APlayerController *PlayerControlle
 	if (!Player)
 	{
 		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowInviteUI Failed to get ULocalPlayer for the given PlayerController!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
 	ExternalUIInterface->ShowInviteUI(Player->GetControllerId(), GameSessionName);
-	Result = EBlueprintResultSwitch::Type::OnSuccess;
+	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
-void UAdvancedExternalUILibrary::ShowFriendsUI(APlayerController *PlayerController, TEnumAsByte<EBlueprintResultSwitch::Type> &Result)
+void UAdvancedExternalUILibrary::ShowFriendsUI(APlayerController *PlayerController, EBlueprintResultSwitch &Result)
 {
 	if (!PlayerController)
 	{
 		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowFriendsUI Had a bad Player Controller!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
@@ -141,7 +141,7 @@ void UAdvancedExternalUILibrary::ShowFriendsUI(APlayerController *PlayerControll
 	if (!ExternalUIInterface.IsValid())
 	{
 		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowFriendsUI Failed to get External UI interface!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
@@ -150,10 +150,10 @@ void UAdvancedExternalUILibrary::ShowFriendsUI(APlayerController *PlayerControll
 	if (!Player)
 	{
 		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowFriendsUI Failed to get ULocalPlayer for the given PlayerController!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
 	ExternalUIInterface->ShowFriendsUI(Player->GetControllerId());
-	Result = EBlueprintResultSwitch::Type::OnSuccess;
+	Result = EBlueprintResultSwitch::OnSuccess;
 }

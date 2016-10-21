@@ -60,7 +60,7 @@ void UAdvancedSessionsLibrary::GetExtraSettings(FBlueprintSessionResult SessionR
 	}
 }
 
-void UAdvancedSessionsLibrary::GetSessionState(TEnumAsByte<EBPOnlineSessionState::Type> &SessionState)
+void UAdvancedSessionsLibrary::GetSessionState(EBPOnlineSessionState &SessionState)
 {
 	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface();
 
@@ -70,17 +70,17 @@ void UAdvancedSessionsLibrary::GetSessionState(TEnumAsByte<EBPOnlineSessionState
 		return;
 	}
 
-	SessionState = ((EBPOnlineSessionState::Type)SessionInterface->GetSessionState(GameSessionName));
+	SessionState = ((EBPOnlineSessionState)SessionInterface->GetSessionState(GameSessionName));
 }
 
-void UAdvancedSessionsLibrary::GetSessionSettings(int32 &NumConnections, int32 &NumPrivateConnections, bool &bIsLAN, bool &bIsDedicated, bool &bAllowInvites, bool &bAllowJoinInProgress, bool &bIsAnticheatEnabled, int32 &BuildUniqueID, TArray<FSessionPropertyKeyPair> &ExtraSettings, TEnumAsByte<EBlueprintResultSwitch::Type> &Result)
+void UAdvancedSessionsLibrary::GetSessionSettings(int32 &NumConnections, int32 &NumPrivateConnections, bool &bIsLAN, bool &bIsDedicated, bool &bAllowInvites, bool &bAllowJoinInProgress, bool &bIsAnticheatEnabled, int32 &BuildUniqueID, TArray<FSessionPropertyKeyPair> &ExtraSettings, EBlueprintResultSwitch &Result)
 {
 	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface();
 
 	if (!SessionInterface.IsValid())
 	{
 		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetSessionSettings couldn't get the session interface!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
@@ -88,7 +88,7 @@ void UAdvancedSessionsLibrary::GetSessionSettings(int32 &NumConnections, int32 &
 	if (!settings)
 	{
 		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetSessionSettings couldn't get the session settings!"));
-		Result = EBlueprintResultSwitch::Type::OnFailure;
+		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
@@ -110,7 +110,7 @@ void UAdvancedSessionsLibrary::GetSessionSettings(int32 &NumConnections, int32 &
 		ExtraSettings.Add(NewSetting);
 	}
 
-	Result = EBlueprintResultSwitch::Type::OnSuccess;
+	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
 void UAdvancedSessionsLibrary::IsPlayerInSession(const FBPUniqueNetId &PlayerToCheck, bool &bIsInSession)
@@ -127,7 +127,7 @@ void UAdvancedSessionsLibrary::IsPlayerInSession(const FBPUniqueNetId &PlayerToC
 	bIsInSession = SessionInterface->IsPlayerInSession(GameSessionName, *PlayerToCheck.GetUniqueNetId());
 }
 
-FSessionsSearchSetting UAdvancedSessionsLibrary::MakeLiteralSessionSearchProperty(FSessionPropertyKeyPair SessionSearchProperty, EOnlineComparisonOpRedux::Type ComparisonOp)
+FSessionsSearchSetting UAdvancedSessionsLibrary::MakeLiteralSessionSearchProperty(FSessionPropertyKeyPair SessionSearchProperty, EOnlineComparisonOpRedux ComparisonOp)
 {
 	FSessionsSearchSetting setting;
 	setting.PropertyKeyPair = SessionSearchProperty;
@@ -176,7 +176,7 @@ FSessionPropertyKeyPair UAdvancedSessionsLibrary::MakeLiteralSessionPropertyFloa
 	return Prop;
 }
 
-void UAdvancedSessionsLibrary::GetSessionPropertyByte(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, TEnumAsByte<ESessionSettingSearchResult::Type> &SearchResult, uint8 &SettingValue)
+void UAdvancedSessionsLibrary::GetSessionPropertyByte(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, ESessionSettingSearchResult &SearchResult, uint8 &SettingValue)
 {
 	for (FSessionPropertyKeyPair itr : ExtraSettings)
 	{
@@ -187,21 +187,21 @@ void UAdvancedSessionsLibrary::GetSessionPropertyByte(const TArray<FSessionPrope
 				int32 Val;
 				itr.Data.GetValue(Val);
 				SettingValue = (uint8)(Val);
-				SearchResult = ESessionSettingSearchResult::Type::Found;
+				SearchResult = ESessionSettingSearchResult::Found;
 			}
 			else
 			{
-				SearchResult = ESessionSettingSearchResult::Type::WrongType;
+				SearchResult = ESessionSettingSearchResult::WrongType;
 			}
 			return;
 		}
 	}
 
-	SearchResult = ESessionSettingSearchResult::Type::NotFound;
+	SearchResult = ESessionSettingSearchResult::NotFound;
 	return;
 }
 
-void UAdvancedSessionsLibrary::GetSessionPropertyBool(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, TEnumAsByte<ESessionSettingSearchResult::Type> &SearchResult, bool &SettingValue)
+void UAdvancedSessionsLibrary::GetSessionPropertyBool(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, ESessionSettingSearchResult &SearchResult, bool &SettingValue)
 {
 	for (FSessionPropertyKeyPair itr : ExtraSettings)
 	{
@@ -210,21 +210,21 @@ void UAdvancedSessionsLibrary::GetSessionPropertyBool(const TArray<FSessionPrope
 			if (itr.Data.GetType() == EOnlineKeyValuePairDataType::Bool)
 			{
 				itr.Data.GetValue(SettingValue);
-				SearchResult = ESessionSettingSearchResult::Type::Found;
+				SearchResult = ESessionSettingSearchResult::Found;
 			}
 			else
 			{
-				SearchResult = ESessionSettingSearchResult::Type::WrongType;
+				SearchResult = ESessionSettingSearchResult::WrongType;
 			}
 			return;
 		}
 	}
 
-	SearchResult = ESessionSettingSearchResult::Type::NotFound;
+	SearchResult = ESessionSettingSearchResult::NotFound;
 	return;
 }
 
-void UAdvancedSessionsLibrary::GetSessionPropertyString(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, TEnumAsByte<ESessionSettingSearchResult::Type> &SearchResult, FString &SettingValue)
+void UAdvancedSessionsLibrary::GetSessionPropertyString(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, ESessionSettingSearchResult &SearchResult, FString &SettingValue)
 {
 	for (FSessionPropertyKeyPair itr : ExtraSettings)
 	{
@@ -233,21 +233,21 @@ void UAdvancedSessionsLibrary::GetSessionPropertyString(const TArray<FSessionPro
 			if (itr.Data.GetType() == EOnlineKeyValuePairDataType::String)
 			{
 				itr.Data.GetValue(SettingValue);
-				SearchResult = ESessionSettingSearchResult::Type::Found;
+				SearchResult = ESessionSettingSearchResult::Found;
 			}
 			else
 			{
-				SearchResult = ESessionSettingSearchResult::Type::WrongType;
+				SearchResult = ESessionSettingSearchResult::WrongType;
 			}
 			return;
 		}
 	}
 
-	SearchResult = ESessionSettingSearchResult::Type::NotFound;
+	SearchResult = ESessionSettingSearchResult::NotFound;
 	return;
 }
 
-void UAdvancedSessionsLibrary::GetSessionPropertyInt(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, TEnumAsByte<ESessionSettingSearchResult::Type> &SearchResult, int32 &SettingValue)
+void UAdvancedSessionsLibrary::GetSessionPropertyInt(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, ESessionSettingSearchResult &SearchResult, int32 &SettingValue)
 {
 	for (FSessionPropertyKeyPair itr : ExtraSettings)
 	{
@@ -256,21 +256,21 @@ void UAdvancedSessionsLibrary::GetSessionPropertyInt(const TArray<FSessionProper
 			if (itr.Data.GetType() == EOnlineKeyValuePairDataType::Int32)
 			{
 				itr.Data.GetValue(SettingValue);
-				SearchResult = ESessionSettingSearchResult::Type::Found;
+				SearchResult = ESessionSettingSearchResult::Found;
 			}
 			else
 			{
-				SearchResult = ESessionSettingSearchResult::Type::WrongType;
+				SearchResult = ESessionSettingSearchResult::WrongType;
 			}
 			return;
 		}
 	}
 
-	SearchResult = ESessionSettingSearchResult::Type::NotFound;
+	SearchResult = ESessionSettingSearchResult::NotFound;
 	return;
 }
 
-void UAdvancedSessionsLibrary::GetSessionPropertyFloat(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, TEnumAsByte<ESessionSettingSearchResult::Type> &SearchResult, float &SettingValue)
+void UAdvancedSessionsLibrary::GetSessionPropertyFloat(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, ESessionSettingSearchResult &SearchResult, float &SettingValue)
 {
 	for (FSessionPropertyKeyPair itr : ExtraSettings)
 	{
@@ -279,17 +279,17 @@ void UAdvancedSessionsLibrary::GetSessionPropertyFloat(const TArray<FSessionProp
 			if (itr.Data.GetType() == EOnlineKeyValuePairDataType::Float)
 			{
 				itr.Data.GetValue(SettingValue);
-				SearchResult = ESessionSettingSearchResult::Type::Found;
+				SearchResult = ESessionSettingSearchResult::Found;
 			}
 			else
 			{
-				SearchResult = ESessionSettingSearchResult::Type::WrongType;
+				SearchResult = ESessionSettingSearchResult::WrongType;
 			}
 			return;
 		}
 	}
 
-	SearchResult = ESessionSettingSearchResult::Type::NotFound;
+	SearchResult = ESessionSettingSearchResult::NotFound;
 	return;
 }
 
