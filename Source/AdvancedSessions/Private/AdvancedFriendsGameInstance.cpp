@@ -8,11 +8,14 @@ DEFINE_LOG_CATEGORY(AdvancedFriendsInterfaceLog);
 UAdvancedFriendsGameInstance::UAdvancedFriendsGameInstance(const FObjectInitializer& ObjectInitializer) 
 	: Super(ObjectInitializer)
 	, bCallFriendInterfaceEventsOnPlayerControllers(true)
+	, bCallIdentityInterfaceEventsOnPlayerControllers(true)
 	, bCallVoiceInterfaceEventsOnPlayerControllers(true)
 	, bEnableTalkingStatusDelegate(true)
 	, SessionInviteReceivedDelegate(FOnSessionInviteReceivedDelegate::CreateUObject(this, &ThisClass::OnSessionInviteReceivedMaster))
 	, SessionInviteAcceptedDelegate(FOnSessionUserInviteAcceptedDelegate::CreateUObject(this, &ThisClass::OnSessionInviteAcceptedMaster))
 	, PlayerTalkingStateChangedDelegate(FOnPlayerTalkingStateChangedDelegate::CreateUObject(this, &ThisClass::OnPlayerTalkingStateChangedMaster))
+	, PlayerLoginChangedDelegate(FOnLoginChangedDelegate::CreateUObject(this, &ThisClass::OnPlayerLoginChangedMaster))
+	, PlayerLoginStatusChangedDelegate(FOnLoginStatusChangedDelegate::CreateUObject(this, &ThisClass::OnPlayerLoginStatusChangedMaster))
 {
 }
 
@@ -47,6 +50,18 @@ void UAdvancedFriendsGameInstance::Shutdown()
 			UE_LOG(AdvancedFriendsInterfaceLog, Warning, TEXT("UAdvancedFriendsInstance Failed to get voice interface!"));
 		}
 	}
+
+	IOnlineIdentityPtr IdentityInterface = Online::GetIdentityInterface();
+
+	if (IdentityInterface.IsValid())
+	{
+		IdentityInterface->ClearOnLoginChangedDelegate_Handle(PlayerLoginChangedDelegateHandle);
+		
+
+		// I am just defaulting to player 1
+		IdentityInterface->ClearOnLoginStatusChangedDelegate_Handle(0, PlayerLoginStatusChangedDelegateHandle);
+	}
+
 
 	Super::Shutdown();
 }
@@ -86,6 +101,21 @@ void UAdvancedFriendsGameInstance::Init()
 			UE_LOG(AdvancedFriendsInterfaceLog, Warning, TEXT("UAdvancedFriendsInstance Failed to get voice interface!"));
 		}
 	}
+
+	IOnlineIdentityPtr IdentityInterface = Online::GetIdentityInterface();
+
+	if (IdentityInterface.IsValid())
+	{
+		PlayerLoginChangedDelegateHandle = IdentityInterface->AddOnLoginChangedDelegate_Handle(PlayerLoginChangedDelegate);
+
+		// Just defaulting to player 1
+		PlayerLoginStatusChangedDelegateHandle = IdentityInterface->AddOnLoginStatusChangedDelegate_Handle(0, PlayerLoginStatusChangedDelegate);
+	}
+	else
+	{
+		UE_LOG(AdvancedFriendsInterfaceLog, Warning, TEXT("UAdvancedFriendsInstance Failed to get identity interface!"));
+	}
+
 
 	Super::Init();
 }
@@ -127,6 +157,58 @@ void UAdvancedFriendsGameInstance::Init()
 		}
 	}
 }*/
+
+void UAdvancedFriendsGameInstance::OnPlayerLoginStatusChangedMaster(int32 PlayerNum, ELoginStatus::Type PreviousStatus, ELoginStatus::Type NewStatus, const FUniqueNetId & NewPlayerUniqueNetID)
+{
+	EBPLoginStatus OrigStatus = (EBPLoginStatus)PreviousStatus;
+	EBPLoginStatus CurrentStatus = (EBPLoginStatus)NewStatus;
+	FBPUniqueNetId PlayerID;
+	PlayerID.SetUniqueNetId(&NewPlayerUniqueNetID);
+
+	OnPlayerLoginStatusChanged(PlayerNum, OrigStatus,CurrentStatus,PlayerID);
+
+
+	if (bCallIdentityInterfaceEventsOnPlayerControllers)
+	{
+		APlayerController* Player = UGameplayStatics::GetPlayerController(GetWorld(), PlayerNum);
+
+		if (Player != NULL)
+		{
+			//Run the Event specific to the actor, if the actor has the interface, otherwise ignore
+			if (Player->GetClass()->ImplementsInterface(UAdvancedFriendsInterface::StaticClass()))
+			{
+				IAdvancedFriendsInterface::Execute_OnPlayerLoginStatusChanged(Player, OrigStatus, CurrentStatus, PlayerID);
+			}
+		}
+		else
+		{
+			UE_LOG(AdvancedFriendsInterfaceLog, Warning, TEXT("UAdvancedFriendsInstance Failed to get a controller with the specified index in OnPlayerLoginStatusChangedMaster!"));
+		}
+	}
+}
+
+void UAdvancedFriendsGameInstance::OnPlayerLoginChangedMaster(int32 PlayerNum)
+{
+	OnPlayerLoginChanged(PlayerNum);
+
+	if (bCallIdentityInterfaceEventsOnPlayerControllers)
+	{
+		APlayerController* Player = UGameplayStatics::GetPlayerController(GetWorld(), PlayerNum);
+
+		if (Player != NULL)
+		{
+			//Run the Event specific to the actor, if the actor has the interface, otherwise ignore
+			if (Player->GetClass()->ImplementsInterface(UAdvancedFriendsInterface::StaticClass()))
+			{
+				IAdvancedFriendsInterface::Execute_OnPlayerLoginChanged(Player, PlayerNum);
+			}
+		}
+		else
+		{
+			UE_LOG(AdvancedFriendsInterfaceLog, Warning, TEXT("UAdvancedFriendsInstance Failed to get a controller with the specified index in OnPlayerLoginChanged!"));
+		}
+	}
+}
 
 void UAdvancedFriendsGameInstance::OnPlayerTalkingStateChangedMaster(TSharedRef<const FUniqueNetId> PlayerId, bool bIsTalking)
 {

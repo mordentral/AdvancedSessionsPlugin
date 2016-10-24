@@ -33,6 +33,9 @@ public:
 	bool bCallFriendInterfaceEventsOnPlayerControllers;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AdvancedFriendsInterface)
+	bool bCallIdentityInterfaceEventsOnPlayerControllers;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AdvancedFriendsInterface)
 	bool bCallVoiceInterfaceEventsOnPlayerControllers;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AdvancedVoiceInterface)
@@ -72,6 +75,24 @@ public:
 
 	FOnPlayerTalkingStateChangedDelegate PlayerTalkingStateChangedDelegate;
 	FDelegateHandle PlayerTalkingStateChangedDelegateHandle;
+
+
+	// Called when the designated LocalUser has changed login state
+	UFUNCTION(BlueprintImplementableEvent , Category = "AdvancedIdentity", meta = (DisplayName = "OnPlayerLoginChanged"))
+	void OnPlayerLoginChanged(int32 PlayerNum);
+
+	void OnPlayerLoginChangedMaster(int32 PlayerNum);
+	FOnLoginChangedDelegate PlayerLoginChangedDelegate;
+	FDelegateHandle PlayerLoginChangedDelegateHandle;
+
+	// Called when the designated LocalUser has changed login status
+	UFUNCTION(BlueprintImplementableEvent, Category = "AdvancedIdentity", meta = (DisplayName = "OnPlayerLoginStatusChanged"))
+	void OnPlayerLoginStatusChanged(int32 PlayerNum, EBPLoginStatus &PreviousStatus, EBPLoginStatus &NewStatus, FBPUniqueNetId & NewPlayerUniqueNetID);
+
+	void OnPlayerLoginStatusChangedMaster(int32 PlayerNum, ELoginStatus::Type PreviousStatus, ELoginStatus::Type NewStatus, const FUniqueNetId & NewPlayerUniqueNetID);
+	FOnLoginStatusChangedDelegate PlayerLoginStatusChangedDelegate;
+	FDelegateHandle PlayerLoginStatusChangedDelegateHandle;
+
 
 	//*** Session Invite Received From Friend ***//
 	// REMOVED BECAUSE IT NEVER GETS CALLED

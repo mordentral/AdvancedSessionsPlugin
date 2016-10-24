@@ -40,6 +40,14 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnPlayerVoiceStateChanged"))
 	void OnPlayerVoiceStateChanged(FBPUniqueNetId PlayerId, bool bIsTalking);
 
+	// Called when the designated LocalUser has changed login state
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnPlayerLoginChanged"))
+	void OnPlayerLoginChanged(int32 PlayerNum);
+
+	// Called when the designated LocalUser has changed login state
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnPlayerLoginStatusChanged"))
+	void OnPlayerLoginStatusChanged(EBPLoginStatus &PreviousStatus, EBPLoginStatus &NewStatus, FBPUniqueNetId & PlayerUniqueNetID);
+
 	// REMOVED BECAUSE IT WAS NEVER BEING CALLED
 	// Called when the designated LocalUser has received a session invite, use JoinSession on result to connect
 	//UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "OnSessionInviteReceived"))
