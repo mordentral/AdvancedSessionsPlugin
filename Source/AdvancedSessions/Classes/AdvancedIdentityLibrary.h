@@ -29,6 +29,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedIdentity", meta = (ExpandEnumAsExecs = "Result"))
 	static void GetLoginStatus(const FBPUniqueNetId & UniqueNetID, EBPLoginStatus & LoginStatus, EBlueprintResultSwitch &Result);
 
+	// Get the auth token for a local player
+	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedIdentity", meta = (ExpandEnumAsExecs = "Result"))
+	static void GetPlayerAuthToken(APlayerController * PlayerController, FString & AuthToken, EBlueprintResultSwitch &Result);
+
 	// Get a players nickname
 	UFUNCTION(BlueprintPure, Category = "Online|AdvancedIdentity")
 	static void GetPlayerNickname(const FBPUniqueNetId & UniqueNetID, FString & PlayerNickname);

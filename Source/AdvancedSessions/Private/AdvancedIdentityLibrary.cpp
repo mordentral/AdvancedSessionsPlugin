@@ -5,6 +5,38 @@
 //General Log
 DEFINE_LOG_CATEGORY(AdvancedIdentityLog);
 
+
+void UAdvancedIdentityLibrary::GetPlayerAuthToken(APlayerController * PlayerController, FString & AuthToken, EBlueprintResultSwitch &Result)
+{
+	if (!PlayerController)
+	{
+		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetPlayerAuthToken was passed a bad player controller!"));
+		Result = EBlueprintResultSwitch::OnFailure;
+		return;
+	}
+
+	ULocalPlayer* Player = Cast<ULocalPlayer>(PlayerController->Player);
+
+	if (!Player)
+	{
+		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetPlayerAuthToken failed to get LocalPlayer!"));
+		Result = EBlueprintResultSwitch::OnFailure;
+		return;
+	}
+
+	IOnlineIdentityPtr IdentityInterface = Online::GetIdentityInterface();
+
+	if (!IdentityInterface.IsValid())
+	{
+		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetPlayerAuthToken Failed to get identity interface!"));
+		Result = EBlueprintResultSwitch::OnFailure;
+		return;
+	}
+	
+	AuthToken = IdentityInterface->GetAuthToken(Player->GetControllerId());
+	Result = EBlueprintResultSwitch::OnSuccess;
+}
+
 void UAdvancedIdentityLibrary::GetPlayerNickname(const FBPUniqueNetId & UniqueNetID, FString & PlayerNickname)
 {
 	if (!UniqueNetID.IsValid())
@@ -20,7 +52,6 @@ void UAdvancedIdentityLibrary::GetPlayerNickname(const FBPUniqueNetId & UniqueNe
 		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetPlayerNickname Failed to get identity interface!"));
 		return;
 	}
-
 	PlayerNickname = IdentityInterface->GetPlayerNickname(*UniqueNetID.GetUniqueNetId());
 }
 
