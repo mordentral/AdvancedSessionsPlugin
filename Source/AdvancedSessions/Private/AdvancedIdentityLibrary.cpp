@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "OnlineSubSystemHeader.h"
 #include "AdvancedIdentityLibrary.h"
-
+#include "onlinesession"
 //General Log
 DEFINE_LOG_CATEGORY(AdvancedIdentityLog);
 
@@ -75,7 +75,7 @@ void UAdvancedIdentityLibrary::GetLoginStatus(const FBPUniqueNetId & UniqueNetID
 	}
 
 	LoginStatus = (EBPLoginStatus)IdentityInterface->GetLoginStatus(*UniqueNetID.GetUniqueNetId());
-	EBlueprintResultSwitch::OnSuccess;
+	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
 
