@@ -118,6 +118,14 @@ public:
 		// Get the unique net id of a network player who is assigned the the given player state
 		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|PlayerInfo|PlayerID")
 		static void GetUniqueNetIDFromPlayerState(APlayerState *PlayerState, FBPUniqueNetId &UniqueNetId);
+		
+		// Return True if Unique Net ID is valid
+		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|PlayerInfo|PlayerID")
+		static bool IsValidUniqueNetID(const FBPUniqueNetId &UniqueNetId);
+
+		/* Returns true if the values are equal (A == B) */
+		UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal Unique Net ID", CompactNodeTitle = "==", Keywords = "== equal"), Category = "Online|AdvancedSessions|PlayerInfo|PlayerID")
+		static bool EqualEqual_UNetIDUnetID(const FBPUniqueNetId &A, const FBPUniqueNetId &B);
 
 		// Check if a UniqueNetId is a friend
 		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|UniqueNetId")
