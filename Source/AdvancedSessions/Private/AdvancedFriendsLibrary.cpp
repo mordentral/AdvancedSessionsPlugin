@@ -76,12 +76,13 @@ bool UAdvancedFriendsLibrary::RequestSteamFriendInfo(const FBPUniqueNetId Unique
 	return false;
 }
 
-UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueNetId UniqueNetId, SteamAvatarSize AvatarSize)
+UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueNetId UniqueNetId, EBlueprintAsyncResultSwitch &Result, SteamAvatarSize AvatarSize)
 {
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid())
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetSteamFriendAvatar Had a bad UniqueNetId!"));
+		Result = EBlueprintAsyncResultSwitch::OnFailure;
 		return nullptr;
 	}
 
@@ -106,7 +107,10 @@ UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueNetId 
 		}
 
 		if (Picture == -1)
+		{
+			Result = EBlueprintAsyncResultSwitch::AsyncLoading;
 			return NULL;
+		}
 
 		SteamUtils()->GetImageSize(Picture, &Width, &Height);
 
@@ -150,6 +154,7 @@ UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueNetId 
 
 			Avatar->UpdateResource();
 
+			Result = EBlueprintAsyncResultSwitch::OnSuccess;
 			return Avatar;
 		}
 		else
@@ -157,11 +162,13 @@ UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueNetId 
 			UE_LOG(AdvancedFriendsLog, Warning, TEXT("Bad Height / Width with steam avatar!"));
 		}
 
+		Result = EBlueprintAsyncResultSwitch::OnFailure;
 		return nullptr;
 	}
 #endif
 
 	UE_LOG(AdvancedFriendsLog, Warning, TEXT("STEAM Couldn't be verified as initialized"));
+	Result = EBlueprintAsyncResultSwitch::OnFailure;
 	return nullptr;
 }
 

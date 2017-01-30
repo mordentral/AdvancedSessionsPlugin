@@ -82,6 +82,19 @@ enum class EBlueprintResultSwitch : uint8
 	OnFailure
 };
 
+// This makes a lot of the blueprint functions cleaner
+UENUM()
+enum class EBlueprintAsyncResultSwitch : uint8
+{
+	// On Success
+	OnSuccess,
+
+	// Still loading
+	AsyncLoading,
+	// On Failure
+	OnFailure
+};
+
 // This is to define server type searches
 UENUM(BlueprintType)
 enum class EBPServerPresenceSearchType : uint8

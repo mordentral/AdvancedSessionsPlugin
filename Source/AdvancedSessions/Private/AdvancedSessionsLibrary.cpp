@@ -361,25 +361,15 @@ void UAdvancedSessionsLibrary::GetUniqueNetIDFromPlayerState(APlayerState *Playe
 	return;
 }
 
-
 bool UAdvancedSessionsLibrary::IsValidUniqueNetID(const FBPUniqueNetId &UniqueNetId)
 {
 	return UniqueNetId.IsValid();
 }
 
 bool UAdvancedSessionsLibrary::EqualEqual_UNetIDUnetID(const FBPUniqueNetId &A, const FBPUniqueNetId &B)
-{
-	if (A.IsValid() && B.IsValid())
-	{	
-		return (A.GetUniqueNetId()->GetSize() == B.GetUniqueNetId()->GetSize()) &&
-			(FMemory::Memcmp(A.GetUniqueNetId()->GetBytes(), B.GetUniqueNetId()->GetBytes(), A.GetUniqueNetId()->GetSize()) == 0);
-	}
-	else
-	{
-		return false;
-	}
+{	
+	return ((A.IsValid() && B.IsValid()) && (*A.GetUniqueNetId() == *B.GetUniqueNetId()));
 }
-
 
 void UAdvancedSessionsLibrary::SetPlayerName(APlayerController *PlayerController, FString PlayerName)
 {
