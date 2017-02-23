@@ -1,0 +1,95 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+#include "OnlineSubSystemHeader.h"
+#include "SteamFuncs/AdvancedSteamWorkshopLibrary.h"
+
+
+// This is taken directly from UE4 - OnlineSubsystemSteamPrivatePCH.h as a fix for the array_count macro
+// @todo Steam: Steam headers trigger secure-C-runtime warnings in Visual C++. Rather than mess with _CRT_SECURE_NO_WARNINGS, we'll just
+//	disable the warnings locally. Remove when this is fixed in the SDK
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable:4996)
+#endif
+
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+
+#pragma push_macro("ARRAY_COUNT")
+#undef ARRAY_COUNT
+
+#include <steam/steam_api.h>
+
+#pragma pop_macro("ARRAY_COUNT")
+
+#endif
+
+// @todo Steam: See above
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
+
+//General Log
+DEFINE_LOG_CATEGORY(AdvancedSteamWorkshopLog);
+
+
+void UAdvancedSteamWorkshopLibrary::GetNumSubscribedWorkshopItems(int32 & NumberOfItems)
+{
+	NumberOfItems = 0;
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+
+	if (SteamAPI_Init())
+	{
+		NumberOfItems = SteamUGC()->GetNumSubscribedItems();
+		return;
+	}
+	else
+	{
+		UE_LOG(AdvancedSteamWorkshopLog, Warning, TEXT("Error in GetNumSubscribedWorkshopItemCount : SteamAPI is not Inited!"));
+		return;
+	}
+#endif
+
+	UE_LOG(AdvancedSteamWorkshopLog, Warning, TEXT("Error in GetNumSubscribedWorkshopItemCount : Called on an incompatible platform"));
+	return;
+}
+
+TArray<FBPSteamWorkshopID> UAdvancedSteamWorkshopLibrary::GetSubscribedWorkshopItems(int32 & NumberOfItems)
+{
+	TArray<FBPSteamWorkshopID> outArray;
+	NumberOfItems = 0;
+
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+
+	if (SteamAPI_Init())
+	{
+		uint32 NumItems = SteamUGC()->GetNumSubscribedItems();
+		
+		if (NumItems == 0)
+			return outArray;
+
+		// Not using the actual variable above in case someone somehow goes past int32 limits
+		// Don't want to go negative on the iteration.
+		NumberOfItems = NumItems;
+
+		PublishedFileId_t *fileIds = new PublishedFileId_t[NumItems];
+		
+		uint32 subItems = SteamUGC()->GetSubscribedItems(fileIds, NumItems);
+
+		for (uint32 i = 0; i < subItems; ++i)
+		{
+			outArray.Add(FBPSteamWorkshopID(fileIds[i]));
+		}
+
+		delete fileIds;
+
+		return outArray;
+	}
+	else
+	{
+		UE_LOG(AdvancedSteamWorkshopLog, Warning, TEXT("Error in GetSubscribedWorkshopItemCount : SteamAPI is not Inited!"));
+		return outArray;
+	}
+#endif
+
+	UE_LOG(AdvancedSteamWorkshopLog, Warning, TEXT("Error in GetSubscribedWorkshopItemCount : Called on an incompatible platform"));
+	return outArray;
+}
