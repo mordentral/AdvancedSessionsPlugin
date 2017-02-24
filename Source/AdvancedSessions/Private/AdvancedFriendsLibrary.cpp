@@ -115,6 +115,8 @@ UTexture2D * UAdvancedFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueNetId 
 		SteamUtils()->GetImageSize(Picture, &Width, &Height);
 
 		// STOLEN FROM ANSWERHUB :p, then fixed because answerhub wasn't releasing the memory O.o
+		// Also fixed image pixel format and switched to a memcpy instead of manual iteration.
+		// At some point I should probably reply to that answerhub post with these fixes to prevent people killing their games.....
 
 		if (Width > 0 && Height > 0)
 		{
