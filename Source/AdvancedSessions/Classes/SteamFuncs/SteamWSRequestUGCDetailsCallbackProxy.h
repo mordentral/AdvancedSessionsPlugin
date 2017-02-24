@@ -28,6 +28,9 @@
 
 #include "SteamWSRequestUGCDetailsCallbackProxy.generated.h"
 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBlueprintWorkshopDetailsDelegate, const FBPSteamWorkshopItemDetails&, WorkShopDetails);
+
 UCLASS(MinimalAPI)
 class USteamWSRequestUGCDetailsCallbackProxy : public UOnlineBlueprintCallProxyBase
 {
@@ -35,11 +38,11 @@ class USteamWSRequestUGCDetailsCallbackProxy : public UOnlineBlueprintCallProxyB
 
 	// Called when there is a successful results return
 	UPROPERTY(BlueprintAssignable)
-	FEmptyOnlineDelegate OnSuccess;
+	FBlueprintWorkshopDetailsDelegate OnSuccess;
 
 	// Called when there is an unsuccessful results return
 	UPROPERTY(BlueprintAssignable)
-	FEmptyOnlineDelegate OnFailure;
+	FBlueprintWorkshopDetailsDelegate OnFailure;
 
 	// Ends the current session
 	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject"), Category = "Online|AdvancedSteamWorkshop")

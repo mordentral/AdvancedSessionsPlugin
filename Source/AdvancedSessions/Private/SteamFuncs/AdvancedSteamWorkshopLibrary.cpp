@@ -1,32 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "OnlineSubSystemHeader.h"
 #include "SteamFuncs/AdvancedSteamWorkshopLibrary.h"
-
-
-// This is taken directly from UE4 - OnlineSubsystemSteamPrivatePCH.h as a fix for the array_count macro
-// @todo Steam: Steam headers trigger secure-C-runtime warnings in Visual C++. Rather than mess with _CRT_SECURE_NO_WARNINGS, we'll just
-//	disable the warnings locally. Remove when this is fixed in the SDK
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable:4996)
-#endif
-
-#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
-
-#pragma push_macro("ARRAY_COUNT")
-#undef ARRAY_COUNT
-
-#include <steam/steam_api.h>
-
-#pragma pop_macro("ARRAY_COUNT")
-
-#endif
-
-// @todo Steam: See above
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif
-
 //General Log
 DEFINE_LOG_CATEGORY(AdvancedSteamWorkshopLog);
 

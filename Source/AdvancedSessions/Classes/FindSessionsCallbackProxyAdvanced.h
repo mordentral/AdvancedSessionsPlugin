@@ -51,6 +51,10 @@ private:
 	// Internal callback when the session search completes, calls out to the public success/failure callbacks
 	void OnCompleted(bool bSuccess);
 
+	bool bRunSecondSearch;
+
+	TArray<FBlueprintSessionResult> SessionSearchResults;
+
 private:
 	// The player controller triggering things
 	TWeakObjectPtr<APlayerController> PlayerControllerWeakPtr;
@@ -63,6 +67,7 @@ private:
 
 	// Object to track search results
 	TSharedPtr<FOnlineSessionSearch> SearchObject;
+	TSharedPtr<FOnlineSessionSearch> SearchObjectDedicated;
 
 	// Whether or not to search LAN
 	bool bUseLAN;
