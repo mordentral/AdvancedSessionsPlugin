@@ -210,6 +210,8 @@ public:
 		bBanned = hUGCDetails.m_bBanned;
 		bAcceptedForUse = hUGCDetails.m_bAcceptedForUse;
 		bTagsTruncated = hUGCDetails.m_bTagsTruncated;
+
+		CreatorSteamID = FString::Printf(TEXT("%llu"), hUGCDetails.m_ulSteamIDOwner);
 	}
 
 	// Result of obtaining the details
@@ -260,9 +262,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Online|AdvancedSteamWorkshop")
 	bool bTagsTruncated;
 
+	// Steam ID of the user who created this content.
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Online|AdvancedSteamWorkshop")
+	FString CreatorSteamID;
+
 	/*
 	PublishedFileId_t m_nPublishedFileId;
-	uint64 m_ulSteamIDOwner;										// Steam ID of the user who created this content.
 	uint32 m_rtimeCreated;											// time when the published file was created
 	uint32 m_rtimeUpdated;											// time when the published file was last updated
 	uint32 m_rtimeAddedToUserList;									// time when the user added the published file to their list (not always applicable)

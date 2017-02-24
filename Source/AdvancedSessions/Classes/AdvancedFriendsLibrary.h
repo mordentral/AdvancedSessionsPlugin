@@ -67,10 +67,17 @@ public:
 
 	// Preloads the avatar and name of a steam friend, return whether it is already available or not, STEAM ONLY, Takes time to actually load everything after this is called.
 	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedFriends|SteamAPI")
-	static bool RequestSteamFriendInfo(const FBPUniqueNetId UniqueNetId);
+	static bool RequestSteamFriendInfo(const FBPUniqueNetId UniqueNetId, bool bRequireNameOnly = false);
 	
 	// Gets the level of a friends steam account, STEAM ONLY, Returns -1 if the steam level is not known, might need RequestSteamFriendInfo called first.
 	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedFriends|SteamAPI")
 	static int32 GetFriendSteamLevel(const FBPUniqueNetId UniqueNetId);
 
+	// Gets the persona name of a steam ID, STEAM ONLY, Returns empty if no result, might need RequestSteamFriendInfo called first.
+	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedFriends|SteamAPI")
+	static FString GetSteamPersonaName(const FBPUniqueNetId UniqueNetId);
+
+	// Creates a unique steam id directly from a string holding a uint64 value, useful for testing
+	UFUNCTION(BlueprintPure, Category = "Online|AdvancedFriends|SteamAPI")
+	static FBPUniqueNetId CreateSteamIDFromString(const FString SteamID64);
 };	
