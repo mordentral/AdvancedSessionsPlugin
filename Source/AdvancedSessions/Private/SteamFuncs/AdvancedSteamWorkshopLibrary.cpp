@@ -53,7 +53,7 @@ TArray<FBPSteamWorkshopID> UAdvancedSteamWorkshopLibrary::GetSubscribedWorkshopI
 			outArray.Add(FBPSteamWorkshopID(fileIds[i]));
 		}
 
-		delete fileIds;
+		delete[] fileIds;
 
 		return outArray;
 	}

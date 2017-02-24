@@ -9,7 +9,7 @@
 USteamWSRequestUGCDetailsCallbackProxy::USteamWSRequestUGCDetailsCallbackProxy(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	NumSecondsBeforeTimeout = 4.0f;
+	NumSecondsBeforeTimeout = 2.0f;
 }
 
 
