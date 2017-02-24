@@ -18,6 +18,7 @@
 #undef ARRAY_COUNT
 
 #include <steam/steam_api.h>
+#include <OnlineSubsystemSteamTypes.h>
 
 #pragma pop_macro("ARRAY_COUNT")
 
@@ -55,7 +56,53 @@ int32 UAdvancedFriendsLibrary::GetFriendSteamLevel(const FBPUniqueNetId UniqueNe
 
 }
 
-bool UAdvancedFriendsLibrary::RequestSteamFriendInfo(const FBPUniqueNetId UniqueNetId)
+FString UAdvancedFriendsLibrary::GetSteamPersonaName(const FBPUniqueNetId UniqueNetId)
+{
+
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid())
+	{
+		UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetSteamPersonaName Had a bad UniqueNetId!"));
+		return FString(TEXT(""));
+	}
+
+	if (SteamAPI_Init())
+	{
+		uint64 id = *((uint64*)UniqueNetId.UniqueNetId->GetBytes());
+		const char* PersonaName = SteamFriends()->GetFriendPersonaName(id);
+		return FString(UTF8_TO_TCHAR(PersonaName));
+	}
+#endif
+
+	return FString(TEXT(""));
+}
+
+FBPUniqueNetId UAdvancedFriendsLibrary::CreateSteamIDFromString(const FString SteamID64)
+{
+	FBPUniqueNetId netId;
+
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+	if (!(SteamID64.Len() > 0))
+	{
+		UE_LOG(AdvancedFriendsLog, Warning, TEXT("CreateSteamIDFromString Had a bad UniqueNetId!"));
+		return netId;
+	}
+
+	if (SteamAPI_Init())
+	{
+		// Already does the conversion
+		TSharedPtr<const FUniqueNetId> ValueID(new const FUniqueNetIdSteam(SteamID64));
+		//FCString::Atoi64(*SteamID64));
+		
+		netId.SetUniqueNetId(ValueID);
+		return netId;
+	}
+#endif
+
+	return netId;
+}
+
+bool UAdvancedFriendsLibrary::RequestSteamFriendInfo(const FBPUniqueNetId UniqueNetId, bool bRequireNameOnly)
 {
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid())
@@ -68,7 +115,7 @@ bool UAdvancedFriendsLibrary::RequestSteamFriendInfo(const FBPUniqueNetId Unique
 	{
 		uint64 id = *((uint64*)UniqueNetId.UniqueNetId->GetBytes());
 
-		return !SteamFriends()->RequestUserInformation(id, false);
+		return !SteamFriends()->RequestUserInformation(id, bRequireNameOnly);
 	}
 #endif
 
@@ -357,7 +404,7 @@ void UAdvancedFriendsLibrary::IsAFriend(APlayerController *PlayerController, con
 void UAdvancedFriendsLibrary::GetStoredRecentPlayersList(FBPUniqueNetId UniqueNetId, TArray<FBPOnlineRecentPlayer> &PlayersList)
 {
 	IOnlineFriendsPtr FriendsInterface = Online::GetFriendsInterface();
-
+	
 	if (!FriendsInterface.IsValid())
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetRecentPlayersList Failed to get friends interface!"));
