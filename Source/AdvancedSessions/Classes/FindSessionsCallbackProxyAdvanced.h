@@ -52,6 +52,7 @@ private:
 	void OnCompleted(bool bSuccess);
 
 	bool bRunSecondSearch;
+	bool bIsOnSecondSearch;
 
 	TArray<FBlueprintSessionResult> SessionSearchResults;
 

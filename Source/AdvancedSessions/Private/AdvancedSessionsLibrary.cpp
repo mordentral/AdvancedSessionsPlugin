@@ -296,7 +296,7 @@ void UAdvancedSessionsLibrary::GetSessionPropertyFloat(const TArray<FSessionProp
 
 bool UAdvancedSessionsLibrary::HasOnlineSubsystem(FName SubSystemName)
 {
-	return((IOnlineSubsystem::Get(SubSystemName) != NULL));
+	return IOnlineSubsystem::DoesInstanceExist(SubSystemName);
 }
 
 void UAdvancedSessionsLibrary::GetNetPlayerIndex(APlayerController *PlayerController, int32 &NetPlayerIndex)

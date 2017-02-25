@@ -13,6 +13,7 @@ UFindSessionsCallbackProxyAdvanced::UFindSessionsCallbackProxyAdvanced(const FOb
 	, bUseLAN(false)
 {
 	bRunSecondSearch = false;
+	bIsOnSecondSearch = false;
 }
 
 UFindSessionsCallbackProxyAdvanced* UFindSessionsCallbackProxyAdvanced::FindSessionsAdvanced(UObject* WorldContextObject, class APlayerController* PlayerController, int MaxResults, bool bUseLAN, EBPServerPresenceSearchType ServerTypeToSearch, const TArray<FSessionsSearchSetting> &Filters, bool bEmptyServersOnly, bool bNonEmptyServersOnly, bool bSecureServersOnly, int MinSlotsAvailable)
@@ -43,6 +44,7 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 		{
 			// Re-initialize here, otherwise I think there might be issues with people re-calling search for some reason before it is destroyed
 			bRunSecondSearch = false;
+			bIsOnSecondSearch = false;
 
 			DelegateHandle = Sessions->AddOnFindSessionsCompleteDelegate_Handle(Delegate);
 
@@ -54,26 +56,26 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 			// Create temp filter variable, because I had to re-define a blueprint version of this, it is required.
 			FOnlineSearchSettingsEx tem;
 
-	/*		// Search only for dedicated servers (value is true/false) 
-#define SEARCH_DEDICATED_ONLY FName(TEXT("DEDICATEDONLY"))
-			// Search for empty servers only (value is true/false) 
-#define SEARCH_EMPTY_SERVERS_ONLY FName(TEXT("EMPTYONLY"))
-			// Search for non empty servers only (value is true/false) 
-#define SEARCH_NONEMPTY_SERVERS_ONLY FName(TEXT("NONEMPTYONLY"))
-			// Search for secure servers only (value is true/false) 
-#define SEARCH_SECURE_SERVERS_ONLY FName(TEXT("SECUREONLY"))
-			// Search for presence sessions only (value is true/false) 
-#define SEARCH_PRESENCE FName(TEXT("PRESENCESEARCH"))
-			// Search for a match with min player availability (value is int) 
-#define SEARCH_MINSLOTSAVAILABLE FName(TEXT("MINSLOTSAVAILABLE"))
-			// Exclude all matches where any unique ids in a given array are present (value is string of the form "uniqueid1;uniqueid2;uniqueid3") 
-#define SEARCH_EXCLUDE_UNIQUEIDS FName(TEXT("EXCLUDEUNIQUEIDS"))
-			// User ID to search for session of 
-#define SEARCH_USER FName(TEXT("SEARCHUSER"))
-			// Keywords to match in session search 
-#define SEARCH_KEYWORDS FName(TEXT("SEARCHKEYWORDS"))*/
+			/*		// Search only for dedicated servers (value is true/false)
+			#define SEARCH_DEDICATED_ONLY FName(TEXT("DEDICATEDONLY"))
+			// Search for empty servers only (value is true/false)
+			#define SEARCH_EMPTY_SERVERS_ONLY FName(TEXT("EMPTYONLY"))
+			// Search for non empty servers only (value is true/false)
+			#define SEARCH_NONEMPTY_SERVERS_ONLY FName(TEXT("NONEMPTYONLY"))
+			// Search for secure servers only (value is true/false)
+			#define SEARCH_SECURE_SERVERS_ONLY FName(TEXT("SECUREONLY"))
+			// Search for presence sessions only (value is true/false)
+			#define SEARCH_PRESENCE FName(TEXT("PRESENCESEARCH"))
+			// Search for a match with min player availability (value is int)
+			#define SEARCH_MINSLOTSAVAILABLE FName(TEXT("MINSLOTSAVAILABLE"))
+			// Exclude all matches where any unique ids in a given array are present (value is string of the form "uniqueid1;uniqueid2;uniqueid3")
+			#define SEARCH_EXCLUDE_UNIQUEIDS FName(TEXT("EXCLUDEUNIQUEIDS"))
+			// User ID to search for session of
+			#define SEARCH_USER FName(TEXT("SEARCHUSER"))
+			// Keywords to match in session search
+			#define SEARCH_KEYWORDS FName(TEXT("SEARCHKEYWORDS"))*/
 
-			if(bEmptyServersOnly)
+			if (bEmptyServersOnly)
 				tem.Set(SEARCH_EMPTY_SERVERS_ONLY, true, EOnlineComparisonOp::Equals);
 
 			if (bNonEmptyServersOnly)
@@ -108,24 +110,28 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 
 			case EBPServerPresenceSearchType::DedicatedServersOnly:
 			{
-				tem.Set(SEARCH_DEDICATED_ONLY, true, EOnlineComparisonOp::Equals);
+				//tem.Set(SEARCH_DEDICATED_ONLY, true, EOnlineComparisonOp::Equals);
 			}
 			break;
 
 			case EBPServerPresenceSearchType::AllServers:
 			default:
 			{
-				bRunSecondSearch = true;
+				// Only steam uses the separate searching flags currently
+				if (IOnlineSubsystem::DoesInstanceExist("STEAM"))
+				{
+					bRunSecondSearch = true;
 
-				SearchObjectDedicated = MakeShareable(new FOnlineSessionSearch);
-				SearchObjectDedicated->MaxSearchResults = MaxResults;
-				SearchObjectDedicated->bIsLanQuery = bUseLAN;
+					SearchObjectDedicated = MakeShareable(new FOnlineSessionSearch);
+					SearchObjectDedicated->MaxSearchResults = MaxResults;
+					SearchObjectDedicated->bIsLanQuery = bUseLAN;
 
-				FOnlineSearchSettingsEx DedicatedOnly = tem;
-				tem.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
+					FOnlineSearchSettingsEx DedicatedOnly = tem;
+					tem.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
 
-				DedicatedOnly.Set(SEARCH_DEDICATED_ONLY, true, EOnlineComparisonOp::Equals);
-				SearchObjectDedicated->QuerySettings = DedicatedOnly;
+					//DedicatedOnly.Set(SEARCH_DEDICATED_ONLY, true, EOnlineComparisonOp::Equals);
+					SearchObjectDedicated->QuerySettings = DedicatedOnly;
+				}
 			}
 			break;
 			}
@@ -134,13 +140,13 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 			SearchObject->QuerySettings = tem;
 
 			Sessions->FindSessions(*Helper.UserID, SearchObject.ToSharedRef());
-			
+
 			// OnQueryCompleted will get called, nothing more to do now
 			return;
 		}
 		else
 		{
-			FFrame::KismetExecutionMessage(TEXT("Sessions not supported by Online Subsystem"), ELogVerbosity::Warning);	
+			FFrame::KismetExecutionMessage(TEXT("Sessions not supported by Online Subsystem"), ELogVerbosity::Warning);
 		}
 	}
 
@@ -162,23 +168,48 @@ void UFindSessionsCallbackProxyAdvanced::OnCompleted(bool bSuccess)
 		}
 	}
 
-	if (bSuccess && SearchObject.IsValid())
+	if (bSuccess)
 	{
-		// Just log the results for now, will need to add a blueprint-compatible search result struct
-		for (auto& Result : SearchObject->SearchResults)
+		if (bIsOnSecondSearch)
 		{
-			FString ResultText = FString::Printf(TEXT("Found a session. Ping is %d"), Result.PingInMs);
+			if (SearchObjectDedicated.IsValid())
+			{
+				// Just log the results for now, will need to add a blueprint-compatible search result struct
+				for (auto& Result : SearchObjectDedicated->SearchResults)
+				{
+					FString ResultText = FString::Printf(TEXT("Found a session. Ping is %d"), Result.PingInMs);
 
-			FFrame::KismetExecutionMessage(*ResultText, ELogVerbosity::Log);
+					FFrame::KismetExecutionMessage(*ResultText, ELogVerbosity::Log);
 
-			FBlueprintSessionResult BPResult;
-			BPResult.OnlineResult = Result;
-			SessionSearchResults.Add(BPResult);
+					FBlueprintSessionResult BPResult;
+					BPResult.OnlineResult = Result;
+					SessionSearchResults.Add(BPResult);
+				}
+				OnSuccess.Broadcast(SessionSearchResults);
+				return;
+			}
 		}
-		if (!bRunSecondSearch)
+		else
 		{
-			OnSuccess.Broadcast(SessionSearchResults);
-			return;
+			if (SearchObject.IsValid())
+			{
+				// Just log the results for now, will need to add a blueprint-compatible search result struct
+				for (auto& Result : SearchObject->SearchResults)
+				{
+					FString ResultText = FString::Printf(TEXT("Found a session. Ping is %d"), Result.PingInMs);
+
+					FFrame::KismetExecutionMessage(*ResultText, ELogVerbosity::Log);
+
+					FBlueprintSessionResult BPResult;
+					BPResult.OnlineResult = Result;
+					SessionSearchResults.Add(BPResult);
+				}
+				if (!bRunSecondSearch)
+				{
+					OnSuccess.Broadcast(SessionSearchResults);
+					return;
+				}
+			}
 		}
 	}
 	else
@@ -186,7 +217,7 @@ void UFindSessionsCallbackProxyAdvanced::OnCompleted(bool bSuccess)
 		if (!bRunSecondSearch)
 		{
 			// Need to account for only one of the searches failing
-			if(SessionSearchResults.Num() > 0)
+			if (SessionSearchResults.Num() > 0)
 				OnSuccess.Broadcast(SessionSearchResults);
 			else
 				OnFailure.Broadcast(SessionSearchResults);
@@ -197,6 +228,7 @@ void UFindSessionsCallbackProxyAdvanced::OnCompleted(bool bSuccess)
 	if (bRunSecondSearch && ServerSearchType == EBPServerPresenceSearchType::AllServers)
 	{
 		bRunSecondSearch = false;
+		bIsOnSecondSearch = true;
 		auto Sessions = Helper.OnlineSub->GetSessionInterface();
 		Sessions->FindSessions(*Helper.UserID, SearchObjectDedicated.ToSharedRef());
 	}

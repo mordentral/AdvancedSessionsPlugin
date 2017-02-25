@@ -99,9 +99,9 @@ enum class EBlueprintAsyncResultSwitch : uint8
 UENUM(BlueprintType)
 enum class EBPServerPresenceSearchType : uint8
 {
+	AllServers,
 	ClientServersOnly,
-	DedicatedServersOnly,
-	AllServers
+	DedicatedServersOnly
 };
 
 // Wanted this to be switchable in the editor
