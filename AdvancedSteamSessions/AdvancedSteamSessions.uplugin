@@ -1,0 +1,21 @@
+{
+    "FileVersion" : 3,
+ 
+    "FriendlyName" : "Advanced Steam Sessions",
+    "Version" : 1.9,
+    "VersionName": "1.9",
+    "EngineVersion" : 1579795,
+    "Description" : "Adds new blueprint functions to handle more advanced session operations in Steam. REQUIRES ADVANCED SESSIONS",
+    "Category" : "Advanced Sessions Plugin",
+    "CreatedBy" : "Joshua Statzer",
+    "CreatedByURL" : "N/A",
+ 
+    "Modules" :
+    [
+        {
+            "Name" : "AdvancedSteamSessions",
+            "Type" : "RunTime",
+			"LoadingPhase" : "PreDefault"
+        } 
+    ]
+}
