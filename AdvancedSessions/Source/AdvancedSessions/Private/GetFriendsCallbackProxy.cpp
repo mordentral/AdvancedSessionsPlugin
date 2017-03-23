@@ -53,7 +53,8 @@ void UGetFriendsCallbackProxy::OnReadFriendsListCompleted(int32 LocalUserNum, bo
 		IOnlineFriendsPtr Friends = Online::GetFriendsInterface();
 		if (Friends.IsValid())
 		{
-			ULocalPlayer* Player = Cast<ULocalPlayer>(PlayerControllerWeakPtr->Player);
+			// Not actually needed anymore, plus was not being validated and causing a crash
+			//ULocalPlayer* Player = Cast<ULocalPlayer>(PlayerControllerWeakPtr->Player);
 
 			TArray<FBPFriendInfo> FriendsListOut;
 			TArray< TSharedRef<FOnlineFriend> > FriendList;
