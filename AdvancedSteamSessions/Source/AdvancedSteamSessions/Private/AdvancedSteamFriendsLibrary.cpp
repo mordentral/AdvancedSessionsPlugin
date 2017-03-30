@@ -32,6 +32,56 @@
 DEFINE_LOG_CATEGORY(AdvancedSteamFriendsLog);
 
 
+// Clan functions, add in soon
+/*int32 UAdvancedSteamFriendsLibrary::GetFriendSteamLevel(const FBPUniqueNetId UniqueNetId)
+{
+
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid())
+	{
+		UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("IsAFriend Had a bad UniqueNetId!"));
+		return 0;
+	}
+
+	if (SteamAPI_Init())
+	{
+		uint64 id = *((uint64*)UniqueNetId.UniqueNetId->GetBytes());
+
+
+		// clan (group) iteration and access functions
+		//virtual int GetClanCount() = 0;
+		//virtual CSteamID GetClanByIndex(int iClan) = 0;
+		//virtual const char *GetClanName(CSteamID steamIDClan) = 0;
+		//virtual const char *GetClanTag(CSteamID steamIDClan) = 0;
+		// returns the most recent information we have about what's happening in a clan
+		//virtual bool GetClanActivityCounts(CSteamID steamIDClan, int *pnOnline, int *pnInGame, int *pnChatting) = 0;
+		// for clans a user is a member of, they will have reasonably up-to-date information, but for others you'll have to download the info to have the latest
+		//virtual SteamAPICall_t DownloadClanActivityCounts(ARRAY_COUNT(cClansToRequest) CSteamID *psteamIDClans, int cClansToRequest) = 0;
+
+		// requests information about a clan officer list
+		// when complete, data is returned in ClanOfficerListResponse_t call result
+		// this makes available the calls below
+		// you can only ask about clans that a user is a member of
+		// note that this won't download avatars automatically; if you get an officer,
+		// and no avatar image is available, call RequestUserInformation( steamID, false ) to download the avatar
+		//virtual SteamAPICall_t RequestClanOfficerList(CSteamID steamIDClan) = 0;
+
+
+		// returns the steamID of the clan owner
+		//virtual CSteamID GetClanOwner(CSteamID steamIDClan) = 0;
+		// returns the number of officers in a clan (including the owner)
+		//virtual int GetClanOfficerCount(CSteamID steamIDClan) = 0;
+		// returns the steamID of a clan officer, by index, of range [0,GetClanOfficerCount)
+		//virtual CSteamID GetClanOfficerByIndex(CSteamID steamIDClan, int iOfficer) = 0;
+
+
+		return SteamFriends()->GetFriendSteamLevel(id);
+	}
+#endif
+
+	return 0;
+}*/
+
 int32 UAdvancedSteamFriendsLibrary::GetFriendSteamLevel(const FBPUniqueNetId UniqueNetId)
 {
 
@@ -51,8 +101,6 @@ int32 UAdvancedSteamFriendsLibrary::GetFriendSteamLevel(const FBPUniqueNetId Uni
 #endif
 
 	return 0;
-
-
 }
 
 FString UAdvancedSteamFriendsLibrary::GetSteamPersonaName(const FBPUniqueNetId UniqueNetId)
@@ -185,7 +233,6 @@ UTexture2D * UAdvancedSteamFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueN
 			}*/
 
 			UTexture2D* Avatar = UTexture2D::CreateTransient(Width, Height, PF_R8G8B8A8);
-
 			// Switched to a Memcpy instead of byte by byte transer
 			uint8* MipData = (uint8*)Avatar->PlatformData->Mips[0].BulkData.Lock(LOCK_READ_WRITE);
 			FMemory::Memcpy(MipData, (void*)oAvatarRGBA, Height * Width * 4);

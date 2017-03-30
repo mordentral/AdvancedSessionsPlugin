@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "OnlineSubSystemHeader.h"
+#include "Engine/LocalPlayer.h"
 #include "AdvancedExternalUILibrary.h"
 
 //General Log

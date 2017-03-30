@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Engine.h"
+#include "EngineMinimal.h"
+#include "Engine/Engine.h"
+#include "GameFramework/PlayerState.h"
 #include "Core.h"
 #include "OnlineSessionInterface.h"
 #include "OnlineSessionSettings.h"
