@@ -1,6 +1,5 @@
 #pragma once
  
-#include "OnlineSubSystemHeader.h"
 #include "ModuleManager.h"
 
 class AdvancedSessions : public IModuleInterface

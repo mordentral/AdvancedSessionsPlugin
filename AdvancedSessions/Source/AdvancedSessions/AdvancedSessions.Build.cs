@@ -5,6 +5,9 @@ public class AdvancedSessions : ModuleRules
 {
     public AdvancedSessions(TargetInfo Target)
     {
+        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+        //bEnforceIWYU = true;
+
         Definitions.Add("WITH_ADVANCED_SESSIONS=1");
 
         PrivateIncludePaths.AddRange(new string[] { "AdvancedSessions/Private"/*, "OnlineSubsystemSteam/Private"*/ });

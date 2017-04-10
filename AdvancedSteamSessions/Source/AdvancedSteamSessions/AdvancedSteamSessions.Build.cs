@@ -5,6 +5,9 @@ public class AdvancedSteamSessions : ModuleRules
 {
     public AdvancedSteamSessions(TargetInfo Target)
     {
+        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+        //bEnforceIWYU = true;
+
         Definitions.Add("WITH_ADVANCED_STEAM_SESSIONS=1");
 
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "OnlineSubsystem", "CoreUObject", "OnlineSubsystemUtils", "Networking", "Sockets", "AdvancedSessions"/*"Voice", "OnlineSubsystemSteam"*/ });

@@ -1,7 +1,6 @@
 //#include "StandAlonePrivatePCH.h"
-#include "OnlineSubSystemHeader.h"
 #include "AdvancedSteamSessions.h"
- 
+
 void AdvancedSteamSessions::StartupModule()
 {
 }

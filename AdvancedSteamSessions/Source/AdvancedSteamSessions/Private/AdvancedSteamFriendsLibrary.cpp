@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "OnlineSubSystemHeader.h"
 #include "AdvancedSteamFriendsLibrary.h"
-
+#include "OnlineSubSystemHeader.h"
 
 // This is taken directly from UE4 - OnlineSubsystemSteamPrivatePCH.h as a fix for the array_count macro
 

@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-#include "OnlineSubSystemHeader.h"
+#include "CoreMinimal.h"
+#include "BlueprintDataDefinitions.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Online.h"
 #include "OnlineSubsystem.h"
