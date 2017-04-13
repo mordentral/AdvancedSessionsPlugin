@@ -2,6 +2,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "OnlineSessionInterface.h"
+#include "BlueprintDataDefinitions.h"
 #include "CancelFindSessionsCallbackProxy.generated.h"
 
 UCLASS(MinimalAPI)

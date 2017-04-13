@@ -2,6 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BlueprintDataDefinitions.h"
 #include "OnlineIdentityInterface.h"
 #include "LogoutUserCallbackProxy.generated.h"
 

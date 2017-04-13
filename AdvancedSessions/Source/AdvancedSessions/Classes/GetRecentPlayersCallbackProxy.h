@@ -2,7 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
+#include "BlueprintDataDefinitions.h"
 #include "GetRecentPlayersCallbackProxy.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(AdvancedGetRecentPlayersLog, Log, All);

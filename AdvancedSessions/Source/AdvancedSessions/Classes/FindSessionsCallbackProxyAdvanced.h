@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "OnlineSessionInterface.h"
 #include "FindSessionsCallbackProxy.h"
+#include "BlueprintDataDefinitions.h"
 #include "FindSessionsCallbackProxyAdvanced.generated.h"
 
 UCLASS(MinimalAPI)

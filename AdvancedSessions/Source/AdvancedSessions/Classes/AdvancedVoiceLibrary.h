@@ -3,6 +3,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "BlueprintDataDefinitions.h"
 #include "Online.h"
 #include "OnlineSubsystem.h"
 #include "VoiceInterface.h"

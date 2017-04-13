@@ -2,7 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
+#include "BlueprintDataDefinitions.h"
 #include "FindFriendSessionCallbackProxy.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(AdvancedFindFriendSessionLog, Log, All);

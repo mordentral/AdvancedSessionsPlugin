@@ -2,7 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
+#include "BlueprintDataDefinitions.h"
 #include "UpdateSessionCallbackProxyAdvanced.generated.h"
 
 UCLASS(MinimalAPI)
