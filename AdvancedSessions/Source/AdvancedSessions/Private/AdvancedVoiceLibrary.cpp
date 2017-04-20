@@ -100,6 +100,12 @@ void UAdvancedVoiceLibrary::UnRegisterAllLocalTalkers()
 
 bool UAdvancedVoiceLibrary::RegisterRemoteTalker(const FBPUniqueNetId& UniqueNetId)
 {
+	if (!UniqueNetId.IsValid())
+	{
+		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Register Remote Talker was passed an invalid unique net id!"));
+		return false;
+	}
+
 	IOnlineVoicePtr VoiceInterface = Online::GetVoiceInterface();
 
 	if (!VoiceInterface.IsValid())
@@ -113,6 +119,12 @@ bool UAdvancedVoiceLibrary::RegisterRemoteTalker(const FBPUniqueNetId& UniqueNet
 
 bool UAdvancedVoiceLibrary::UnRegisterRemoteTalker(const FBPUniqueNetId& UniqueNetId)
 {
+	if (!UniqueNetId.IsValid())
+	{
+		UE_LOG(AdvancedVoiceLog, Warning, TEXT("UnRegister Remote Talker was passed an invalid unique net id!"));
+		return false;
+	}
+
 	IOnlineVoicePtr VoiceInterface = Online::GetVoiceInterface();
 
 	if (!VoiceInterface.IsValid())
@@ -152,6 +164,12 @@ bool UAdvancedVoiceLibrary::IsLocalPlayerTalking(uint8 LocalPlayerNum)
 
 bool UAdvancedVoiceLibrary::IsRemotePlayerTalking(const FBPUniqueNetId& UniqueNetId)
 {
+	if (!UniqueNetId.IsValid())
+	{
+		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Is Remote Player Talking was passed an invalid unique net id!"));
+		return false;
+	}
+
 	IOnlineVoicePtr VoiceInterface = Online::GetVoiceInterface();
 
 	if (!VoiceInterface.IsValid())
@@ -165,6 +183,12 @@ bool UAdvancedVoiceLibrary::IsRemotePlayerTalking(const FBPUniqueNetId& UniqueNe
 
 bool UAdvancedVoiceLibrary::IsPlayerMuted(uint8 LocalUserNumChecking, const FBPUniqueNetId& UniqueNetId)
 {
+	if (!UniqueNetId.IsValid())
+	{
+		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Is Player Muted was passed an invalid unique net id!"));
+		return false;
+	}
+
 	IOnlineVoicePtr VoiceInterface = Online::GetVoiceInterface();
 
 	if (!VoiceInterface.IsValid())
@@ -178,6 +202,12 @@ bool UAdvancedVoiceLibrary::IsPlayerMuted(uint8 LocalUserNumChecking, const FBPU
 
 bool UAdvancedVoiceLibrary::MuteRemoteTalker(uint8 LocalUserNum, const FBPUniqueNetId& UniqueNetId, bool bIsSystemWide)
 {
+	if (!UniqueNetId.IsValid())
+	{
+		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Mute Remote Talker was passed an invalid unique net id!"));
+		return false;
+	}
+
 	IOnlineVoicePtr VoiceInterface = Online::GetVoiceInterface();
 
 	if (!VoiceInterface.IsValid())
@@ -191,6 +221,12 @@ bool UAdvancedVoiceLibrary::MuteRemoteTalker(uint8 LocalUserNum, const FBPUnique
 
 bool UAdvancedVoiceLibrary::UnMuteRemoteTalker(uint8 LocalUserNum, const FBPUniqueNetId& UniqueNetId, bool bIsSystemWide)
 {
+	if (!UniqueNetId.IsValid())
+	{
+		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Unmute Remote Talker was passed an invalid unique net id!"));
+		return false;
+	}
+
 	IOnlineVoicePtr VoiceInterface = Online::GetVoiceInterface();
 
 	if (!VoiceInterface.IsValid())

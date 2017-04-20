@@ -31,7 +31,7 @@ void UAdvancedIdentityLibrary::GetPlayerAuthToken(APlayerController * PlayerCont
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
-	
+
 	AuthToken = IdentityInterface->GetAuthToken(Player->GetControllerId());
 	Result = EBlueprintResultSwitch::OnSuccess;
 }
@@ -57,7 +57,7 @@ void UAdvancedIdentityLibrary::GetPlayerNickname(const FBPUniqueNetId & UniqueNe
 
 void UAdvancedIdentityLibrary::GetLoginStatus(const FBPUniqueNetId & UniqueNetID, EBPLoginStatus & LoginStatus, EBlueprintResultSwitch &Result)
 {
-	if(!UniqueNetID.IsValid())
+	if (!UniqueNetID.IsValid())
 	{
 		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetLoginStatus was passed a bad player uniquenetid!"));
 		Result = EBlueprintResultSwitch::OnFailure;
@@ -102,6 +102,13 @@ void UAdvancedIdentityLibrary::GetAllUserAccounts(TArray<FBPUserOnlineAccount> &
 void UAdvancedIdentityLibrary::GetUserAccount(const FBPUniqueNetId & UniqueNetId, FBPUserOnlineAccount & AccountInfo, EBlueprintResultSwitch &Result)
 {
 	IOnlineIdentityPtr IdentityInterface = Online::GetIdentityInterface();
+
+	if(!UniqueNetId.IsValid())
+	{
+		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetUserAccount was passed a bad unique net id!"));
+		Result = EBlueprintResultSwitch::OnFailure;
+		return;
+	}
 
 	if (!IdentityInterface.IsValid())
 	{
