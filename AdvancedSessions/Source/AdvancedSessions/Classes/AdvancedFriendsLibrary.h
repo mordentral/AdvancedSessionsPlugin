@@ -5,6 +5,7 @@
 #include "BlueprintDataDefinitions.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Online.h"
+#include "Engine/LocalPlayer.h"
 #include "OnlineSubsystem.h"
 #include "OnlineFriendsInterface.h"
 #include "OnlineUserInterface.h"

@@ -4,6 +4,7 @@
 #include "CoreMinimal.h"
 #include "BlueprintDataDefinitions.h"
 #include "OnlineIdentityInterface.h"
+#include "Engine/LocalPlayer.h"
 #include "LogoutUserCallbackProxy.generated.h"
 
 UCLASS(MinimalAPI)

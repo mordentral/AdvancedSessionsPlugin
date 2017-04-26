@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "BlueprintDataDefinitions.h"
+#include "Engine/LocalPlayer.h"
 #include "SendFriendInviteCallbackProxy.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(AdvancedSendFriendInviteLog, Log, All);
