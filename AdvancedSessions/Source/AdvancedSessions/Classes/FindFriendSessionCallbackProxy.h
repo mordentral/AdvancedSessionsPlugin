@@ -2,13 +2,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine/LocalPlayer.h"
 #include "BlueprintDataDefinitions.h"
+#include "Engine/LocalPlayer.h"
 #include "FindFriendSessionCallbackProxy.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(AdvancedFindFriendSessionLog, Log, All);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBlueprintFindFriendSessionDelegate, const FBlueprintSessionResult&, SessionInfo);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBlueprintFindFriendSessionDelegate, const TArray<FBlueprintSessionResult>, SessionInfo);
 
 UCLASS(MinimalAPI)
 class UFindFriendSessionCallbackProxy : public UOnlineBlueprintCallProxyBase
@@ -31,7 +31,7 @@ class UFindFriendSessionCallbackProxy : public UOnlineBlueprintCallProxyBase
 
 private:
 	// Internal callback when the friends list is retrieved
-	void OnFindFriendSessionCompleted(int32 LocalPlayer, bool bWasSuccessful, const FOnlineSessionSearchResult& SessionInfo);
+	void OnFindFriendSessionCompleted(int32 LocalPlayer, bool bWasSuccessful, const TArray<FOnlineSessionSearchResult>& SessionInfo);
 
 	// The player controller triggering things
 	TWeakObjectPtr<APlayerController> PlayerControllerWeakPtr;

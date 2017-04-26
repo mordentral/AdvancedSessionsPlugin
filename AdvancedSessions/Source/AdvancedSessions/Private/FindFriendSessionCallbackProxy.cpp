@@ -27,7 +27,7 @@ void UFindFriendSessionCallbackProxy::Activate()
 	{
 		// Fail immediately
 		UE_LOG(AdvancedFindFriendSessionLog, Warning, TEXT("FindFriendSession Failed received a bad UniqueNetId!"));
-		FBlueprintSessionResult EmptyResult;
+		TArray<FBlueprintSessionResult> EmptyResult;
 		OnFailure.Broadcast(EmptyResult);
 		return;
 	}
@@ -36,7 +36,7 @@ void UFindFriendSessionCallbackProxy::Activate()
 	{
 		// Fail immediately
 		UE_LOG(AdvancedFindFriendSessionLog, Warning, TEXT("FindFriendSession Failed received a bad playercontroller!"));
-		FBlueprintSessionResult EmptyResult;
+		TArray<FBlueprintSessionResult> EmptyResult;
 		OnFailure.Broadcast(EmptyResult);
 		return;
 	}
@@ -51,7 +51,7 @@ void UFindFriendSessionCallbackProxy::Activate()
 		{
 			// Fail immediately
 			UE_LOG(AdvancedFindFriendSessionLog, Warning, TEXT("FindFriendSession Failed couldn't cast to ULocalPlayer!"));
-			FBlueprintSessionResult EmptyResult;
+			TArray<FBlueprintSessionResult> EmptyResult;
 			OnFailure.Broadcast(EmptyResult);
 			return;
 		}
@@ -64,11 +64,12 @@ void UFindFriendSessionCallbackProxy::Activate()
 	}
 
 	// Fail immediately
-	FBlueprintSessionResult EmptyResult;
+	TArray<FBlueprintSessionResult> EmptyResult;
 	OnFailure.Broadcast(EmptyResult);
 }
 
-void UFindFriendSessionCallbackProxy::OnFindFriendSessionCompleted(int32 LocalPlayer, bool bWasSuccessful, const FOnlineSessionSearchResult& SessionInfo)
+
+void UFindFriendSessionCallbackProxy::OnFindFriendSessionCompleted(int32 LocalPlayer, bool bWasSuccessful, const TArray<FOnlineSessionSearchResult>& SessionInfo)
 {
 	IOnlineSessionPtr Sessions = Online::GetSessionInterface();
 
@@ -77,9 +78,19 @@ void UFindFriendSessionCallbackProxy::OnFindFriendSessionCompleted(int32 LocalPl
 
 	if ( bWasSuccessful )
 	{ 
-		FBlueprintSessionResult Result;
-		Result.OnlineResult = SessionInfo;
-		if(Result.OnlineResult.IsValid())
+		TArray<FBlueprintSessionResult> Result;
+
+		for (auto& Sesh : SessionInfo)
+		{
+			if (Sesh.IsValid())
+			{
+				FBlueprintSessionResult BSesh;
+				BSesh.OnlineResult = Sesh;
+				Result.Add(BSesh);
+			}
+		}
+
+		if(Result.Num() > 0)
 			OnSuccess.Broadcast(Result);
 		else
 		{
@@ -90,7 +101,7 @@ void UFindFriendSessionCallbackProxy::OnFindFriendSessionCompleted(int32 LocalPl
 	else
 	{
 		UE_LOG(AdvancedFindFriendSessionLog, Warning, TEXT("FindFriendSession Failed"));
-		FBlueprintSessionResult EmptyResult;
+		TArray<FBlueprintSessionResult> EmptyResult;
 		OnFailure.Broadcast(EmptyResult);
 	}
 }
