@@ -88,7 +88,7 @@ public:
 
 	// Called when the designated LocalUser has changed login status
 	UFUNCTION(BlueprintImplementableEvent, Category = "AdvancedIdentity", meta = (DisplayName = "OnPlayerLoginStatusChanged"))
-	void OnPlayerLoginStatusChanged(int32 PlayerNum, EBPLoginStatus &PreviousStatus, EBPLoginStatus &NewStatus, FBPUniqueNetId & NewPlayerUniqueNetID);
+	void OnPlayerLoginStatusChanged(int32 PlayerNum, EBPLoginStatus PreviousStatus, EBPLoginStatus NewStatus, FBPUniqueNetId NewPlayerUniqueNetID);
 
 	void OnPlayerLoginStatusChangedMaster(int32 PlayerNum, ELoginStatus::Type PreviousStatus, ELoginStatus::Type NewStatus, const FUniqueNetId & NewPlayerUniqueNetID);
 	FOnLoginStatusChangedDelegate PlayerLoginStatusChangedDelegate;
