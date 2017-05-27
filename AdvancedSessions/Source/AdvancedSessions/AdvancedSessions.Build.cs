@@ -3,7 +3,7 @@ using System.IO;
  
 public class AdvancedSessions : ModuleRules
 {
-    public AdvancedSessions(TargetInfo Target)
+    public AdvancedSessions(ReadOnlyTargetRules Target) : base(Target)
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
         //bEnforceIWYU = true;

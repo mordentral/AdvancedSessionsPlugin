@@ -46,7 +46,7 @@ public:
 
 	// Called when the designated LocalUser has changed login state
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnPlayerLoginStatusChanged"))
-	void OnPlayerLoginStatusChanged(EBPLoginStatus &PreviousStatus, EBPLoginStatus &NewStatus, FBPUniqueNetId & PlayerUniqueNetID);
+	void OnPlayerLoginStatusChanged(EBPLoginStatus PreviousStatus, EBPLoginStatus NewStatus, FBPUniqueNetId PlayerUniqueNetID);
 
 	// REMOVED BECAUSE IT WAS NEVER BEING CALLED
 	// Called when the designated LocalUser has received a session invite, use JoinSession on result to connect

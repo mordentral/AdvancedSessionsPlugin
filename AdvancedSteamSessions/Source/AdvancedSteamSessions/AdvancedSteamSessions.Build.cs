@@ -3,7 +3,7 @@ using System.IO;
  
 public class AdvancedSteamSessions : ModuleRules
 {
-    public AdvancedSteamSessions(TargetInfo Target)
+    public AdvancedSteamSessions(ReadOnlyTargetRules Target) : base(Target)
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
         //bEnforceIWYU = true;
