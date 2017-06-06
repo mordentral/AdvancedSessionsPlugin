@@ -11,6 +11,7 @@
 #include "OnlineMessageInterface.h"
 #include "OnlinePresenceInterface.h"
 #include "Engine/GameInstance.h"
+#include "Engine/LocalPlayer.h"
 #include "OnlineSessionInterface.h"
 #include "OnlineSessionSettings.h"
 #include "UObjectIterator.h"

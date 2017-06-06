@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "AdvancedFriendsGameInstance.h"
 
-
 //General Log
 DEFINE_LOG_CATEGORY(AdvancedFriendsInterfaceLog);
 

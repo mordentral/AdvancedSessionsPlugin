@@ -10,6 +10,7 @@
 #include "OnlineUserInterface.h"
 #include "OnlinePresenceInterface.h"
 #include "Engine/GameInstance.h"
+#include "Engine/LocalPlayer.h"
 
 #include "UObjectIterator.h"
 
