@@ -17,6 +17,8 @@
 #undef ARRAY_COUNT
 
 #include <steam/steam_api.h>
+#include <steam/isteamapps.h>
+#include <steam/isteamapplist.h>
 #include <OnlineSubsystemSteamTypes.h>
 #pragma pop_macro("ARRAY_COUNT")
 
@@ -80,6 +82,75 @@ DEFINE_LOG_CATEGORY(AdvancedSteamFriendsLog);
 
 	return 0;
 }*/
+
+void UAdvancedSteamFriendsLibrary::GetSteamGroups(TArray<FBPSteamGroupInfo> & SteamGroups)
+{
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+
+	if (SteamAPI_Init())
+	{
+		int numClans = SteamFriends()->GetClanCount();
+
+		for (int i = 0; i < numClans; i++)
+		{
+			CSteamID SteamGroupID = SteamFriends()->GetClanByIndex(i);
+
+			if(!SteamGroupID.IsValid())
+				continue;
+
+			FBPSteamGroupInfo GroupInfo;
+
+			TSharedPtr<const FUniqueNetId> ValueID(new const FUniqueNetIdSteam(SteamGroupID));
+			GroupInfo.GroupID.SetUniqueNetId(ValueID);
+			SteamFriends()->GetClanActivityCounts(SteamGroupID, &GroupInfo.numOnline, &GroupInfo.numInGame, &GroupInfo.numChatting);
+			GroupInfo.GroupName = FString(UTF8_TO_TCHAR(SteamFriends()->GetClanName(SteamGroupID)));
+			GroupInfo.GroupTag = FString(UTF8_TO_TCHAR(SteamFriends()->GetClanTag(SteamGroupID)));
+
+			SteamGroups.Add(GroupInfo);
+		}
+	}
+#endif
+}
+
+void UAdvancedSteamFriendsLibrary::GetSteamFriendGamePlayed(const FBPUniqueNetId UniqueNetId, EBlueprintResultSwitch &Result, FString & GameName, int32 & AppID)
+{
+
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid())
+	{
+		UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("GetSteamFriendGamePlayed Had a bad UniqueNetId!"));
+		Result = EBlueprintResultSwitch::OnFailure;
+		return;
+	}
+
+	if (SteamAPI_Init())
+	{
+		uint64 id = *((uint64*)UniqueNetId.UniqueNetId->GetBytes());
+
+		FriendGameInfo_t GameInfo;
+		bool bIsInGame = SteamFriends()->GetFriendGamePlayed(id, &GameInfo);
+
+		if (bIsInGame && GameInfo.m_gameID.IsValid())
+		{
+			AppID = GameInfo.m_gameID.AppID();
+
+			char NameBuffer[512];
+			int Len = SteamAppList()->GetAppName(GameInfo.m_gameID.AppID(), NameBuffer, 512);
+
+			if (Len != -1) // Invalid
+			{
+				GameName = FString(UTF8_TO_TCHAR(NameBuffer));
+			}
+
+			Result = EBlueprintResultSwitch::OnSuccess;
+			return;
+		}
+
+	}
+#endif
+
+	Result = EBlueprintResultSwitch::OnFailure;
+}
 
 int32 UAdvancedSteamFriendsLibrary::GetFriendSteamLevel(const FBPUniqueNetId UniqueNetId)
 {
