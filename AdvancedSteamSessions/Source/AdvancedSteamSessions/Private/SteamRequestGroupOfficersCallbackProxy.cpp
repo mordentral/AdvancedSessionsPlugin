@@ -27,6 +27,7 @@ void USteamRequestGroupOfficersCallbackProxy::Activate()
 	{
 		uint64 id = *((uint64*)GroupUniqueID.UniqueNetId->GetBytes());
 		SteamAPICall_t hSteamAPICall = SteamFriends()->RequestClanOfficerList(id);
+
 		m_callResultGroupOfficerRequestDetails.Set(hSteamAPICall, this, &USteamRequestGroupOfficersCallbackProxy::OnRequestGroupOfficerDetails);
 		return;
 	}

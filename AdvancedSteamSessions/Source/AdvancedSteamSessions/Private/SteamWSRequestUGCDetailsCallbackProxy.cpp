@@ -9,16 +9,14 @@
 USteamWSRequestUGCDetailsCallbackProxy::USteamWSRequestUGCDetailsCallbackProxy(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	NumSecondsBeforeTimeout = 2.0f;
 }
 
 
-USteamWSRequestUGCDetailsCallbackProxy* USteamWSRequestUGCDetailsCallbackProxy::GetWorkshopItemDetails(UObject* WorldContextObject, FBPSteamWorkshopID WorkShopID, int32 NumSecondsBeforeTimeout)
+USteamWSRequestUGCDetailsCallbackProxy* USteamWSRequestUGCDetailsCallbackProxy::GetWorkshopItemDetails(UObject* WorldContextObject, FBPSteamWorkshopID WorkShopID/*, int32 NumSecondsBeforeTimeout*/)
 {
 	USteamWSRequestUGCDetailsCallbackProxy* Proxy = NewObject<USteamWSRequestUGCDetailsCallbackProxy>();
 
 	Proxy->WorkShopID = WorkShopID;
-	Proxy->NumSecondsBeforeTimeout = NumSecondsBeforeTimeout;
 	return Proxy;
 }
 
@@ -27,7 +25,20 @@ void USteamWSRequestUGCDetailsCallbackProxy::Activate()
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 	if (SteamAPI_Init())
 	{
-		SteamAPICall_t hSteamAPICall = SteamUGC()->RequestUGCDetails(WorkShopID.SteamWorkshopID, NumSecondsBeforeTimeout);
+		// #TODO: Support arrays instead in the future?
+		UGCQueryHandle_t hQueryHandle = SteamUGC()->CreateQueryUGCDetailsRequest((PublishedFileId_t *)&WorkShopID.SteamWorkshopID, 1);
+		// #TODO: add search settings here by calling into the handle?
+		SteamAPICall_t hSteamAPICall = SteamUGC()->SendQueryUGCRequest(hQueryHandle);
+
+		// Need to release the query
+		SteamUGC()->ReleaseQueryUGCRequest(hQueryHandle);
+
+		if (hSteamAPICall == k_uAPICallInvalid)
+		{
+			OnFailure.Broadcast(FBPSteamWorkshopItemDetails());
+			return;
+		}
+
 		m_callResultUGCRequestDetails.Set(hSteamAPICall, this, &USteamWSRequestUGCDetailsCallbackProxy::OnUGCRequestUGCDetails);
 		return;
 	}
@@ -35,18 +46,24 @@ void USteamWSRequestUGCDetailsCallbackProxy::Activate()
 	OnFailure.Broadcast(FBPSteamWorkshopItemDetails());
 }
 
-void USteamWSRequestUGCDetailsCallbackProxy::OnUGCRequestUGCDetails(SteamUGCRequestUGCDetailsResult_t *pResult, bool bIOFailure)
+void USteamWSRequestUGCDetailsCallbackProxy::OnUGCRequestUGCDetails(SteamUGCQueryCompleted_t *pResult, bool bIOFailure)
 {
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 
-	if (bIOFailure || !pResult)
+	if (bIOFailure || !pResult || pResult->m_unNumResultsReturned <= 0)
 	{
 		OnFailure.Broadcast(FBPSteamWorkshopItemDetails());
 		return;
 	}
-
-	OnSuccess.Broadcast(FBPSteamWorkshopItemDetails(pResult->m_details));
-	return;
+	if (SteamAPI_Init())
+	{
+		SteamUGCDetails_t Details;
+		if (SteamUGC()->GetQueryUGCResult(pResult->m_handle, 0, &Details))
+		{
+			OnSuccess.Broadcast(FBPSteamWorkshopItemDetails(Details));
+			return;
+		}
+	}
 #endif
 
 	OnFailure.Broadcast(FBPSteamWorkshopItemDetails());
