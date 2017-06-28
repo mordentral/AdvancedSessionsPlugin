@@ -67,8 +67,8 @@ void USteamRequestGroupOfficersCallbackProxy::OnRequestGroupOfficerDetails(ClanO
 
 			Officer.bIsOwner = false;
 
-			TSharedPtr<const FUniqueNetId> ValueID(new const FUniqueNetIdSteam(OfficerSteamID));
-			Officer.OfficerUniqueNetID.SetUniqueNetId(ValueID);
+			TSharedPtr<const FUniqueNetId> newValueID(new const FUniqueNetIdSteam(OfficerSteamID));
+			Officer.OfficerUniqueNetID.SetUniqueNetId(newValueID);
 
 			OfficerArray.Add(Officer);
 		}
