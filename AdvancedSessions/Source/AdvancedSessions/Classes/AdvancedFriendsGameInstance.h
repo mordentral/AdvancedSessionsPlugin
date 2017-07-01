@@ -66,7 +66,7 @@ public:
 
 	// After a session invite has been accepted by the local player this event is triggered, call JoinSession on the session result to join it
 	UFUNCTION(BlueprintImplementableEvent, Category = "AdvancedFriends")
-	void OnSessionInviteAccepted(int32 LocalPlayerNum, FBPUniqueNetId PersonInviting, const FBlueprintSessionResult& SessionToJoin);
+	void OnSessionInviteAccepted(int32 LocalPlayerNum, FBPUniqueNetId PersonInvited, const FBlueprintSessionResult& SessionToJoin);
 
 
 	// After a voice status has changed this event is triggered if the bEnableTalkingStatusDelegate property is true

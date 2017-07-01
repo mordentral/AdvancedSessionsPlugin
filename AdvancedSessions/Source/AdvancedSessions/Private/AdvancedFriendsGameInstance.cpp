@@ -292,7 +292,7 @@ void UAdvancedFriendsGameInstance::OnSessionInviteReceivedMaster(const FUniqueNe
 	}
 }
 
-void UAdvancedFriendsGameInstance::OnSessionInviteAcceptedMaster(const bool bWasSuccessful, int32 LocalPlayer, TSharedPtr<const FUniqueNetId> PersonInviting, const FOnlineSessionSearchResult& SessionToJoin)
+void UAdvancedFriendsGameInstance::OnSessionInviteAcceptedMaster(const bool bWasSuccessful, int32 LocalPlayer, TSharedPtr<const FUniqueNetId> PersonInvited, const FOnlineSessionSearchResult& SessionToJoin)
 {
 	if (bWasSuccessful)
 	{
@@ -302,10 +302,10 @@ void UAdvancedFriendsGameInstance::OnSessionInviteAcceptedMaster(const bool bWas
 			FBlueprintSessionResult BluePrintResult;
 			BluePrintResult.OnlineResult = SessionToJoin;
 
-			FBPUniqueNetId PInviting;
-			PInviting.SetUniqueNetId(PersonInviting);
+			FBPUniqueNetId PInvited;
+			PInvited.SetUniqueNetId(PersonInvited);
 
-			OnSessionInviteAccepted(LocalPlayer,PInviting, BluePrintResult);
+			OnSessionInviteAccepted(LocalPlayer,PInvited, BluePrintResult);
 
 			APlayerController* Player = UGameplayStatics::GetPlayerController(GetWorld(), LocalPlayer);
 
@@ -316,7 +316,7 @@ void UAdvancedFriendsGameInstance::OnSessionInviteAcceptedMaster(const bool bWas
 				//Run the Event specific to the actor, if the actor has the interface, otherwise ignore
 				if (Player->GetClass()->ImplementsInterface(UAdvancedFriendsInterface::StaticClass()))
 				{
-					IAdvancedFriendsInterface::Execute_OnSessionInviteAccepted(Player,PInviting, BluePrintResult);
+					IAdvancedFriendsInterface::Execute_OnSessionInviteAccepted(Player,PInvited, BluePrintResult);
 				}
 			}
 			else
