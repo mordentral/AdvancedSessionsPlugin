@@ -423,7 +423,7 @@ void UAdvancedSessionsLibrary::GetNumberOfNetworkPlayers(UObject* WorldContextOb
 	//~~~~~~~~~~~~
 
 	//Get World
-	UWorld* TheWorld = GEngine->GetWorldFromContextObject(WorldContextObject);
+	UWorld* TheWorld = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
 
 	if (!TheWorld)
 	{
