@@ -34,7 +34,7 @@ UFindSessionsCallbackProxyAdvanced* UFindSessionsCallbackProxyAdvanced::FindSess
 
 void UFindSessionsCallbackProxyAdvanced::Activate()
 {
-	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("FindSessions"), GEngine->GetWorldFromContextObject(WorldContextObject));
+	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("FindSessions"), GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull));
 	Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
 
 	if (Helper.IsValid())
@@ -156,7 +156,7 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 
 void UFindSessionsCallbackProxyAdvanced::OnCompleted(bool bSuccess)
 {
-	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("FindSessionsCallback"), GEngine->GetWorldFromContextObject(WorldContextObject));
+	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("FindSessionsCallback"), GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull));
 	Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
 
 	if (!bRunSecondSearch && Helper.IsValid())
