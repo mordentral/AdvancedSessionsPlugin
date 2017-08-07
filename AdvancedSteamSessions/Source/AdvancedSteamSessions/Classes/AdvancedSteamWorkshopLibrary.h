@@ -13,6 +13,8 @@
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable:4996)
+// #TODO check back on this at some point
+#pragma warning(disable:4265) // SteamAPI CCallback< specifically, this warning is off by default but 4.17 turned it on....
 #endif
 
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
@@ -20,7 +22,17 @@
 #pragma push_macro("ARRAY_COUNT")
 #undef ARRAY_COUNT
 
+#if USING_CODE_ANALYSIS
+MSVC_PRAGMA(warning(push))
+MSVC_PRAGMA(warning(disable : ALL_CODE_ANALYSIS_WARNINGS))
+#endif	// USING_CODE_ANALYSIS
+
 #include <steam/steam_api.h>
+
+#if USING_CODE_ANALYSIS
+MSVC_PRAGMA(warning(pop))
+#endif	// USING_CODE_ANALYSIS
+
 
 #pragma pop_macro("ARRAY_COUNT")
 

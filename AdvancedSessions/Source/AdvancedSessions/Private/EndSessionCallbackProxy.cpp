@@ -22,7 +22,7 @@ UEndSessionCallbackProxy* UEndSessionCallbackProxy::EndSession(UObject* WorldCon
 
 void UEndSessionCallbackProxy::Activate()
 {
-	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("EndSession"), GEngine->GetWorldFromContextObject(WorldContextObject));
+	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("EndSession"), GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull));
 	Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
 
 	if (Helper.IsValid())
@@ -56,7 +56,7 @@ void UEndSessionCallbackProxy::Activate()
 
 void UEndSessionCallbackProxy::OnCompleted(FName SessionName, bool bWasSuccessful)
 {
-	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("EndSessionCallback"), GEngine->GetWorldFromContextObject(WorldContextObject));
+	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("EndSessionCallback"), GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull));
 	Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
 
 	if (Helper.IsValid())
