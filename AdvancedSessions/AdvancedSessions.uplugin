@@ -2,8 +2,8 @@
     "FileVersion" : 3,
  
     "FriendlyName" : "Advanced Sessions",
-    "Version" : 1.9,
-    "VersionName": "1.9",
+    "Version" : 4.17,
+    "VersionName": "4.17",
     "Description" : "Adds new blueprint functions to handle more advanced session operations.",
     "Category" : "Advanced Sessions Plugin",
     "CreatedBy" : "Joshua Statzer",
@@ -16,5 +16,15 @@
             "Type" : "RunTime",
 			"LoadingPhase" : "PreDefault"
         } 
-    ]
+    ],
+	"Plugins": [
+		{
+			"Name": "OnlineSubsystem",
+			"Enabled": true
+		},
+		{
+			"Name": "OnlineSubsystemUtils",
+			"Enabled": true
+		}
+	]
 }
