@@ -1,7 +1,9 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 
 #include "SteamRequestGroupOfficersCallbackProxy.h"
+#include "CoreOnline.h"
 #include "OnlineSubSystemHeader.h"
+#include "OnlineSubsystemSteamTypes.h"
 
 //////////////////////////////////////////////////////////////////////////
 // UEndSessionCallbackProxy
