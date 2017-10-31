@@ -225,12 +225,19 @@ void UFindSessionsCallbackProxyAdvanced::OnCompleted(bool bSuccess)
 		}
 	}
 
-	if (bRunSecondSearch && ServerSearchType == EBPServerPresenceSearchType::AllServers)
+	if (Helper.IsValid() && bRunSecondSearch && ServerSearchType == EBPServerPresenceSearchType::AllServers)
 	{
 		bRunSecondSearch = false;
 		bIsOnSecondSearch = true;
 		auto Sessions = Helper.OnlineSub->GetSessionInterface();
 		Sessions->FindSessions(*Helper.UserID, SearchObjectDedicated.ToSharedRef());
+	}
+	else // We lost our player controller
+	{
+		if (bSuccess && SessionSearchResults.Num() > 0)
+			OnSuccess.Broadcast(SessionSearchResults);
+		else
+			OnFailure.Broadcast(SessionSearchResults);
 	}
 }
 
