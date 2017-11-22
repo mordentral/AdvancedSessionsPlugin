@@ -22,6 +22,31 @@ void UAdvancedSessionsLibrary::GetUniqueBuildID(FBlueprintSessionResult SessionR
 	UniqueBuildId = SessionResult.OnlineResult.Session.SessionSettings.BuildUniqueId;
 }
 
+FName UAdvancedSessionsLibrary::GetSessionPropertyKey(const FSessionPropertyKeyPair& SessionProperty)
+{
+	return SessionProperty.Key;
+}
+
+void UAdvancedSessionsLibrary::FindSessionPropertyByName(const TArray<FSessionPropertyKeyPair>& ExtraSettings, FName SettingName, EBlueprintResultSwitch &Result, FSessionPropertyKeyPair& OutProperty)
+{
+	const FSessionPropertyKeyPair* prop = ExtraSettings.FindByPredicate([&](const FSessionPropertyKeyPair& it) {return it.Key == SettingName; });
+	if (prop)
+	{
+		Result = EBlueprintResultSwitch::OnSuccess;
+		OutProperty = *prop;
+		return;
+	}
+
+	Result = EBlueprintResultSwitch::OnFailure;
+}
+
+void UAdvancedSessionsLibrary::FindSessionPropertyIndexByName(const TArray<FSessionPropertyKeyPair>& ExtraSettings, FName SettingName, EBlueprintResultSwitch &Result, int32& OutIndex)
+{
+	OutIndex = ExtraSettings.IndexOfByPredicate([&](const FSessionPropertyKeyPair& it) {return it.Key == SettingName; });
+
+	Result = OutIndex != INDEX_NONE ? EBlueprintResultSwitch::OnSuccess : EBlueprintResultSwitch::OnFailure;
+}	
+
 void UAdvancedSessionsLibrary::AddOrModifyExtraSettings(UPARAM(ref) TArray<FSessionPropertyKeyPair> & SettingsArray, UPARAM(ref) TArray<FSessionPropertyKeyPair> & NewOrChangedSettings, TArray<FSessionPropertyKeyPair> & ModifiedSettingsArray)
 {
 	ModifiedSettingsArray = SettingsArray;
@@ -413,15 +438,6 @@ void UAdvancedSessionsLibrary::GetPlayerName(APlayerController *PlayerController
 
 void UAdvancedSessionsLibrary::GetNumberOfNetworkPlayers(UObject* WorldContextObject, int32 &NumNetPlayers)
 {
-	//Get an actor to GetWorld() from
-	/*TObjectIterator<AActor> Itr;
-	if (!Itr)
-	{
-		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetNumberOfNetworkPlayers Failed to get iterator!"));
-		return;
-	}*/
-	//~~~~~~~~~~~~
-
 	//Get World
 	UWorld* TheWorld = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
 
@@ -430,6 +446,6 @@ void UAdvancedSessionsLibrary::GetNumberOfNetworkPlayers(UObject* WorldContextOb
 		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetNumberOfNetworkPlayers Failed to get World()!"));
 		return;
 	}
-	TArray<class APlayerState*>& PlayerArray = (TheWorld->GetGameState()->PlayerArray);
-	NumNetPlayers = PlayerArray.Num();
+
+	NumNetPlayers = TheWorld->GetGameState()->PlayerArray.Num();
 }
