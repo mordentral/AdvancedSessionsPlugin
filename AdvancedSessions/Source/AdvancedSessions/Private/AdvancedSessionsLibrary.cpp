@@ -427,7 +427,7 @@ void UAdvancedSessionsLibrary::GetPlayerName(APlayerController *PlayerController
 
 	if (APlayerState* PlayerState = (PlayerController != NULL) ? PlayerController->PlayerState : NULL)
 	{
-		PlayerName = PlayerState->PlayerName;
+		PlayerName = PlayerState->GetPlayerName();
 		return;
 	}
 	else
