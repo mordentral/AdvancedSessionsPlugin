@@ -111,7 +111,6 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 			case EBPServerPresenceSearchType::DedicatedServersOnly:
 			{
 				//tem.Set(SEARCH_DEDICATED_ONLY, true, EOnlineComparisonOp::Equals);
-				DedicatedOnly.Set(SEARCH_PRESENCE, false, EOnlineComparisonOp::Equals);
 			}
 			break;
 
@@ -128,7 +127,6 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 					SearchObjectDedicated->bIsLanQuery = bUseLAN;
 
 					FOnlineSearchSettingsEx DedicatedOnly = tem;
-					DedicatedOnly.Set(SEARCH_PRESENCE, false, EOnlineComparisonOp::Equals);
 					tem.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
 
 					//DedicatedOnly.Set(SEARCH_DEDICATED_ONLY, true, EOnlineComparisonOp::Equals);
