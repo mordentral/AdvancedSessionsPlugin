@@ -65,6 +65,7 @@ public:
 	void OnSessionInviteAcceptedMaster(const bool bWasSuccessful, int32 LocalPlayer, TSharedPtr<const FUniqueNetId> PersonInviting, const FOnlineSessionSearchResult& SessionToJoin);
 
 	// After a session invite has been accepted by the local player this event is triggered, call JoinSession on the session result to join it
+	// This function is currently not hooked up in any of Epics default subsystems, it is here for custom subsystems
 	UFUNCTION(BlueprintImplementableEvent, Category = "AdvancedFriends")
 	void OnSessionInviteAccepted(int32 LocalPlayerNum, FBPUniqueNetId PersonInvited, const FBlueprintSessionResult& SessionToJoin);
 
