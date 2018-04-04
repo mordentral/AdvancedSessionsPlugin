@@ -21,7 +21,7 @@ class UGetUserPrivilegeCallbackProxy : public UOnlineBlueprintCallProxyBase
 	UPROPERTY(BlueprintAssignable)
 	FEmptyOnlineDelegate OnFailure;
 
-	// Logs out of the identity interface
+	// Gets the privilage of the user
 	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject"), Category = "Online|AdvancedIdentity")
 	static UGetUserPrivilegeCallbackProxy* GetUserPrivilege(UObject* WorldContextObject, const EBPUserPrivileges & PrivilegeToCheck, const FBPUniqueNetId & PlayerUniqueNetID);
 

@@ -88,6 +88,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedFriends|SteamAPI", meta = (ExpandEnumAsExecs = "Result"))
 	static void GetSteamFriendGamePlayed(const FBPUniqueNetId UniqueNetId, EBlueprintResultSwitch &Result, FString & GameName, int32 & AppID);
 
+	// Get a full list of steam groups
 	UFUNCTION(BlueprintCallable, Category = "Online|SteamAPI|SteamGroups")
 		static void GetSteamGroups(TArray<FBPSteamGroupInfo> & SteamGroups);
 };	
