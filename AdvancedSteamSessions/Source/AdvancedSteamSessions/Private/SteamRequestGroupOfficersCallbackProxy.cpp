@@ -2,8 +2,9 @@
 
 #include "SteamRequestGroupOfficersCallbackProxy.h"
 #include "CoreOnline.h"
+#include "AdvancedSteamFriendsLibrary.h"
 #include "OnlineSubSystemHeader.h"
-#include "OnlineSubsystemSteamTypes.h"
+//#include "OnlineSubsystemSteamTypes.h"
 
 //////////////////////////////////////////////////////////////////////////
 // UEndSessionCallbackProxy
@@ -44,7 +45,7 @@ void USteamRequestGroupOfficersCallbackProxy::Activate()
 void USteamRequestGroupOfficersCallbackProxy::OnRequestGroupOfficerDetails(ClanOfficerListResponse_t *pResult, bool bIOFailure)
 {
 	TArray<FBPSteamGroupOfficer> OfficerArray;
-
+	
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 
 	if (bIOFailure || !pResult || !pResult->m_bSuccess)
@@ -62,7 +63,7 @@ void USteamRequestGroupOfficersCallbackProxy::OnRequestGroupOfficerDetails(ClanO
 
 		Officer.bIsOwner = true;
 
-		TSharedPtr<const FUniqueNetId> ValueID(new const FUniqueNetIdSteam(ClanOwner));
+		TSharedPtr<const FUniqueNetId> ValueID(new const FUniqueNetIdSteam2(ClanOwner));
 		Officer.OfficerUniqueNetID.SetUniqueNetId(ValueID);
 		OfficerArray.Add(Officer);
 
@@ -72,7 +73,7 @@ void USteamRequestGroupOfficersCallbackProxy::OnRequestGroupOfficerDetails(ClanO
 
 			Officer.bIsOwner = false;
 
-			TSharedPtr<const FUniqueNetId> newValueID(new const FUniqueNetIdSteam(OfficerSteamID));
+			TSharedPtr<const FUniqueNetId> newValueID(new const FUniqueNetIdSteam2(OfficerSteamID));
 			Officer.OfficerUniqueNetID.SetUniqueNetId(newValueID);
 
 			OfficerArray.Add(Officer);

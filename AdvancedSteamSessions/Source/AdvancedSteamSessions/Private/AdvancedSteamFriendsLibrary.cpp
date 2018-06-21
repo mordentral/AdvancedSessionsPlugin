@@ -2,45 +2,6 @@
 #include "AdvancedSteamFriendsLibrary.h"
 #include "OnlineSubSystemHeader.h"
 
-// This is taken directly from UE4 - OnlineSubsystemSteamPrivatePCH.h as a fix for the array_count macro
-
-// @todo Steam: Steam headers trigger secure-C-runtime warnings in Visual C++. Rather than mess with _CRT_SECURE_NO_WARNINGS, we'll just
-//	disable the warnings locally. Remove when this is fixed in the SDK
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable:4996)
-// #TODO check back on this at some point
-#pragma warning(disable:4265) // SteamAPI CCallback< specifically, this warning is off by default but 4.17 turned it on....
-#endif
-
-#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
-
-#pragma push_macro("ARRAY_COUNT")
-#undef ARRAY_COUNT
-
-#if USING_CODE_ANALYSIS
-MSVC_PRAGMA(warning(push))
-MSVC_PRAGMA(warning(disable : ALL_CODE_ANALYSIS_WARNINGS))
-#endif	// USING_CODE_ANALYSIS
-
-#include <steam/steam_api.h>
-
-#if USING_CODE_ANALYSIS
-MSVC_PRAGMA(warning(pop))
-#endif	// USING_CODE_ANALYSIS
-
-#include <steam/isteamapps.h>
-#include <steam/isteamapplist.h>
-#include <OnlineSubsystemSteamTypes.h>
-#pragma pop_macro("ARRAY_COUNT")
-
-#endif
-
-// @todo Steam: See above
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif
-
 //General Log
 DEFINE_LOG_CATEGORY(AdvancedSteamFriendsLog);
 
@@ -97,6 +58,7 @@ DEFINE_LOG_CATEGORY(AdvancedSteamFriendsLog);
 
 void UAdvancedSteamFriendsLibrary::GetSteamGroups(TArray<FBPSteamGroupInfo> & SteamGroups)
 {
+	
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 
 	if (SteamAPI_Init())
@@ -112,7 +74,7 @@ void UAdvancedSteamFriendsLibrary::GetSteamGroups(TArray<FBPSteamGroupInfo> & St
 
 			FBPSteamGroupInfo GroupInfo;
 
-			TSharedPtr<const FUniqueNetId> ValueID(new const FUniqueNetIdSteam(SteamGroupID));
+			TSharedPtr<const FUniqueNetId> ValueID(new const FUniqueNetIdSteam2(SteamGroupID));
 			GroupInfo.GroupID.SetUniqueNetId(ValueID);
 			SteamFriends()->GetClanActivityCounts(SteamGroupID, &GroupInfo.numOnline, &GroupInfo.numInGame, &GroupInfo.numChatting);
 			GroupInfo.GroupName = FString(UTF8_TO_TCHAR(SteamFriends()->GetClanName(SteamGroupID)));
@@ -122,6 +84,7 @@ void UAdvancedSteamFriendsLibrary::GetSteamGroups(TArray<FBPSteamGroupInfo> & St
 		}
 	}
 #endif
+
 }
 
 void UAdvancedSteamFriendsLibrary::GetSteamFriendGamePlayed(const FBPUniqueNetId UniqueNetId, EBlueprintResultSwitch &Result, FString & GameName, int32 & AppID)
@@ -209,7 +172,7 @@ FString UAdvancedSteamFriendsLibrary::GetSteamPersonaName(const FBPUniqueNetId U
 FBPUniqueNetId UAdvancedSteamFriendsLibrary::CreateSteamIDFromString(const FString SteamID64)
 {
 	FBPUniqueNetId netId;
-
+	
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 	if (!(SteamID64.Len() > 0))
 	{
@@ -220,7 +183,7 @@ FBPUniqueNetId UAdvancedSteamFriendsLibrary::CreateSteamIDFromString(const FStri
 	if (SteamAPI_Init())
 	{
 		// Already does the conversion
-		TSharedPtr<const FUniqueNetId> ValueID(new const FUniqueNetIdSteam(SteamID64));
+		TSharedPtr<const FUniqueNetId> ValueID(new const FUniqueNetIdSteam2(SteamID64));
 		//FCString::Atoi64(*SteamID64));
 		
 		netId.SetUniqueNetId(ValueID);
