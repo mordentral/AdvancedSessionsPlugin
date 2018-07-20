@@ -7,12 +7,12 @@
 #include "Online.h"
 #include "Engine/LocalPlayer.h"
 #include "OnlineSubsystem.h"
-#include "OnlineFriendsInterface.h"
-#include "OnlineUserInterface.h"
-#include "OnlineMessageInterface.h"
-#include "OnlinePresenceInterface.h"
+#include "Interfaces/OnlineFriendsInterface.h"
+#include "Interfaces/OnlineUserInterface.h"
+#include "Interfaces/OnlineMessageInterface.h"
+#include "Interfaces/OnlinePresenceInterface.h"
 #include "Engine/GameInstance.h"
-#include "OnlineSessionInterface.h"
+#include "Interfaces/OnlineSessionInterface.h"
 
 #include "UObjectIterator.h"
 

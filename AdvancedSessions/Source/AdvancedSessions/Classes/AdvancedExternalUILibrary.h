@@ -13,7 +13,7 @@
 //#include "OnlineMessageInterface.h"
 //#include "OnlinePresenceInterface.h"
 //#include "Engine/GameInstance.h"
-#include "OnlineSessionInterface.h"
+#include "Interfaces/OnlineSessionInterface.h"
 
 //#include "UObjectIterator.h"
 
