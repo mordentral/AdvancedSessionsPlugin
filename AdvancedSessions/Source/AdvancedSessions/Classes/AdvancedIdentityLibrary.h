@@ -12,7 +12,7 @@
 #include "Engine/GameInstance.h"
 #include "Engine/LocalPlayer.h"
 
-#include "UObjectIterator.h"
+#include "UObject/UObjectIterator.h"
 
 #include "AdvancedIdentityLibrary.generated.h"
 

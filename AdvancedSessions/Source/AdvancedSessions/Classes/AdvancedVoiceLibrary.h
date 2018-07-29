@@ -14,7 +14,7 @@
 #include "Engine/GameInstance.h"
 //#include "OnlineSessionInterface.h"
 
-#include "UObjectIterator.h"
+#include "UObject/UObjectIterator.h"
 
 #include "AdvancedVoiceLibrary.generated.h"
 

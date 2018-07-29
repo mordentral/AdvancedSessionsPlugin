@@ -14,7 +14,7 @@
 #include "Engine/GameInstance.h"
 #include "Interfaces/OnlineSessionInterface.h"
 
-#include "UObjectIterator.h"
+#include "UObject/UObjectIterator.h"
 
 #include "AdvancedFriendsLibrary.generated.h"
 
