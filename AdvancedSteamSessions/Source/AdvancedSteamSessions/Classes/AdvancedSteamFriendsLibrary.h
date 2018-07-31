@@ -12,6 +12,7 @@
 #include "Interfaces/OnlinePresenceInterface.h"
 #include "Engine/GameInstance.h"
 #include "Interfaces/OnlineSessionInterface.h"
+#include "BlueprintDataDefinitions.h"
 #include "UObject/UObjectIterator.h"
 
 // This is taken directly from UE4 - OnlineSubsystemSteamPrivatePCH.h as a fix for the array_count macro

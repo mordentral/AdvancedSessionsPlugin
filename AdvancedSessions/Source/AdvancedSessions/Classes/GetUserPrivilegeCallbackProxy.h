@@ -3,7 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "BlueprintDataDefinitions.h"
-#include "OnlineIdentityInterface.h"
+#include "Interfaces/OnlineIdentityInterface.h"
 #include "GetUserPrivilegeCallbackProxy.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FBlueprintGetUserPrivilegeDelegate,/* const &FBPUniqueNetId, PlayerID,*/ EBPUserPrivileges, QueriedPrivilege, bool, HadPrivilege);

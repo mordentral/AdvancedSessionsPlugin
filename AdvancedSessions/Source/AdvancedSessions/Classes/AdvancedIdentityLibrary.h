@@ -6,9 +6,9 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Online.h"
 #include "OnlineSubsystem.h"
-#include "OnlineIdentityInterface.h"
-#include "OnlineUserInterface.h"
-#include "OnlinePresenceInterface.h"
+#include "Interfaces/OnlineIdentityInterface.h"
+#include "Interfaces/OnlineUserInterface.h"
+#include "Interfaces/OnlinePresenceInterface.h"
 #include "Engine/GameInstance.h"
 #include "Engine/LocalPlayer.h"
 
