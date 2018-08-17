@@ -87,7 +87,7 @@ void UAdvancedSteamFriendsLibrary::GetSteamGroups(TArray<FBPSteamGroupInfo> & St
 
 }
 
-void UAdvancedSteamFriendsLibrary::GetSteamFriendGamePlayed(const FBPUniqueNetId UniqueNetId, EBlueprintResultSwitch &Result, FString & GameName, int32 & AppID)
+void UAdvancedSteamFriendsLibrary::GetSteamFriendGamePlayed(const FBPUniqueNetId UniqueNetId, EBlueprintResultSwitch &Result/*, FString & GameName*/, int32 & AppID)
 {
 
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
@@ -109,13 +109,15 @@ void UAdvancedSteamFriendsLibrary::GetSteamFriendGamePlayed(const FBPUniqueNetId
 		{
 			AppID = GameInfo.m_gameID.AppID();
 
-			char NameBuffer[512];
+			// Forgot this test and left it in, it is incorrect, you would need restricted access
+			// And it would only find games in the local library anyway
+			/*char NameBuffer[512];
 			int Len = SteamAppList()->GetAppName(GameInfo.m_gameID.AppID(), NameBuffer, 512);
 
 			if (Len != -1) // Invalid
 			{
 				GameName = FString(UTF8_TO_TCHAR(NameBuffer));
-			}
+			}*/
 
 			Result = EBlueprintResultSwitch::OnSuccess;
 			return;
