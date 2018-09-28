@@ -49,10 +49,19 @@ void USteamWSRequestUGCDetailsCallbackProxy::Activate()
 void USteamWSRequestUGCDetailsCallbackProxy::OnUGCRequestUGCDetails(SteamUGCQueryCompleted_t *pResult, bool bIOFailure)
 {
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+	
+	FOnlineSubsystemSteam* SteamSubsystem = (FOnlineSubsystemSteam*)(IOnlineSubsystem::Get(STEAM_SUBSYSTEM));
 
 	if (bIOFailure || !pResult || pResult->m_unNumResultsReturned <= 0)
 	{
-		OnFailure.Broadcast(FBPSteamWorkshopItemDetails());
+		if (SteamSubsystem != nullptr)
+		{
+			SteamSubsystem->ExecuteNextTick([this]()
+			{
+				OnFailure.Broadcast(FBPSteamWorkshopItemDetails());
+			});
+		}
+		//OnFailure.Broadcast(FBPSteamWorkshopItemDetails());
 		return;
 	}
 	if (SteamAPI_Init())
@@ -60,12 +69,31 @@ void USteamWSRequestUGCDetailsCallbackProxy::OnUGCRequestUGCDetails(SteamUGCQuer
 		SteamUGCDetails_t Details;
 		if (SteamUGC()->GetQueryUGCResult(pResult->m_handle, 0, &Details))
 		{
-			OnSuccess.Broadcast(FBPSteamWorkshopItemDetails(Details));
+			if (SteamSubsystem != nullptr)
+			{
+				SteamSubsystem->ExecuteNextTick([Details, this]()
+				{
+					OnSuccess.Broadcast(FBPSteamWorkshopItemDetails(Details));
+				});
+			}
+
+			//OnSuccess.Broadcast(FBPSteamWorkshopItemDetails(Details));
 			return;
+		}
+	}
+	else
+	{
+		if (SteamSubsystem != nullptr)
+		{
+			SteamSubsystem->ExecuteNextTick([this]()
+			{
+				OnFailure.Broadcast(FBPSteamWorkshopItemDetails());
+			});
 		}
 	}
 #endif
 
-	OnFailure.Broadcast(FBPSteamWorkshopItemDetails());
+	// Not needed, should never hit here
+	//OnFailure.Broadcast(FBPSteamWorkshopItemDetails());
 }
 
