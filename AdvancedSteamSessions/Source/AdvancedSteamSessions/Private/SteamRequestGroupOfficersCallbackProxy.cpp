@@ -47,10 +47,20 @@ void USteamRequestGroupOfficersCallbackProxy::OnRequestGroupOfficerDetails(ClanO
 	TArray<FBPSteamGroupOfficer> OfficerArray;
 	
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+	
+	FOnlineSubsystemSteam* SteamSubsystem = (FOnlineSubsystemSteam*)(IOnlineSubsystem::Get(STEAM_SUBSYSTEM));
 
 	if (bIOFailure || !pResult || !pResult->m_bSuccess)
 	{
-		OnFailure.Broadcast(OfficerArray);
+		if (SteamSubsystem != nullptr)
+		{
+			SteamSubsystem->ExecuteNextTick([this]()
+			{
+				TArray<FBPSteamGroupOfficer> FailureArray;
+				OnFailure.Broadcast(FailureArray);
+			});
+		}
+		//OnFailure.Broadcast(OfficerArray);
 		return;
 	}
 
@@ -79,11 +89,31 @@ void USteamRequestGroupOfficersCallbackProxy::OnRequestGroupOfficerDetails(ClanO
 			OfficerArray.Add(Officer);
 		}
 
-		OnSuccess.Broadcast(OfficerArray);
+		if (SteamSubsystem != nullptr)
+		{
+			SteamSubsystem->ExecuteNextTick([OfficerArray, this]()
+			{
+				OnSuccess.Broadcast(OfficerArray);
+			});
+		}
+
+		//OnSuccess.Broadcast(OfficerArray);
 		return;
+	}
+	else
+	{
+		if (SteamSubsystem != nullptr)
+		{
+			SteamSubsystem->ExecuteNextTick([this]()
+			{
+				TArray<FBPSteamGroupOfficer> FailureArray;
+				OnFailure.Broadcast(FailureArray);
+			});
+		}
 	}
 #endif
 
-	OnFailure.Broadcast(OfficerArray);
+	// Should never hit this anyway
+	//OnFailure.Broadcast(OfficerArray);
 }
 
