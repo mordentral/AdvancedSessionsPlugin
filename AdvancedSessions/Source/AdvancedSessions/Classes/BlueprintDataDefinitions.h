@@ -11,7 +11,7 @@
 #include "OnlineSubsystemImpl.h"
 #include "OnlineSubsystemUtils.h"
 #include "OnlineSubsystemUtilsModule.h"
-#include "Gameframework/PlayerController.h"
+#include "GameFramework/PlayerController.h"
 #include "Modules/ModuleManager.h"
 #include "OnlineSubsystemUtilsClasses.h"
 #include "BlueprintDataDefinitions.generated.h"	

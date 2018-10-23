@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "AdvancedFriendsGameInstance.h"
 #include "Kismet/GameplayStatics.h"
-#include "Gameframework/PlayerController.h"
+#include "GameFramework/PlayerController.h"
 
 //General Log
 DEFINE_LOG_CATEGORY(AdvancedFriendsInterfaceLog);
