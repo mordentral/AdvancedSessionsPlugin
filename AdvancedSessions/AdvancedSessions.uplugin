@@ -2,8 +2,8 @@
     "FileVersion" : 3,
  
     "FriendlyName" : "Advanced Sessions",
-    "Version" : 4.20,
-    "VersionName": "4.20",
+    "Version" : 4.21,
+    "VersionName": "4.21",
     "Description" : "Adds new blueprint functions to handle more advanced session operations.",
     "Category" : "Advanced Sessions Plugin",
     "CreatedBy" : "Joshua Statzer",

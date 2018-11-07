@@ -205,7 +205,16 @@ struct FBPSteamWorkshopItemDetails
 public:
 	FBPSteamWorkshopItemDetails()
 	{
-
+		ResultOfRequest = FBPSteamResult::k_EResultOK;
+		FileType = FBPWorkshopFileType::k_EWorkshopFileTypeMax;
+		CreatorAppID = 0;
+		ConsumerAppID = 0;
+		VotesUp = 0;
+		VotesDown = 0;
+		CalculatedScore = 0.f;
+		bBanned = false;
+		bAcceptedForUse = false;
+		bTagsTruncated = false;
 	}
 
 	FBPSteamWorkshopItemDetails(SteamUGCDetails_t &hUGCDetails)
