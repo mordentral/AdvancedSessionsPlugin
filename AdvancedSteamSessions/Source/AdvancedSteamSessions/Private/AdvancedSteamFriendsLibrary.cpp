@@ -196,6 +196,21 @@ FBPUniqueNetId UAdvancedSteamFriendsLibrary::CreateSteamIDFromString(const FStri
 	return netId;
 }
 
+FBPUniqueNetId UAdvancedSteamFriendsLibrary::GetLocalSteamIDFromSteam()
+{
+	FBPUniqueNetId netId;
+
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+	if (SteamAPI_Init())
+	{
+		FUniqueNetIdSteam2 SteamID(SteamUser()->GetSteamID());
+		netId.SetUniqueNetId(&SteamID);
+	}
+#endif
+
+	return netId;
+}
+
 bool UAdvancedSteamFriendsLibrary::RequestSteamFriendInfo(const FBPUniqueNetId UniqueNetId, bool bRequireNameOnly)
 {
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX

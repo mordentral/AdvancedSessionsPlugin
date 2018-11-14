@@ -197,7 +197,8 @@ public:
 	/** Needed for TMap::GetTypeHash() */
 	friend uint32 GetTypeHash(const FUniqueNetIdSteam2& A)
 	{
-		return (uint32)(A.UniqueNetId) + ((uint32)((A.UniqueNetId) >> 32) * 23);
+		return GetTypeHash(A.UniqueNetId);
+		//return (uint32)(A.UniqueNetId) + ((uint32)((A.UniqueNetId) >> 32) * 23);
 	}
 
 	/** Convenience cast to CSteamID */
@@ -295,6 +296,10 @@ public:
 	// Creates a unique steam id directly from a string holding a uint64 value, useful for testing
 	UFUNCTION(BlueprintPure, Category = "Online|AdvancedFriends|SteamAPI")
 	static FBPUniqueNetId CreateSteamIDFromString(const FString SteamID64);
+
+	// Retreives the local steam ID from steam
+	UFUNCTION(BlueprintPure, Category = "Online|AdvancedFriends|SteamAPI")
+		static FBPUniqueNetId GetLocalSteamIDFromSteam();
 
 	/* Gets the current game played by a friend - AppID is int32 even though steam ids are uint32, can't be helped in blueprint currently
 	*  can use the AppID with the WebAPI GetAppList request.
