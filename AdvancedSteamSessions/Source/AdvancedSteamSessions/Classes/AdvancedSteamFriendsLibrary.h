@@ -247,6 +247,41 @@ enum class SteamAvatarSize : uint8
 	SteamAvatar_Large = 3
 };
 
+UENUM(Blueprintable)
+enum class ESteamUserOverlayType : uint8
+{
+	/*Opens the overlay web browser to the specified user or groups profile.*/
+	steamid,
+	/*Opens a chat window to the specified user, or joins the group chat.*/
+	chat,
+	/*Opens a window to a Steam Trading session that was started with the ISteamEconomy / StartTrade Web API.*/
+	jointrade,
+	/*Opens the overlay web browser to the specified user's stats.*/
+	stats,
+	/*Opens the overlay web browser to the specified user's achievements.*/
+	achievements,
+	/*Opens the overlay in minimal mode prompting the user to add the target user as a friend.*/
+	friendadd,
+	/*Opens the overlay in minimal mode prompting the user to remove the target friend.*/
+	friendremove,
+	/*Opens the overlay in minimal mode prompting the user to accept an incoming friend invite.*/
+	friendrequestaccept,
+	/*Opens the overlay in minimal mode prompting the user to ignore an incoming friend invite.*/
+	friendrequestignore
+};
+
+static FString EnumToString(const FString& enumName, uint8 value)
+{
+	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, *enumName, true);
+
+	if (!EnumPtr)
+		return FString();
+
+	FString EnumName = EnumPtr->GetNameStringByIndex(value);
+	return EnumName;
+}
+
+
 USTRUCT(BlueprintType, Category = "Online|SteamAPI|SteamGroups")
 struct FBPSteamGroupInfo
 {
@@ -284,6 +319,10 @@ public:
 	// Preloads the avatar and name of a steam friend, return whether it is already available or not, STEAM ONLY, Takes time to actually load everything after this is called.
 	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedFriends|SteamAPI")
 	static bool RequestSteamFriendInfo(const FBPUniqueNetId UniqueNetId, bool bRequireNameOnly = false);
+
+	// Opens the steam overlay to go to the specified user dialog
+	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedFriends|SteamAPI")
+		static bool OpenSteamUserOverlay(const FBPUniqueNetId UniqueNetId, ESteamUserOverlayType DialogType);
 	
 	// Gets the level of a friends steam account, STEAM ONLY, Returns -1 if the steam level is not known, might need RequestSteamFriendInfo called first.
 	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedFriends|SteamAPI")
