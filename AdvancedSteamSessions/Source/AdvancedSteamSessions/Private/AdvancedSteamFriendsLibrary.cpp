@@ -203,8 +203,8 @@ FBPUniqueNetId UAdvancedSteamFriendsLibrary::GetLocalSteamIDFromSteam()
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 	if (SteamAPI_Init())
 	{
-		FUniqueNetIdSteam2 SteamID(SteamUser()->GetSteamID());
-		netId.SetUniqueNetId(&SteamID);
+		TSharedPtr<const FUniqueNetId> SteamID(new const FUniqueNetIdSteam2(SteamUser()->GetSteamID()));
+		netId.SetUniqueNetId(SteamID);
 	}
 #endif
 
