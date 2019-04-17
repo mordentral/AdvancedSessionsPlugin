@@ -12,6 +12,19 @@ bool UAdvancedSessionsLibrary::IsValidSession(const FBlueprintSessionResult & Se
 	return SessionResult.OnlineResult.IsValid();
 }
 
+void UAdvancedSessionsLibrary::GetSessionID_AsString(const FBlueprintSessionResult & SessionResult, FString& SessionID)
+{
+	const TSharedPtr<class FOnlineSessionInfo> SessionInfo = SessionResult.OnlineResult.Session.SessionInfo;
+	if (SessionInfo.IsValid() && SessionInfo->IsValid() && SessionInfo->GetSessionId().IsValid())
+	{
+		SessionID = SessionInfo->GetSessionId().ToString();
+		return;
+	}
+
+	// Zero the string out if we didn't have a valid one, in case this is called in c++
+	SessionID.Empty();
+}
+
 void UAdvancedSessionsLibrary::GetCurrentUniqueBuildID(int32 &UniqueBuildId)
 {
 	UniqueBuildId = GetBuildUniqueId();
