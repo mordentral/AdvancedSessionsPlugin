@@ -25,6 +25,32 @@ void UAdvancedSessionsLibrary::GetSessionID_AsString(const FBlueprintSessionResu
 	SessionID.Empty();
 }
 
+void UAdvancedSessionsLibrary::GetCurrentSessionID_AsString(FString& SessionID)
+{
+	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface();
+
+	if (!SessionInterface.IsValid()) 
+	{
+		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetCurrentSessionID_AsString couldn't get the session interface!"));
+		SessionID.Empty();
+		return;
+	}
+
+	const FNamedOnlineSession* Session = SessionInterface->GetNamedSession(NAME_GameSession);
+	if (Session != nullptr) 
+	{
+		const TSharedPtr<class FOnlineSessionInfo> SessionInfo = Session->SessionInfo;
+		if (SessionInfo.IsValid() && SessionInfo->IsValid() && SessionInfo->GetSessionId().IsValid()) 
+		{
+			SessionID = SessionInfo->GetSessionId().ToString();
+			return;
+		}
+	}
+
+	// Zero the string out if we didn't have a valid one, in case this is called in c++
+	SessionID.Empty();
+}
+
 void UAdvancedSessionsLibrary::GetCurrentUniqueBuildID(int32 &UniqueBuildId)
 {
 	UniqueBuildId = GetBuildUniqueId();
