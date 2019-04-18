@@ -136,7 +136,7 @@ void UAdvancedSessionsLibrary::GetSessionState(EBPOnlineSessionState &SessionSta
 		return;
 	}
 
-	SessionState = ((EBPOnlineSessionState)SessionInterface->GetSessionState(GameSessionName));
+	SessionState = ((EBPOnlineSessionState)SessionInterface->GetSessionState(NAME_GameSession));
 }
 
 void UAdvancedSessionsLibrary::GetSessionSettings(int32 &NumConnections, int32 &NumPrivateConnections, bool &bIsLAN, bool &bIsDedicated, bool &bAllowInvites, bool &bAllowJoinInProgress, bool &bIsAnticheatEnabled, int32 &BuildUniqueID, TArray<FSessionPropertyKeyPair> &ExtraSettings, EBlueprintResultSwitch &Result)
@@ -150,7 +150,7 @@ void UAdvancedSessionsLibrary::GetSessionSettings(int32 &NumConnections, int32 &
 		return;
 	}
 
-	FOnlineSessionSettings* settings = SessionInterface->GetSessionSettings(GameSessionName);
+	FOnlineSessionSettings* settings = SessionInterface->GetSessionSettings(NAME_GameSession);
 	if (!settings)
 	{
 		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetSessionSettings couldn't get the session settings!"));
@@ -190,7 +190,7 @@ void UAdvancedSessionsLibrary::IsPlayerInSession(const FBPUniqueNetId &PlayerToC
 		return;
 	}
 
-	bIsInSession = SessionInterface->IsPlayerInSession(GameSessionName, *PlayerToCheck.GetUniqueNetId());
+	bIsInSession = SessionInterface->IsPlayerInSession(NAME_GameSession, *PlayerToCheck.GetUniqueNetId());
 }
 
 FSessionsSearchSetting UAdvancedSessionsLibrary::MakeLiteralSessionSearchProperty(FSessionPropertyKeyPair SessionSearchProperty, EOnlineComparisonOpRedux ComparisonOp)

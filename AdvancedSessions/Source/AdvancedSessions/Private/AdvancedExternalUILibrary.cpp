@@ -124,7 +124,7 @@ void UAdvancedExternalUILibrary::ShowInviteUI(APlayerController *PlayerControlle
 		return;
 	}
 
-	ExternalUIInterface->ShowInviteUI(Player->GetControllerId(), GameSessionName);
+	ExternalUIInterface->ShowInviteUI(Player->GetControllerId(), NAME_GameSession);
 	Result = EBlueprintResultSwitch::OnSuccess;
 }
 

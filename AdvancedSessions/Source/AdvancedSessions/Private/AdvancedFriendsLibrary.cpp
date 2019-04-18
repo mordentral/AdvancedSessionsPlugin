@@ -50,7 +50,7 @@ void UAdvancedFriendsLibrary::SendSessionInviteToFriends(APlayerController *Play
 		List.Add(val);
 	}
 
-	if (SessionInterface->SendSessionInviteToFriends(Player->GetControllerId(), GameSessionName, List))
+	if (SessionInterface->SendSessionInviteToFriends(Player->GetControllerId(), NAME_GameSession, List))
 	{
 		Result = EBlueprintResultSwitch::OnSuccess;
 		return;
@@ -94,7 +94,7 @@ void UAdvancedFriendsLibrary::SendSessionInviteToFriend(APlayerController *Playe
 		return;
 	}
 
-	if (SessionInterface->SendSessionInviteToFriend(Player->GetControllerId(), GameSessionName, *FriendUniqueNetId.GetUniqueNetId()))
+	if (SessionInterface->SendSessionInviteToFriend(Player->GetControllerId(), NAME_GameSession, *FriendUniqueNetId.GetUniqueNetId()))
 	{
 		Result = EBlueprintResultSwitch::OnSuccess;
 		return;

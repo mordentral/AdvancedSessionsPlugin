@@ -42,8 +42,8 @@ void UUpdateSessionCallbackProxyAdvanced::Activate()
 		}
 
 		// This gets the actual session itself
-		//FNamedOnlineSession * curSession = Sessions->GetNamedSession(GameSessionName);
-		FOnlineSessionSettings* Settings = Sessions->GetSessionSettings(GameSessionName);
+		//FNamedOnlineSession * curSession = Sessions->GetNamedSession(NAME_GameSession);
+		FOnlineSessionSettings* Settings = Sessions->GetSessionSettings(NAME_GameSession);
 
 		if (!Settings)
 		{
@@ -85,7 +85,7 @@ void UUpdateSessionCallbackProxyAdvanced::Activate()
 			}
 		}
 
-		Sessions->UpdateSession(GameSessionName, *Settings, bRefreshOnlineData);
+		Sessions->UpdateSession(NAME_GameSession, *Settings, bRefreshOnlineData);
 
 		// OnUpdateCompleted will get called, nothing more to do now
 		return;

@@ -83,7 +83,7 @@ void UCreateSessionCallbackProxyAdvanced::Activate()
 			{
 				if (PlayerControllerWeakPtr.IsValid() && Helper.UserID.IsValid())
 				{
-					Sessions->CreateSession(*Helper.UserID, GameSessionName, Settings);
+					Sessions->CreateSession(*Helper.UserID, NAME_GameSession, Settings);
 				}
 				else
 				{
@@ -95,7 +95,7 @@ void UCreateSessionCallbackProxyAdvanced::Activate()
 				}
 			}
 			else
-				Sessions->CreateSession(0, GameSessionName, Settings);
+				Sessions->CreateSession(0, NAME_GameSession, Settings);
 
 			// OnCreateCompleted will get called, nothing more to do now
 			return;
@@ -125,7 +125,7 @@ void UCreateSessionCallbackProxyAdvanced::OnCreateCompleted(FName SessionName, b
 			if (bWasSuccessful)
 			{
 				StartCompleteDelegateHandle = Sessions->AddOnStartSessionCompleteDelegate_Handle(StartCompleteDelegate);
-				Sessions->StartSession(GameSessionName);
+				Sessions->StartSession(NAME_GameSession);
 
 				// OnStartCompleted will get called, nothing more to do now
 				return;
