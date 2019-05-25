@@ -2,6 +2,7 @@
 
 #include "SteamWSRequestUGCDetailsCallbackProxy.h"
 #include "OnlineSubSystemHeader.h"
+#include "steam/isteamugc.h"
 
 //////////////////////////////////////////////////////////////////////////
 // UEndSessionCallbackProxy

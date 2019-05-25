@@ -6,6 +6,8 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Online.h"
 #include "OnlineSubsystem.h"
+#include "steam/isteamugc.h"
+#include "steam/isteamremotestorage.h"
 #include "Interfaces/OnlineSessionInterface.h"
 
 // @todo Steam: Steam headers trigger secure-C-runtime warnings in Visual C++. Rather than mess with _CRT_SECURE_NO_WARNINGS, we'll just

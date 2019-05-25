@@ -4,6 +4,7 @@
 #include "UObject/CoreOnline.h"
 #include "AdvancedSteamFriendsLibrary.h"
 #include "OnlineSubSystemHeader.h"
+#include "steam/isteamfriends.h"
 //#include "OnlineSubsystemSteamTypes.h"
 
 //////////////////////////////////////////////////////////////////////////
