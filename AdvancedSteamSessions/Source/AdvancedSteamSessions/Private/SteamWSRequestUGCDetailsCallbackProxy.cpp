@@ -2,7 +2,9 @@
 
 #include "SteamWSRequestUGCDetailsCallbackProxy.h"
 #include "OnlineSubSystemHeader.h"
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 #include "steam/isteamugc.h"
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 // UEndSessionCallbackProxy
@@ -47,10 +49,9 @@ void USteamWSRequestUGCDetailsCallbackProxy::Activate()
 	OnFailure.Broadcast(FBPSteamWorkshopItemDetails());
 }
 
-void USteamWSRequestUGCDetailsCallbackProxy::OnUGCRequestUGCDetails(SteamUGCQueryCompleted_t *pResult, bool bIOFailure)
-{
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
-	
+void USteamWSRequestUGCDetailsCallbackProxy::OnUGCRequestUGCDetails(SteamUGCQueryCompleted_t *pResult, bool bIOFailure)
+{	
 	FOnlineSubsystemSteam* SteamSubsystem = (FOnlineSubsystemSteam*)(IOnlineSubsystem::Get(STEAM_SUBSYSTEM));
 
 	if (bIOFailure || !pResult || pResult->m_unNumResultsReturned <= 0)
@@ -92,9 +93,9 @@ void USteamWSRequestUGCDetailsCallbackProxy::OnUGCRequestUGCDetails(SteamUGCQuer
 			});
 		}
 	}
-#endif
 
 	// Not needed, should never hit here
 	//OnFailure.Broadcast(FBPSteamWorkshopItemDetails());
 }
+#endif
 

@@ -4,7 +4,9 @@
 #include "UObject/CoreOnline.h"
 #include "AdvancedSteamFriendsLibrary.h"
 #include "OnlineSubSystemHeader.h"
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 #include "steam/isteamfriends.h"
+#endif
 //#include "OnlineSubsystemSteamTypes.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -43,11 +45,10 @@ void USteamRequestGroupOfficersCallbackProxy::Activate()
 	OnFailure.Broadcast(EmptyArray);
 }
 
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 void USteamRequestGroupOfficersCallbackProxy::OnRequestGroupOfficerDetails(ClanOfficerListResponse_t *pResult, bool bIOFailure)
 {
 	TArray<FBPSteamGroupOfficer> OfficerArray;
-	
-#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 	
 	FOnlineSubsystemSteam* SteamSubsystem = (FOnlineSubsystemSteam*)(IOnlineSubsystem::Get(STEAM_SUBSYSTEM));
 
@@ -112,9 +113,9 @@ void USteamRequestGroupOfficersCallbackProxy::OnRequestGroupOfficerDetails(ClanO
 			});
 		}
 	}
-#endif
 
 	// Should never hit this anyway
 	//OnFailure.Broadcast(OfficerArray);
 }
+#endif
 

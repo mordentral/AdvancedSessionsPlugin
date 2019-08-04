@@ -6,8 +6,10 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Online.h"
 #include "OnlineSubsystem.h"
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 #include "steam/isteamugc.h"
 #include "steam/isteamremotestorage.h"
+#endif
 #include "Interfaces/OnlineSessionInterface.h"
 
 // @todo Steam: Steam headers trigger secure-C-runtime warnings in Visual C++. Rather than mess with _CRT_SECURE_NO_WARNINGS, we'll just
@@ -205,6 +207,7 @@ struct FBPSteamWorkshopItemDetails
 	GENERATED_USTRUCT_BODY()
 
 public:
+
 	FBPSteamWorkshopItemDetails()
 	{
 		ResultOfRequest = FBPSteamResult::k_EResultOK;
@@ -219,6 +222,7 @@ public:
 		bTagsTruncated = false;
 	}
 
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 	FBPSteamWorkshopItemDetails(SteamUGCDetails_t &hUGCDetails)
 	{
 		ResultOfRequest = (FBPSteamResult)hUGCDetails.m_eResult;
@@ -256,6 +260,7 @@ public:
 
 		CreatorSteamID = FString::Printf(TEXT("%llu"), hUGCDetails.m_ulSteamIDOwner);
 	}
+#endif
 
 	// Result of obtaining the details
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Online|AdvancedSteamWorkshop")
