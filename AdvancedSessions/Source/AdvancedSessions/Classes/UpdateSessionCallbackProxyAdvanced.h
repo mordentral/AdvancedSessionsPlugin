@@ -2,6 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine/Engine.h"
 #include "BlueprintDataDefinitions.h"
 #include "UpdateSessionCallbackProxyAdvanced.generated.h"
 
