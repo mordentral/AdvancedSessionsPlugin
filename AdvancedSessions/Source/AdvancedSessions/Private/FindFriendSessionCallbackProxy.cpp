@@ -41,7 +41,7 @@ void UFindFriendSessionCallbackProxy::Activate()
 		return;
 	}
 
-	IOnlineSessionPtr Sessions = Online::GetSessionInterface();
+	IOnlineSessionPtr Sessions = Online::GetSessionInterface(GetWorld());
 
 	if (Sessions.IsValid())
 	{	
@@ -71,7 +71,7 @@ void UFindFriendSessionCallbackProxy::Activate()
 
 void UFindFriendSessionCallbackProxy::OnFindFriendSessionCompleted(int32 LocalPlayer, bool bWasSuccessful, const TArray<FOnlineSessionSearchResult>& SessionInfo)
 {
-	IOnlineSessionPtr Sessions = Online::GetSessionInterface();
+	IOnlineSessionPtr Sessions = Online::GetSessionInterface(GetWorld());
 
 	if (Sessions.IsValid())
 		Sessions->ClearOnFindFriendSessionCompleteDelegate_Handle(LocalPlayer, FindFriendSessionCompleteDelegateHandle);

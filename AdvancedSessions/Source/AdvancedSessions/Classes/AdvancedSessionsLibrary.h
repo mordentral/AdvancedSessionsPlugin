@@ -39,16 +39,16 @@ public:
 		static void GetExtraSettings(FBlueprintSessionResult SessionResult, TArray<FSessionPropertyKeyPair> & ExtraSettings);
 
 		// Get the current session state
-		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions|SessionInfo")
-		static void GetSessionState(EBPOnlineSessionState &SessionState);
+		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions|SessionInfo", meta = (WorldContext = "WorldContextObject"))
+		static void GetSessionState(UObject* WorldContextObject, EBPOnlineSessionState &SessionState);
 
 		// Get the current session settings
-		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions|SessionInfo", meta = (ExpandEnumAsExecs = "Result"))
-		static void GetSessionSettings(int32 &NumConnections, int32 &NumPrivateConnections, bool &bIsLAN, bool &bIsDedicated, bool &bAllowInvites, bool &bAllowJoinInProgress, bool &bIsAnticheatEnabled, int32 &BuildUniqueID, TArray<FSessionPropertyKeyPair> &ExtraSettings, EBlueprintResultSwitch &Result);
+		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions|SessionInfo", meta = (ExpandEnumAsExecs = "Result", WorldContext = "WorldContextObject"))
+		static void GetSessionSettings(UObject* WorldContextObject, int32 &NumConnections, int32 &NumPrivateConnections, bool &bIsLAN, bool &bIsDedicated, bool &bAllowInvites, bool &bAllowJoinInProgress, bool &bIsAnticheatEnabled, int32 &BuildUniqueID, TArray<FSessionPropertyKeyPair> &ExtraSettings, EBlueprintResultSwitch &Result);
 
 		// Check if someone is in the current session
-		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions|SessionInfo")
-		static void IsPlayerInSession(const FBPUniqueNetId &PlayerToCheck, bool &bIsInSession);
+		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions|SessionInfo", meta = (WorldContext = "WorldContextObject"))
+		static void IsPlayerInSession(UObject* WorldContextObject, const FBPUniqueNetId &PlayerToCheck, bool &bIsInSession);
 		
 		// Make a literal session search parameter
 		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|SessionInfo|Literals")
@@ -66,8 +66,8 @@ public:
 		static void GetSessionID_AsString(const FBlueprintSessionResult & SessionResult, FString& SessionID);
 
 		// Get a string copy of the current session ID
-		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|SessionInfo")
-		static void GetCurrentSessionID_AsString(FString& SessionID);
+		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|SessionInfo", meta = (WorldContext = "WorldContextObject"))
+		static void GetCurrentSessionID_AsString(UObject* WorldContextObject, FString& SessionID);
 
 		// Get the Unique Current Build ID
 		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|SessionInfo")
