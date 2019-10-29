@@ -30,7 +30,7 @@ UUpdateSessionCallbackProxyAdvanced* UUpdateSessionCallbackProxyAdvanced::Update
 void UUpdateSessionCallbackProxyAdvanced::Activate()
 {
 
-	IOnlineSessionPtr Sessions = Online::GetSessionInterface();
+	IOnlineSessionPtr Sessions = Online::GetSessionInterface(GetWorld());
 
 	if (Sessions.IsValid())
 	{
@@ -101,7 +101,7 @@ void UUpdateSessionCallbackProxyAdvanced::Activate()
 
 void UUpdateSessionCallbackProxyAdvanced::OnUpdateCompleted(FName SessionName, bool bWasSuccessful)
 {
-	IOnlineSessionPtr Sessions = Online::GetSessionInterface();
+	IOnlineSessionPtr Sessions = Online::GetSessionInterface(GetWorld());
 	if (Sessions.IsValid())
 	{
 		Sessions->ClearOnUpdateSessionCompleteDelegate_Handle(OnUpdateSessionCompleteDelegateHandle);
