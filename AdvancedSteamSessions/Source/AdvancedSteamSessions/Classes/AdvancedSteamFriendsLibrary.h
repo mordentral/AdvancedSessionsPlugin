@@ -242,6 +242,7 @@ DECLARE_LOG_CATEGORY_EXTERN(AdvancedSteamFriendsLog, Log, All);
 UENUM(Blueprintable)
 enum class SteamAvatarSize : uint8
 {
+	SteamAvatar_INVALID = 0,
 	SteamAvatar_Small = 1,
 	SteamAvatar_Medium = 2,
 	SteamAvatar_Large = 3

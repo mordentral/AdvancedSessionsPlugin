@@ -328,7 +328,7 @@ UTexture2D * UAdvancedSteamFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueN
 			delete[] oAvatarRGBA;
 
 			//Setting some Parameters for the Texture and finally returning it
-			Avatar->PlatformData->NumSlices = 1;
+			Avatar->PlatformData->SetNumSlices(1);
 			Avatar->NeverStream = true;
 			//Avatar->CompressionSettings = TC_EditorIcon;
 

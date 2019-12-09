@@ -1,9 +1,9 @@
 {
-    "FileVersion" : 3,
+    "FileVersion" : 24,
  
     "FriendlyName" : "Advanced Steam Sessions",
-    "Version" : 4.23,
-    "VersionName": "4.23",
+    "Version" : 4.24,
+    "VersionName": "4.24",
     "Description" : "Adds new blueprint functions to handle more advanced session operations in Steam. REQUIRES ADVANCED SESSIONS",
     "Category" : "Advanced Sessions Plugin",
     "CreatedBy" : "Joshua Statzer",

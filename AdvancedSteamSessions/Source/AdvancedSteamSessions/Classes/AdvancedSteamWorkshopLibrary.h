@@ -83,6 +83,7 @@ public:
 UENUM(BlueprintType)
 enum class FBPSteamResult : uint8
 {
+	K_EResultInvalid = 0,
 	k_EResultOK = 1,							// success
 	k_EResultFail = 2,							// generic failure 
 	k_EResultNoConnection = 3,					// no/failed network connection
