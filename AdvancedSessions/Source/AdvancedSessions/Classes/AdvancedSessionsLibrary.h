@@ -101,6 +101,7 @@ public:
 		static void GetSessionPropertyByte(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, ESessionSettingSearchResult &SearchResult, uint8 &SettingValue);
 
 		// Get session custom information key/value as Bool
+		// Steam only currently supports Int,Float,String,BYTE values for search filtering!!!
 		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions|SessionInfo", meta = (ExpandEnumAsExecs = "SearchResult"))
 		static void GetSessionPropertyBool(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, ESessionSettingSearchResult &SearchResult, bool &SettingValue);
 
@@ -122,6 +123,7 @@ public:
 		static FSessionPropertyKeyPair MakeLiteralSessionPropertyByte(FName Key, uint8 Value);
 
 		// Make a literal session custom information key/value pair from Bool
+		// Steam only currently supports Int,Float,String,BYTE values for search filtering!
 		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|SessionInfo|Literals")
 		static FSessionPropertyKeyPair MakeLiteralSessionPropertyBool(FName Key, bool Value);
 
