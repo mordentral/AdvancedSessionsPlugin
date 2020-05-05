@@ -263,7 +263,7 @@ void UAdvancedFriendsGameInstance::OnSessionInviteReceivedMaster(const FUniqueNe
 		int32 LocalPlayer = 0;
 		for (int i = 0; i < PlayerList.Num(); i++)
 		{
-			if (*PlayerList[i]->PlayerState->UniqueId.GetUniqueNetId() == PersonInvited)
+			if (*PlayerList[i]->PlayerState->GetUniqueId().GetUniqueNetId() == PersonInvited)
 			{
 				LocalPlayer = i;
 				Player = PlayerList[i];
