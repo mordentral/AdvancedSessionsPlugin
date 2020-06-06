@@ -2,6 +2,6 @@
 
 **KantanDocGen Automatic Documentation ([KantanDocGen](http://kantandev.com/free/kantan-doc-gen))** 
 
-**[AdvancedSessions](https://mordentral.bitbucket.io/AdvancedSessions/Advanced)**
+**[AdvancedSessions](https://vreue4.com/generated-node-documentation?section=advanced-sessions-plugin)**
 
-**[AdvancedSteamSessions](https://mordentral.bitbucket.io/AdvancedSteamSessions/Advanced)**
+**[AdvancedSteamSessions](https://vreue4.com/generated-node-documentation?section=advanced-steam-sessions-plugin)**
