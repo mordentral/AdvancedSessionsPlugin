@@ -14,6 +14,9 @@
 #include "Engine/GameInstance.h"
 #include "Interfaces/OnlineSessionInterface.h"
 
+#include "GameFramework/GameModeBase.h"
+#include "GameFramework/GameSession.h"
+
 //#include "UObjectIterator.h"
 
 #include "AdvancedSessionsLibrary.generated.h"
@@ -28,6 +31,17 @@ class UAdvancedSessionsLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 public:
+		//********* Session Admin Functions *************//	
+
+		// Kick a player from the currently active game session, only available on the server
+		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions", meta = (WorldContext = "WorldContextObject"))
+		static bool KickPlayer(UObject* WorldContextObject, APlayerController* PlayerToKick, FText KickReason);
+
+		// Ban a player from the currently active game session, only available on the server
+		// Note that the default gamesession class does not implement an actual ban list and just kicks when this is called
+		UFUNCTION(BlueprintCallable, Category = "Online|AdvancedSessions", meta = (WorldContext = "WorldContextObject"))
+		static bool BanPlayer(UObject* WorldContextObject, APlayerController* PlayerToBan, FText BanReason);
+
 		//********* Session Search Functions *************//	
 
 		// Adds or modifies session settings in an existing array depending on if they exist already or not
