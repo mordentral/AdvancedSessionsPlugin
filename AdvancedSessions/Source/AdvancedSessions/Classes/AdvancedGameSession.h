@@ -8,6 +8,7 @@
 #include "Engine/GameInstance.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameFramework/GameSession.h"
+#include "GameFramework/PlayerState.h"
 
 //#include "UObjectIterator.h"
 
