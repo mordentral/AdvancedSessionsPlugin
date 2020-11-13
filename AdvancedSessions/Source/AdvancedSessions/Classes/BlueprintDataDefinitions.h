@@ -200,6 +200,17 @@ public:
 			return nullptr;
 	}
 
+	// Adding in a compare operator so that std functions will work with this struct
+	FORCEINLINE bool operator==(const FBPUniqueNetId& Other) const
+	{
+		return (IsValid() && Other.IsValid() && (*GetUniqueNetId() == *Other.GetUniqueNetId()));
+	}
+
+	FORCEINLINE bool operator!=(const FBPUniqueNetId& Other) const
+	{
+		return !(IsValid() && Other.IsValid() && (*GetUniqueNetId() == *Other.GetUniqueNetId()));
+	}
+
 	FBPUniqueNetId()
 	{
 		bUseDirectPointer = false;
