@@ -13,7 +13,7 @@ UCreateSessionCallbackProxyAdvanced::UCreateSessionCallbackProxyAdvanced(const F
 {
 }
 
-UCreateSessionCallbackProxyAdvanced* UCreateSessionCallbackProxyAdvanced::CreateAdvancedSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair> &ExtraSettings, class APlayerController* PlayerController, int32 PublicConnections, int32 PrivateConnections, bool bUseLAN, bool bAllowInvites, bool bIsDedicatedServer, bool bUsePresence, bool bAllowJoinViaPresence, bool bAllowJoinViaPresenceFriendsOnly, bool bAntiCheatProtected, bool bUsesStats, bool bShouldAdvertise)
+UCreateSessionCallbackProxyAdvanced* UCreateSessionCallbackProxyAdvanced::CreateAdvancedSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair> &ExtraSettings, class APlayerController* PlayerController, int32 PublicConnections, int32 PrivateConnections, bool bUseLAN, bool bAllowInvites, bool bIsDedicatedServer, bool bUsePresence, bool bUseLobbiesIfAvailable, bool bAllowJoinViaPresence, bool bAllowJoinViaPresenceFriendsOnly, bool bAntiCheatProtected, bool bUsesStats, bool bShouldAdvertise)
 {
 	UCreateSessionCallbackProxyAdvanced* Proxy = NewObject<UCreateSessionCallbackProxyAdvanced>();
 	Proxy->PlayerControllerWeakPtr = PlayerController;
@@ -25,6 +25,7 @@ UCreateSessionCallbackProxyAdvanced* UCreateSessionCallbackProxyAdvanced::Create
 	Proxy->ExtraSettings = ExtraSettings;
 	Proxy->bDedicatedServer = bIsDedicatedServer;
 	Proxy->bUsePresence = bUsePresence;
+	Proxy->bUseLobbiesIfAvailable = bUseLobbiesIfAvailable;
 	Proxy->bAllowJoinViaPresence = bAllowJoinViaPresence;
 	Proxy->bAllowJoinViaPresenceFriendsOnly = bAllowJoinViaPresenceFriendsOnly;
 	Proxy->bAntiCheatProtected = bAntiCheatProtected;
@@ -57,9 +58,15 @@ void UCreateSessionCallbackProxyAdvanced::Activate()
 			Settings.bIsDedicated = bDedicatedServer;
 
 			if (bDedicatedServer)
+			{
 				Settings.bUsesPresence = false;
+				Settings.bUseLobbiesIfAvailable = false;
+			}
 			else
+			{
 				Settings.bUsesPresence = bUsePresence;
+				Settings.bUseLobbiesIfAvailable = bUseLobbiesIfAvailable;
+			}
 
 			Settings.bAllowJoinViaPresenceFriendsOnly = bAllowJoinViaPresenceFriendsOnly;
 			Settings.bAntiCheatProtected = bAntiCheatProtected;
