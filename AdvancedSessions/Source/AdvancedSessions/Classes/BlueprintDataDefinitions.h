@@ -264,9 +264,17 @@ public:
 		EBPOnlinePresenceState PresenceState;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
 		FString StatusString;
+
+	FBPFriendPresenceInfo()
+	{
+		bIsOnline = false;
+		bIsPlaying = false;
+		bIsPlayingThisGame = false;
+		bIsJoinable = false;
+		bHasVoiceSupport = false;
+		PresenceState = EBPOnlinePresenceState::Offline;
+	}
 };
-
-
 
 USTRUCT(BlueprintType)
 struct FBPFriendInfo
@@ -287,7 +295,14 @@ public:
 	bool bIsPlayingSameGame;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
 	FBPFriendPresenceInfo PresenceInfo;
+
+	FBPFriendInfo()
+	{
+		OnlineState = EBPOnlinePresenceState::Offline;
+		bIsPlayingSameGame = false;
+	}
 };
+
 
 /** The types of comparison operations for a given search query */
 // Used to compare session properties
