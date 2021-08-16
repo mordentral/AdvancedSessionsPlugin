@@ -255,6 +255,19 @@ bool UAdvancedSteamFriendsLibrary::OpenSteamUserOverlay(const FBPUniqueNetId Uni
 	return false;
 }
 
+bool UAdvancedSteamFriendsLibrary::IsOverlayEnabled()
+{
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+	if (SteamAPI_Init())
+	{
+		return SteamUtils()->IsOverlayEnabled();
+	}
+#endif
+
+	UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("OpenSteamUserOverlay Couldn't init steamAPI!"));
+	return false;
+}
+
 UTexture2D * UAdvancedSteamFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueNetId UniqueNetId, EBlueprintAsyncResultSwitch &Result, SteamAvatarSize AvatarSize)
 {
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
@@ -350,4 +363,66 @@ UTexture2D * UAdvancedSteamFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueN
 	UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("STEAM Couldn't be verified as initialized"));
 	Result = EBlueprintAsyncResultSwitch::OnFailure;
 	return nullptr;
+}
+
+bool UAdvancedSteamFriendsLibrary::InitTextFiltering()
+{
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+
+	if (SteamAPI_Init())
+	{
+		return SteamUtils()->InitFilterText();
+	}
+
+#endif
+
+	return false;
+}
+
+bool UAdvancedSteamFriendsLibrary::FilterText(FString TextToFilter, EBPTextFilteringContext Context, const FBPUniqueNetId TextSourceID, FString& FilteredText)
+{
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+
+	if (SteamAPI_Init())
+	{
+		uint32 BufferLen = TextToFilter.Len() + 10; // Docs say 1 byte excess min, going with 10
+		char* OutText = new char[BufferLen];
+		
+		uint64 id = 0;
+
+		if (TextSourceID.IsValid())
+		{
+			id = *((uint64*)TextSourceID.UniqueNetId->GetBytes());
+		}
+		
+		int FilterCount = SteamUtils()->FilterText((ETextFilteringContext)Context, id, TCHAR_TO_ANSI(*TextToFilter), OutText, BufferLen);
+
+		if (FilterCount > 0)
+		{
+			FilteredText = FString(UTF8_TO_TCHAR(OutText));
+			delete[] OutText;
+			return true;
+		}
+
+		delete[] OutText;
+	}
+
+#endif
+
+	FilteredText = TextToFilter;
+	return false;
+}
+
+bool UAdvancedSteamFriendsLibrary::IsSteamInBigPictureMode()
+{
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+
+	if (SteamAPI_Init())
+	{
+		return SteamUtils()->IsSteamInBigPictureMode();
+	}
+
+#endif
+
+	return false;
 }
