@@ -55,7 +55,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Online|SteamAPI|SteamGroups")
 		FBPUniqueNetId OfficerUniqueNetID; // Uint64 representation
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Online|SteamAPI|SteamGroups")
-	bool bIsOwner;
+		bool bIsOwner = false;
 
 };
 
