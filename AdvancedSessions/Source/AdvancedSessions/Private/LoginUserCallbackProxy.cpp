@@ -82,7 +82,7 @@ void ULoginUserCallbackProxy::OnCompleted(int32 LocalUserNum, bool bWasSuccessfu
 		if (State)
 		{
 			// Update UniqueId. See also ShowLoginUICallbackProxy.cpp
-			State->SetUniqueId(uniqueId);
+			State->SetUniqueId((const FUniqueNetIdPtr&) uniqueId);
 		}
 	}
 
