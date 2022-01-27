@@ -5,10 +5,10 @@
 #include "BlueprintDataDefinitions.h"
 #include "Interfaces/OnlineIdentityInterface.h"
 #include "Engine/LocalPlayer.h"
-#include "LoginUserCallbackProxy.generated.h"
+#include "AutoLoginUserCallbackProxy.generated.h"
 
 UCLASS(MinimalAPI)
-class ULoginUserCallbackProxy : public UOnlineBlueprintCallProxyBase
+class UAutoLoginUserCallbackProxy : public UOnlineBlueprintCallProxyBase
 {
 	GENERATED_UCLASS_BODY()
 
@@ -20,9 +20,17 @@ class ULoginUserCallbackProxy : public UOnlineBlueprintCallProxyBase
 	UPROPERTY(BlueprintAssignable)
 	FEmptyOnlineDelegate OnFailure;
 
-	// Logs into the identity interface
-	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject", AdvancedDisplay = "Type"), Category = "Online|AdvancedIdentity")
-	static ULoginUserCallbackProxy* LoginUser(UObject* WorldContextObject, class APlayerController* PlayerController, FString UserID, FString UserToken, FString Type);
+	/**
+	 * Logs the player into the online service using parameters passed on the
+	 * command line. Expects -AUTH_LOGIN=<UserName> -AUTH_PASSWORD=<password>. If either
+	 * are missing, the function returns false and doesn't start the login
+	 * process
+	 *
+	 * @param LocalUserNum the controller number of the associated user
+	 *
+	 */
+	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject"), Category = "Online|AdvancedIdentity")
+	static UAutoLoginUserCallbackProxy* AutoLoginUser(UObject* WorldContextObject, int32 LocalUserNum);
 
 	// UOnlineBlueprintCallProxyBase interface
 	virtual void Activate() override;
@@ -33,16 +41,8 @@ private:
 	void OnCompleted(int32 LocalUserNum, bool bWasSuccessful, const FUniqueNetId& UserId, const FString& ErrorVal);
 
 private:
-	// The player controller triggering things
-	TWeakObjectPtr<APlayerController> PlayerControllerWeakPtr;
-
-	// The user ID
-	FString UserID;
-
-	// The user pass / token
-	FString UserToken;
-
-	FString Type;
+	// The controller number of the associated user
+	int32 LocalUserNumber;
 
 	// The delegate executed by the online subsystem
 	FOnLoginCompleteDelegate Delegate;
