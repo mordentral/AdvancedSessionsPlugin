@@ -29,73 +29,70 @@ UUpdateSessionCallbackProxyAdvanced* UUpdateSessionCallbackProxyAdvanced::Update
 
 void UUpdateSessionCallbackProxyAdvanced::Activate()
 {
-	const FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("UpdateSession"), GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull));
 
-	if (Helper.OnlineSub != nullptr)
+	IOnlineSessionPtr Sessions = Online::GetSessionInterface(GetWorld());
+
+	if (Sessions.IsValid())
 	{
-		const auto Sessions = Helper.OnlineSub->GetSessionInterface();
-		if (Sessions.IsValid())
+		if (Sessions->GetNumSessions() < 1)
 		{
-			if (Sessions->GetNumSessions() < 1)
-			{
-				OnFailure.Broadcast();
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("NO REGISTERED SESSIONS!"));
-				return;
-			}
-
-			// This gets the actual session itself
-			//FNamedOnlineSession * curSession = Sessions->GetNamedSession(NAME_GameSession);
-			FOnlineSessionSettings* Settings = Sessions->GetSessionSettings(NAME_GameSession);
-
-			if (!Settings)
-			{
-				// Fail immediately
-				OnFailure.Broadcast();
-				return;
-			}
-
-			OnUpdateSessionCompleteDelegateHandle = Sessions->AddOnUpdateSessionCompleteDelegate_Handle(OnUpdateSessionCompleteDelegate);
-
-		//	FOnlineSessionSettings Settings;
-			//Settings->BuildUniqueId = GetBuildUniqueId();
-			Settings->NumPublicConnections = NumPublicConnections;
-			Settings->NumPrivateConnections = NumPrivateConnections;
-			//Settings->bShouldAdvertise = true;
-			Settings->bAllowJoinInProgress = bAllowJoinInProgress;
-			Settings->bIsLANMatch = bUseLAN;
-			//Settings->bUsesPresence = true;
-			//Settings->bAllowJoinViaPresence = true;
-			Settings->bAllowInvites = bAllowInvites;
-			Settings->bAllowJoinInProgress = bAllowJoinInProgress;
-			Settings->bIsDedicated = bDedicatedServer;
-
-			FOnlineSessionSetting * fSetting = NULL;
-			FOnlineSessionSetting ExtraSetting;
-			for (int i = 0; i < ExtraSettings.Num(); i++)
-			{
-				fSetting = Settings->Settings.Find(ExtraSettings[i].Key);
-
-				if (fSetting)
-				{
-					fSetting->Data = ExtraSettings[i].Data;
-				}
-				else
-				{
-					ExtraSetting.Data = ExtraSettings[i].Data;
-					ExtraSetting.AdvertisementType = EOnlineDataAdvertisementType::ViaOnlineService;
-					Settings->Settings.Add(ExtraSettings[i].Key, ExtraSetting);
-				}
-			}
-
-			Sessions->UpdateSession(NAME_GameSession, *Settings, bRefreshOnlineData);
-
-			// OnUpdateCompleted will get called, nothing more to do now
+			OnFailure.Broadcast();
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("NO REGISTERED SESSIONS!"));
 			return;
 		}
-		else
+
+		// This gets the actual session itself
+		//FNamedOnlineSession * curSession = Sessions->GetNamedSession(NAME_GameSession);
+		FOnlineSessionSettings* Settings = Sessions->GetSessionSettings(NAME_GameSession);
+
+		if (!Settings)
 		{
-			FFrame::KismetExecutionMessage(TEXT("Sessions not supported by Online Subsystem"), ELogVerbosity::Warning);
+			// Fail immediately
+			OnFailure.Broadcast();
+			return;
 		}
+
+		OnUpdateSessionCompleteDelegateHandle = Sessions->AddOnUpdateSessionCompleteDelegate_Handle(OnUpdateSessionCompleteDelegate);
+
+	//	FOnlineSessionSettings Settings;
+		//Settings->BuildUniqueId = GetBuildUniqueId();
+		Settings->NumPublicConnections = NumPublicConnections;
+		Settings->NumPrivateConnections = NumPrivateConnections;
+		//Settings->bShouldAdvertise = true;
+		Settings->bAllowJoinInProgress = bAllowJoinInProgress;
+		Settings->bIsLANMatch = bUseLAN;
+		//Settings->bUsesPresence = true;
+		//Settings->bAllowJoinViaPresence = true;
+		Settings->bAllowInvites = bAllowInvites;
+		Settings->bAllowJoinInProgress = bAllowJoinInProgress;
+		Settings->bIsDedicated = bDedicatedServer;
+
+		FOnlineSessionSetting * fSetting = NULL;
+		FOnlineSessionSetting ExtraSetting;
+		for (int i = 0; i < ExtraSettings.Num(); i++)
+		{
+			fSetting = Settings->Settings.Find(ExtraSettings[i].Key);
+
+			if (fSetting)
+			{
+				fSetting->Data = ExtraSettings[i].Data;
+			}
+			else
+			{
+				ExtraSetting.Data = ExtraSettings[i].Data;
+				ExtraSetting.AdvertisementType = EOnlineDataAdvertisementType::ViaOnlineService;
+				Settings->Settings.Add(ExtraSettings[i].Key, ExtraSetting);
+			}
+		}
+
+		Sessions->UpdateSession(NAME_GameSession, *Settings, bRefreshOnlineData);
+
+		// OnUpdateCompleted will get called, nothing more to do now
+		return;
+	}
+	else
+	{
+		FFrame::KismetExecutionMessage(TEXT("Sessions not supported by Online Subsystem"), ELogVerbosity::Warning);
 	}
 	// Fail immediately
 	OnFailure.Broadcast();
@@ -104,20 +101,15 @@ void UUpdateSessionCallbackProxyAdvanced::Activate()
 
 void UUpdateSessionCallbackProxyAdvanced::OnUpdateCompleted(FName SessionName, bool bWasSuccessful)
 {
-	const FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("UpdateSessionCallback"), GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull));
-
-	if (Helper.OnlineSub != nullptr)
+	IOnlineSessionPtr Sessions = Online::GetSessionInterface(GetWorld());
+	if (Sessions.IsValid())
 	{
-		const auto Sessions = Helper.OnlineSub->GetSessionInterface();
-		if (Sessions.IsValid())
+		Sessions->ClearOnUpdateSessionCompleteDelegate_Handle(OnUpdateSessionCompleteDelegateHandle);
+			
+		if (bWasSuccessful)
 		{
-			Sessions->ClearOnUpdateSessionCompleteDelegate_Handle(OnUpdateSessionCompleteDelegateHandle);
-				
-			if (bWasSuccessful)
-			{
-				OnSuccess.Broadcast();
-				return;
-			}
+			OnSuccess.Broadcast();
+			return;
 		}
 	}
 
