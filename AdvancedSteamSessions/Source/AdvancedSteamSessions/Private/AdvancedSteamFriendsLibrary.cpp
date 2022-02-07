@@ -255,6 +255,19 @@ bool UAdvancedSteamFriendsLibrary::OpenSteamUserOverlay(const FBPUniqueNetId Uni
 	return false;
 }
 
+bool UAdvancedSteamFriendsLibrary::IsOverlayEnabled()
+{
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+	if (SteamAPI_Init())
+	{
+		return SteamUtils()->IsOverlayEnabled();
+	}
+#endif
+
+	UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("OpenSteamUserOverlay Couldn't init steamAPI!"));
+	return false;
+}
+
 UTexture2D * UAdvancedSteamFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueNetId UniqueNetId, EBlueprintAsyncResultSwitch &Result, SteamAvatarSize AvatarSize)
 {
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
@@ -350,4 +363,77 @@ UTexture2D * UAdvancedSteamFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueN
 	UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("STEAM Couldn't be verified as initialized"));
 	Result = EBlueprintAsyncResultSwitch::OnFailure;
 	return nullptr;
+}
+
+bool UAdvancedSteamFriendsLibrary::InitTextFiltering()
+{
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+
+	if (SteamAPI_Init())
+	{
+		return SteamUtils()->InitFilterText();
+	}
+
+#endif
+
+	return false;
+}
+
+bool UAdvancedSteamFriendsLibrary::FilterText(FString TextToFilter, EBPTextFilteringContext Context, const FBPUniqueNetId TextSourceID, FString& FilteredText)
+{
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+
+	if (SteamAPI_Init())
+	{
+		uint32 BufferLen = TextToFilter.Len() + 10; // Docs say 1 byte excess min, going with 10
+		char* OutText = new char[BufferLen];
+		
+		uint64 id = 0;
+
+		if (TextSourceID.IsValid())
+		{
+			id = *((uint64*)TextSourceID.UniqueNetId->GetBytes());
+		}
+		
+		// MAC is bugged with current steam version according to epic, they forced it to be the old steam ver
+#if PLATFORM_MAC
+			// Filters the provided input message and places the filtered result into pchOutFilteredText.
+			//   pchOutFilteredText is where the output will be placed, even if no filtering or censoring is performed
+			//   nByteSizeOutFilteredText is the size (in bytes) of pchOutFilteredText
+			//   pchInputText is the input string that should be filtered, which can be ASCII or UTF-8
+			//   bLegalOnly should be false if you want profanity and legally required filtering (where required) and true if you want legally required filtering only
+			//   Returns the number of characters (not bytes) filtered.
+			int FilterCount = SteamUtils()->FilterText(OutText, BufferLen, TCHAR_TO_ANSI(*TextToFilter), Context == EBPTextFilteringContext::FContext_GameContent);
+#else
+		int FilterCount = SteamUtils()->FilterText((ETextFilteringContext)Context, id, TCHAR_TO_ANSI(*TextToFilter), OutText, BufferLen);
+#endif
+
+		if (FilterCount > 0)
+		{
+			FilteredText = FString(UTF8_TO_TCHAR(OutText));
+			delete[] OutText;
+			return true;
+		}
+
+		delete[] OutText;
+	}
+
+#endif
+
+	FilteredText = TextToFilter;
+	return false;
+}
+
+bool UAdvancedSteamFriendsLibrary::IsSteamInBigPictureMode()
+{
+#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+
+	if (SteamAPI_Init())
+	{
+		return SteamUtils()->IsSteamInBigPictureMode();
+	}
+
+#endif
+
+	return false;
 }

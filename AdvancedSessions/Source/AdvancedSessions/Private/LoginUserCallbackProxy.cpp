@@ -12,12 +12,13 @@ ULoginUserCallbackProxy::ULoginUserCallbackProxy(const FObjectInitializer& Objec
 {
 }
 
-ULoginUserCallbackProxy* ULoginUserCallbackProxy::LoginUser(UObject* WorldContextObject, class APlayerController* PlayerController, FString UserID, FString UserToken)
+ULoginUserCallbackProxy* ULoginUserCallbackProxy::LoginUser(UObject* WorldContextObject, class APlayerController* PlayerController, FString UserID, FString UserToken, FString Type)
 {
 	ULoginUserCallbackProxy* Proxy = NewObject<ULoginUserCallbackProxy>();
 	Proxy->PlayerControllerWeakPtr = PlayerController;
 	Proxy->UserID = UserID;
 	Proxy->UserToken = UserToken;
+	Proxy->Type = Type;
 	Proxy->WorldContextObject = WorldContextObject;
 	return Proxy;
 }
@@ -43,8 +44,13 @@ void ULoginUserCallbackProxy::Activate()
 
 	if (Identity.IsValid())
 	{
+		// Fallback to default AuthType if nothing is specified
+		if (Type.IsEmpty())
+		{
+			Type = Identity->GetAuthType();
+		}
 		DelegateHandle = Identity->AddOnLoginCompleteDelegate_Handle(Player->GetControllerId(), Delegate);
-		FOnlineAccountCredentials AccountCreds(Identity->GetAuthType(), UserID, UserToken);
+		FOnlineAccountCredentials AccountCreds(Type, UserID, UserToken);
 		Identity->Login(Player->GetControllerId(), AccountCreds);
 		return;
 	}
