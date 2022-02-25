@@ -1,22 +1,19 @@
 {
-    "FileVersion" : 3,
- 
-    "FriendlyName" : "Advanced Sessions",
-    "Version" : 4.27,
-    "VersionName": "4.27",
-    "Description" : "Adds new blueprint functions to handle more advanced session operations.",
-    "Category" : "Advanced Sessions Plugin",
-    "CreatedBy" : "Joshua Statzer",
-    "CreatedByURL" : "N/A",
- 
-    "Modules" :
-    [
-        {
-            "Name" : "AdvancedSessions",
-            "Type" : "RunTime",
-			"LoadingPhase" : "PreDefault"
-        } 
-    ],
+	"FileVersion": 3,
+	"FriendlyName": "Advanced Sessions",
+	"Version": 4,
+	"VersionName": "5.0",
+	"Description": "Adds new blueprint functions to handle more advanced session operations.",
+	"Category": "Advanced Sessions Plugin",
+	"CreatedBy": "Joshua Statzer",
+	"CreatedByURL": "N/A",
+	"Modules": [
+		{
+			"Name": "AdvancedSessions",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		}
+	],
 	"Plugins": [
 		{
 			"Name": "OnlineSubsystem",
@@ -26,5 +23,12 @@
 			"Name": "OnlineSubsystemUtils",
 			"Enabled": true
 		}
-	]
+	],
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false
 }

@@ -332,18 +332,22 @@ UTexture2D * UAdvancedSteamFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueN
 
 			UTexture2D* Avatar = UTexture2D::CreateTransient(Width, Height, PF_R8G8B8A8);
 			// Switched to a Memcpy instead of byte by byte transer
-			uint8* MipData = (uint8*)Avatar->PlatformData->Mips[0].BulkData.Lock(LOCK_READ_WRITE);
-			FMemory::Memcpy(MipData, (void*)oAvatarRGBA, Height * Width * 4);
-			Avatar->PlatformData->Mips[0].BulkData.Unlock();
 
-			// Original implementation was missing this!!
-			// the hell man......
-			delete[] oAvatarRGBA;
+			if (FTexturePlatformData* PlatformData = Avatar->GetPlatformData())
+			{
+				uint8* MipData = (uint8*)PlatformData->Mips[0].BulkData.Lock(LOCK_READ_WRITE);
+				FMemory::Memcpy(MipData, (void*)oAvatarRGBA, Height * Width * 4);
+				PlatformData->Mips[0].BulkData.Unlock();
 
-			//Setting some Parameters for the Texture and finally returning it
-			Avatar->PlatformData->SetNumSlices(1);
-			Avatar->NeverStream = true;
-			//Avatar->CompressionSettings = TC_EditorIcon;
+				// Original implementation was missing this!!
+				// the hell man......
+				delete[] oAvatarRGBA;
+
+				//Setting some Parameters for the Texture and finally returning it
+				PlatformData->SetNumSlices(1);
+				Avatar->NeverStream = true;
+				//Avatar->CompressionSettings = TC_EditorIcon;
+			}
 
 			Avatar->UpdateResource();
 
