@@ -1,7 +1,7 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 
 #include "SteamRequestGroupOfficersCallbackProxy.h"
-#include "UObject/CoreOnline.h"
+#include "Online/CoreOnline.h"
 #include "AdvancedSteamFriendsLibrary.h"
 #include "OnlineSubSystemHeader.h"
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
