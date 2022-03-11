@@ -200,5 +200,10 @@ public:
 		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|Misc")
 		static bool HasOnlineSubsystem(FName SubSystemName);
 
+		//**** Seamless travel Functions ****//
+
+		//Exposes Server travel to blueprint
+		UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Online|AdvancedSessions|Seamless", meta = (HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+		static bool ServerTravel(UObject* WorldContextObject, const FString& InURL, bool bAbsolute, bool bShouldSkipGameNotify);
 		
 };	
