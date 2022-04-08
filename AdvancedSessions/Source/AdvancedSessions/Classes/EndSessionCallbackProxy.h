@@ -23,7 +23,7 @@ class UEndSessionCallbackProxy : public UOnlineBlueprintCallProxyBase
 	 *	  Ends the current sessions, Generally for almost all uses you should be using the engines native Destroy Session node instead.
 	 *	  This exists for people using StartSession and optionally hand managing the session state.
 	 */
-	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject"), Category = "Online|AdvancedSessions|Deprecated")
+	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject"), Category = "Online|AdvancedSessions")
 	static UEndSessionCallbackProxy* EndSession(UObject* WorldContextObject, class APlayerController* PlayerController);
 
 	// UOnlineBlueprintCallProxyBase interface
