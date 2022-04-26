@@ -33,6 +33,10 @@
 		{
 			"Name": "OnlineSubsystemSteam",
 			"Enabled": true
+		},
+		{
+			"Name": "SteamShared",
+			"Enabled": true
 		}
 	]
 }
