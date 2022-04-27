@@ -130,20 +130,24 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 			default:
 			{
 				// Only steam uses the separate searching flags currently
-				if (IOnlineSubsystem::DoesInstanceExist("STEAM"))
-				{
-					bRunSecondSearch = true;
+				//if (IOnlineSubsystem::DoesInstanceExist("STEAM"))
+				//{
+				bRunSecondSearch = true;
 
-					SearchObjectDedicated = MakeShareable(new FOnlineSessionSearch);
-					SearchObjectDedicated->MaxSearchResults = MaxResults;
-					SearchObjectDedicated->bIsLanQuery = bUseLAN;
+				SearchObjectDedicated = MakeShareable(new FOnlineSessionSearch);
+				SearchObjectDedicated->MaxSearchResults = MaxResults;
+				SearchObjectDedicated->bIsLanQuery = bUseLAN;
 
-					FOnlineSearchSettingsEx DedicatedOnly = tem;
-					tem.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
+				FOnlineSearchSettingsEx DedicatedOnly = tem;
 
-					//DedicatedOnly.Set(SEARCH_DEDICATED_ONLY, true, EOnlineComparisonOp::Equals);
-					SearchObjectDedicated->QuerySettings = DedicatedOnly;
-				}
+				tem.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
+
+				if (bSearchLobbies)
+					tem.Set(SEARCH_LOBBIES, true, EOnlineComparisonOp::Equals);
+
+				//DedicatedOnly.Set(SEARCH_DEDICATED_ONLY, true, EOnlineComparisonOp::Equals);
+				SearchObjectDedicated->QuerySettings = DedicatedOnly;
+				//}
 			}
 			break;
 			}
