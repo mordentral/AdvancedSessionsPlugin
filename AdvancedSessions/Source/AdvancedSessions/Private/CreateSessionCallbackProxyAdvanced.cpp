@@ -56,7 +56,7 @@ void UCreateSessionCallbackProxyAdvanced::Activate()
 			Settings.bShouldAdvertise = true;
 			Settings.bAllowJoinInProgress = true;
 			Settings.bIsLANMatch = bUseLAN;
-			Settings.bAllowJoinViaPresence = true;
+			Settings.bAllowJoinViaPresence = bAllowJoinViaPresence;
 			Settings.bIsDedicated = bDedicatedServer;
 
 			if (bDedicatedServer)
