@@ -44,12 +44,11 @@ void UAutoLoginUserCallbackProxy::OnCompleted(int32 LocalUserNum, bool bWasSucce
 		Identity->ClearOnLoginCompleteDelegate_Handle(LocalUserNum, DelegateHandle);
 	}
 
-
 	if(APlayerController* PController = UGameplayStatics::GetPlayerController(WorldContextObject->GetWorld(), LocalUserNum))
 	{
 		ULocalPlayer* Player = Cast<ULocalPlayer>(PController->Player);
 
-		auto uniqueId = UserId.AsShared();
+		FUniqueNetIdRepl uniqueId(UserId.AsShared());
 
 		if (Player)
 		{
@@ -59,7 +58,7 @@ void UAutoLoginUserCallbackProxy::OnCompleted(int32 LocalUserNum, bool bWasSucce
 		if (APlayerState* State = PController->PlayerState)
 		{
 			// Update UniqueId. See also ShowLoginUICallbackProxy.cpp
-			State->SetUniqueId((const FUniqueNetIdPtr&)uniqueId);
+			State->SetUniqueId(uniqueId);
 		}
 	}
 
