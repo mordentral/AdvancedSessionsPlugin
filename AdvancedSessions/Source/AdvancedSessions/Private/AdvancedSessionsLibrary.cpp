@@ -540,8 +540,7 @@ bool UAdvancedSessionsLibrary::ServerTravel(UObject* WorldContextObject, const F
 	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::ReturnNull);
 	if (World)
 	{
-		World->ServerTravel(FURL, bAbsolute, bShouldSkipGameNotify);
-		return true;
+		return World->ServerTravel(FURL, bAbsolute, bShouldSkipGameNotify);
 	}
 
 	return false;
