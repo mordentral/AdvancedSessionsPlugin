@@ -273,7 +273,8 @@ enum class ESteamUserOverlayType : uint8
 
 static FString EnumToString(const FString& enumName, uint8 value)
 {
-	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, *enumName, true);
+	
+	const UEnum* EnumPtr = FindFirstObject<UEnum>(*enumName, EFindFirstObjectOptions::None, ELogVerbosity::Warning, TEXT("EumtoString"));
 
 	if (!EnumPtr)
 		return FString();
