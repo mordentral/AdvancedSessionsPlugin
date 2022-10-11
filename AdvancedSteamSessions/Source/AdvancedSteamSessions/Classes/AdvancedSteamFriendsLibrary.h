@@ -194,11 +194,10 @@ public:
 		}
 	}
 
-	/** Needed for TMap::GetTypeHash() */
-	friend uint32 GetTypeHash(const FUniqueNetIdSteam2& A)
+
+	virtual uint32 GetTypeHash() const override
 	{
-		return A.GetTypeHash();
-		//return (uint32)(A.UniqueNetId) + ((uint32)((A.UniqueNetId) >> 32) * 23);
+		return ::GetTypeHash(UniqueNetId);
 	}
 
 	/** Convenience cast to CSteamID */
