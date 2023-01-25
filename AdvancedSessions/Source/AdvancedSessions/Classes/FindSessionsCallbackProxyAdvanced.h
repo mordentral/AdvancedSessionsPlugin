@@ -7,6 +7,18 @@
 #include "BlueprintDataDefinitions.h"
 #include "FindSessionsCallbackProxyAdvanced.generated.h"
 
+
+FORCEINLINE bool operator==(const FBlueprintSessionResult& A, const FBlueprintSessionResult& B)
+{
+	return (A.OnlineResult.IsValid() == B.OnlineResult.IsValid() && (A.OnlineResult.GetSessionIdStr() == B.OnlineResult.GetSessionIdStr()));
+}
+
+// Adding in a compare operator so that std functions will work with this struct
+//FORCEINLINE bool operator==(FBlueprintSessionResult& A, FBlueprintSessionResult& B) const
+//{
+	//return (A.OnlineResult.IsValid() && B.OnlineResult.IsValid() && (A.OnlineResult.GetSessionIdStr() == B.OnlineResult.GetSessionIdStr()));
+//}
+
 UCLASS(MinimalAPI)
 class UFindSessionsCallbackProxyAdvanced : public UOnlineBlueprintCallProxyBase
 {
