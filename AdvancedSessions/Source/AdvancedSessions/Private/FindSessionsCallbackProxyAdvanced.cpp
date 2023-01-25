@@ -199,7 +199,7 @@ void UFindSessionsCallbackProxyAdvanced::OnCompleted(bool bSuccess)
 
 					FBlueprintSessionResult BPResult;
 					BPResult.OnlineResult = Result;
-					SessionSearchResults.Add(BPResult);
+					SessionSearchResults.AddUnique(BPResult);
 				}
 				OnSuccess.Broadcast(SessionSearchResults);
 				return;
@@ -218,7 +218,7 @@ void UFindSessionsCallbackProxyAdvanced::OnCompleted(bool bSuccess)
 
 					FBlueprintSessionResult BPResult;
 					BPResult.OnlineResult = Result;
-					SessionSearchResults.Add(BPResult);
+					SessionSearchResults.AddUnique(BPResult);
 				}
 				if (!bRunSecondSearch)
 				{
