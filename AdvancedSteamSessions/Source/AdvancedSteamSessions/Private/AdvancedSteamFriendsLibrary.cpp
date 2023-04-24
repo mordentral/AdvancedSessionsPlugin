@@ -399,18 +399,7 @@ bool UAdvancedSteamFriendsLibrary::FilterText(FString TextToFilter, EBPTextFilte
 			id = *((uint64*)TextSourceID.UniqueNetId->GetBytes());
 		}
 		
-		// MAC is bugged with current steam version according to epic, they forced it to be the old steam ver
-#if PLATFORM_MAC
-			// Filters the provided input message and places the filtered result into pchOutFilteredText.
-			//   pchOutFilteredText is where the output will be placed, even if no filtering or censoring is performed
-			//   nByteSizeOutFilteredText is the size (in bytes) of pchOutFilteredText
-			//   pchInputText is the input string that should be filtered, which can be ASCII or UTF-8
-			//   bLegalOnly should be false if you want profanity and legally required filtering (where required) and true if you want legally required filtering only
-			//   Returns the number of characters (not bytes) filtered.
-			int FilterCount = SteamUtils()->FilterText(OutText, BufferLen, TCHAR_TO_ANSI(*TextToFilter), Context == EBPTextFilteringContext::FContext_GameContent);
-#else
 		int FilterCount = SteamUtils()->FilterText((ETextFilteringContext)Context, id, TCHAR_TO_ANSI(*TextToFilter), OutText, BufferLen);
-#endif
 
 		if (FilterCount > 0)
 		{
