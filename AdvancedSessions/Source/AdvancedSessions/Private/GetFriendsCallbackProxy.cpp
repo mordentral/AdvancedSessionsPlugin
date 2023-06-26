@@ -1,6 +1,8 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #include "GetFriendsCallbackProxy.h"
 
+#include "Online.h"
+#include "Interfaces/OnlinePresenceInterface.h"
 
 //////////////////////////////////////////////////////////////////////////
 // UGetFriendsCallbackProxy
