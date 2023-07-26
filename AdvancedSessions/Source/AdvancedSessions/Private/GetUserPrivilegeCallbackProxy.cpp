@@ -2,6 +2,7 @@
 
 #include "GetUserPrivilegeCallbackProxy.h"
 
+#include "Online.h"
 
 //////////////////////////////////////////////////////////////////////////
 // UGetUserPrivilegeCallbackProxy
