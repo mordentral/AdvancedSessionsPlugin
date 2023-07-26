@@ -12,7 +12,7 @@ UUpdateSessionCallbackProxyAdvanced::UUpdateSessionCallbackProxyAdvanced(const F
 {
 }	
 
-UUpdateSessionCallbackProxyAdvanced* UUpdateSessionCallbackProxyAdvanced::UpdateSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair> &ExtraSettings, int32 PublicConnections, int32 PrivateConnections, bool bUseLAN, bool bAllowInvites, bool bAllowJoinInProgress, bool bRefreshOnlineData, bool bIsDedicatedServer)
+UUpdateSessionCallbackProxyAdvanced* UUpdateSessionCallbackProxyAdvanced::UpdateSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair> &ExtraSettings, int32 PublicConnections, int32 PrivateConnections, bool bUseLAN, bool bAllowInvites, bool bAllowJoinInProgress, bool bRefreshOnlineData, bool bIsDedicatedServer, bool bShouldAdvertise)
 {
 	UUpdateSessionCallbackProxyAdvanced* Proxy = NewObject<UUpdateSessionCallbackProxyAdvanced>();
 	Proxy->NumPublicConnections = PublicConnections;
@@ -24,6 +24,7 @@ UUpdateSessionCallbackProxyAdvanced* UUpdateSessionCallbackProxyAdvanced::Update
 	Proxy->bRefreshOnlineData = bRefreshOnlineData;
 	Proxy->bAllowJoinInProgress = bAllowJoinInProgress;
 	Proxy->bDedicatedServer = bIsDedicatedServer;
+	Proxy->bShouldAdvertise = bShouldAdvertise;
 	return Proxy;	
 }
 
@@ -60,7 +61,7 @@ void UUpdateSessionCallbackProxyAdvanced::Activate()
 			//Settings->BuildUniqueId = GetBuildUniqueId();
 			Settings->NumPublicConnections = NumPublicConnections;
 			Settings->NumPrivateConnections = NumPrivateConnections;
-			//Settings->bShouldAdvertise = true;
+			Settings->bShouldAdvertise = bShouldAdvertise;
 			Settings->bAllowJoinInProgress = bAllowJoinInProgress;
 			Settings->bIsLANMatch = bUseLAN;
 			//Settings->bUsesPresence = true;
