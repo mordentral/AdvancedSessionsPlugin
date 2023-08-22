@@ -50,7 +50,7 @@ public:
 
 		}
 #else
-		cSteamEventsStore() :
+		cSteamEventsStore()
 		{
 
 		}
