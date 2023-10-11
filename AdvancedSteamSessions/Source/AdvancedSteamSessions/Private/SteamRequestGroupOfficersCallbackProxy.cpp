@@ -50,17 +50,17 @@ void USteamRequestGroupOfficersCallbackProxy::OnRequestGroupOfficerDetails(ClanO
 {
 	TArray<FBPSteamGroupOfficer> OfficerArray;
 	
-	FOnlineSubsystemSteam* SteamSubsystem = (FOnlineSubsystemSteam*)(IOnlineSubsystem::Get(STEAM_SUBSYSTEM));
+	//FOnlineSubsystemSteam* SteamSubsystem = (FOnlineSubsystemSteam*)(IOnlineSubsystem::Get(STEAM_SUBSYSTEM));
 
 	if (bIOFailure || !pResult || !pResult->m_bSuccess)
 	{
-		if (SteamSubsystem != nullptr)
+		//if (SteamSubsystem != nullptr)
 		{
-			SteamSubsystem->ExecuteNextTick([this]()
-			{
+		//	SteamSubsystem->ExecuteNextTick([this]()
+			//{
 				TArray<FBPSteamGroupOfficer> FailureArray;
 				OnFailure.Broadcast(FailureArray);
-			});
+			//});
 		}
 		//OnFailure.Broadcast(OfficerArray);
 		return;
@@ -91,26 +91,26 @@ void USteamRequestGroupOfficersCallbackProxy::OnRequestGroupOfficerDetails(ClanO
 			OfficerArray.Add(Officer);
 		}
 
-		if (SteamSubsystem != nullptr)
-		{
-			SteamSubsystem->ExecuteNextTick([OfficerArray, this]()
-			{
+		//if (SteamSubsystem != nullptr)
+		//{
+			//SteamSubsystem->ExecuteNextTick([OfficerArray, this]()
+			//{
 				OnSuccess.Broadcast(OfficerArray);
-			});
-		}
+			//});
+		//}
 
 		//OnSuccess.Broadcast(OfficerArray);
 		return;
 	}
 	else
 	{
-		if (SteamSubsystem != nullptr)
+		//if (SteamSubsystem != nullptr)
 		{
-			SteamSubsystem->ExecuteNextTick([this]()
-			{
+			//SteamSubsystem->ExecuteNextTick([this]()
+			//{
 				TArray<FBPSteamGroupOfficer> FailureArray;
 				OnFailure.Broadcast(FailureArray);
-			});
+			//});
 		}
 	}
 
