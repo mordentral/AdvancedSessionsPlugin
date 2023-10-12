@@ -7,8 +7,8 @@
 
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 
-#include "OnlineSubsystemSteam.h"
-#include "OnlineSubsystemSteamPrivate.h"
+//#include "OnlineSubsystemSteam.h"
+//#include "OnlineSubsystemSteamPrivate.h"
 
 #include <steam/steam_api.h>
 

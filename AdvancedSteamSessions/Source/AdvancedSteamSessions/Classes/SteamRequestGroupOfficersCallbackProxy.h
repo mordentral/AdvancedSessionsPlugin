@@ -17,7 +17,7 @@
 
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
 
-#include "OnlineSubsystemSteam.h"
+//#include "OnlineSubsystemSteam.h"
 
 #pragma push_macro("ARRAY_COUNT")
 #undef ARRAY_COUNT
