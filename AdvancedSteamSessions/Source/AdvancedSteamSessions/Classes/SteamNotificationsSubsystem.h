@@ -50,13 +50,13 @@ public:
 
 		}
 #else
-		cSteamEventsStore()
-		{
+		//cSteamEventsStore()
+		//{
 
-		}
+		//}
 #endif
 
-		~cSteamEventsStore(){}
+		//~cSteamEventsStore(){}
 
 	private:
 #if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
