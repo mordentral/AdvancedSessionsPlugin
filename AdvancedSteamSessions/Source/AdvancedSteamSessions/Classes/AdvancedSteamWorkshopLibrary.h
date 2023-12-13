@@ -6,7 +6,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Online.h"
 #include "OnlineSubsystem.h"
-#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+#if STEAM_SDK_INSTALLED && (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX)
 #include "steam/isteamugc.h"
 #include "steam/isteamremotestorage.h"
 #endif
@@ -21,7 +21,7 @@
 #pragma warning(disable:4265) // SteamAPI CCallback< specifically, this warning is off by default but 4.17 turned it on....
 #endif
 
-#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+#if STEAM_SDK_INSTALLED && (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX)
 
 #pragma push_macro("ARRAY_COUNT")
 #undef ARRAY_COUNT
@@ -223,7 +223,7 @@ public:
 		bTagsTruncated = false;
 	}
 
-#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+#if STEAM_SDK_INSTALLED && (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX)
 	FBPSteamWorkshopItemDetails(SteamUGCDetails_t &hUGCDetails)
 	{
 		ResultOfRequest = (FBPSteamResult)hUGCDetails.m_eResult;

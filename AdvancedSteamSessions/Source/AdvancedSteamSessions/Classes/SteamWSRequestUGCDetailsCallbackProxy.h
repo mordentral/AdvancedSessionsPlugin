@@ -16,7 +16,7 @@
 #pragma warning(disable:4265) // SteamAPI CCallback< specifically, this warning is off by default but 4.17 turned it on....
 #endif
 
-#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+#if STEAM_SDK_INSTALLED && (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX)
 
 //#include "OnlineSubsystemSteam.h"
 
@@ -72,7 +72,7 @@ class USteamWSRequestUGCDetailsCallbackProxy : public UOnlineBlueprintCallProxyB
 
 private:
 	
-#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+#if STEAM_SDK_INSTALLED && (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX)
 	// Internal callback when the operation completes, calls out to the public success/failure callbacks
 		
 	void OnUGCRequestUGCDetails(SteamUGCQueryCompleted_t *pResult, bool bIOFailure);

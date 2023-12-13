@@ -4,7 +4,7 @@
 #include "Online/CoreOnline.h"
 #include "AdvancedSteamFriendsLibrary.h"
 #include "OnlineSubSystemHeader.h"
-#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+#if STEAM_SDK_INSTALLED && (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX)
 #include "steam/isteamfriends.h"
 #endif
 //#include "OnlineSubsystemSteamTypes.h"
@@ -31,7 +31,7 @@ USteamRequestGroupOfficersCallbackProxy* USteamRequestGroupOfficersCallbackProxy
 
 void USteamRequestGroupOfficersCallbackProxy::Activate()
 {
-#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+#if STEAM_SDK_INSTALLED && (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX)
 	if (SteamAPI_Init())
 	{
 		uint64 id = *((uint64*)GroupUniqueID.UniqueNetId->GetBytes());
@@ -45,7 +45,7 @@ void USteamRequestGroupOfficersCallbackProxy::Activate()
 	OnFailure.Broadcast(EmptyArray);
 }
 
-#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+#if STEAM_SDK_INSTALLED && (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX)
 void USteamRequestGroupOfficersCallbackProxy::OnRequestGroupOfficerDetails(ClanOfficerListResponse_t *pResult, bool bIOFailure)
 {
 	TArray<FBPSteamGroupOfficer> OfficerArray;

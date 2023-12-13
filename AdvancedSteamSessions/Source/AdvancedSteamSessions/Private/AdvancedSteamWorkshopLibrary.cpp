@@ -8,7 +8,7 @@ DEFINE_LOG_CATEGORY(AdvancedSteamWorkshopLog);
 void UAdvancedSteamWorkshopLibrary::GetNumSubscribedWorkshopItems(int32 & NumberOfItems)
 {
 	NumberOfItems = 0;
-#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+#if STEAM_SDK_INSTALLED && (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX)
 
 	if (SteamAPI_Init())
 	{
@@ -31,7 +31,7 @@ TArray<FBPSteamWorkshopID> UAdvancedSteamWorkshopLibrary::GetSubscribedWorkshopI
 	TArray<FBPSteamWorkshopID> outArray;
 	NumberOfItems = 0;
 
-#if PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX
+#if STEAM_SDK_INSTALLED && (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX)
 
 	if (SteamAPI_Init())
 	{

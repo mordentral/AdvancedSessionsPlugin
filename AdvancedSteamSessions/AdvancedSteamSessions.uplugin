@@ -11,11 +11,11 @@
  
     "Modules" :
     [
-        {
-            "Name" : "AdvancedSteamSessions",
-            "Type" : "RunTime",
-	    "LoadingPhase" : "PreDefault"
-        } 
+			{
+				"Name": "AdvancedSteamSessions",
+				"Type": "RunTime",
+				"LoadingPhase": "Default"
+			} 
     ],
 	"Plugins": [
 		{
