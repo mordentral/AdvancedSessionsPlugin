@@ -24,13 +24,19 @@ UAutoLoginUserCallbackProxy* UAutoLoginUserCallbackProxy::AutoLoginUser(UObject*
 
 void UAutoLoginUserCallbackProxy::Activate()
 {
-	auto Identity = Online::GetIdentityInterface();
 
-	if (Identity.IsValid())
+	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("AutoLoginUser"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
+	
+	if (Helper.OnlineSub != nullptr)
 	{
-		DelegateHandle = Identity->AddOnLoginCompleteDelegate_Handle(LocalUserNumber, Delegate);
-		Identity->AutoLogin(LocalUserNumber);
-		return;
+		auto Identity = Helper.OnlineSub->GetIdentityInterface();
+
+		if (Identity.IsValid())
+		{
+			DelegateHandle = Identity->AddOnLoginCompleteDelegate_Handle(LocalUserNumber, Delegate);
+			Identity->AutoLogin(LocalUserNumber);
+			return;
+		}
 	}
 
 	// Fail immediately
@@ -39,38 +45,45 @@ void UAutoLoginUserCallbackProxy::Activate()
 
 void UAutoLoginUserCallbackProxy::OnCompleted(int32 LocalUserNum, bool bWasSuccessful, const FUniqueNetId& UserId, const FString& ErrorVal)
 {
-	auto Identity = Online::GetIdentityInterface();
-
-	if (Identity.IsValid())
+	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("AutoLoginUser"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
+	
+	if (Helper.OnlineSub != nullptr)
 	{
-		Identity->ClearOnLoginCompleteDelegate_Handle(LocalUserNum, DelegateHandle);
-	}
+		auto Identity = Helper.OnlineSub->GetIdentityInterface();
 
-	if(APlayerController* PController = UGameplayStatics::GetPlayerController(WorldContextObject->GetWorld(), LocalUserNum))
-	{
-		ULocalPlayer* Player = Cast<ULocalPlayer>(PController->Player);
-
-		FUniqueNetIdRepl uniqueId(UserId.AsShared());
-
-		if (Player)
+		if (Identity.IsValid())
 		{
-			Player->SetCachedUniqueNetId(uniqueId);
+			Identity->ClearOnLoginCompleteDelegate_Handle(LocalUserNum, DelegateHandle);
 		}
 
-		if (APlayerState* State = PController->PlayerState)
+		if (APlayerController* PController = UGameplayStatics::GetPlayerController(WorldContextObject->GetWorld(), LocalUserNum))
 		{
-			// Update UniqueId. See also ShowLoginUICallbackProxy.cpp
-			State->SetUniqueId(uniqueId);
+			ULocalPlayer* Player = Cast<ULocalPlayer>(PController->Player);
+
+			FUniqueNetIdRepl uniqueId(UserId.AsShared());
+
+			if (Player)
+			{
+				Player->SetCachedUniqueNetId(uniqueId);
+			}
+
+			if (APlayerState* State = PController->PlayerState)
+			{
+				// Update UniqueId. See also ShowLoginUICallbackProxy.cpp
+				State->SetUniqueId(uniqueId);
+			}
+		}
+
+
+		if (bWasSuccessful)
+		{
+			OnSuccess.Broadcast();
+		}
+		else
+		{
+			OnFailure.Broadcast();
 		}
 	}
 
-
-	if (bWasSuccessful)
-	{
-		OnSuccess.Broadcast();
-	}
-	else
-	{
-		OnFailure.Broadcast();
-	}
+	OnFailure.Broadcast();
 }

@@ -2,6 +2,7 @@
 #include "GetFriendsCallbackProxy.h"
 
 #include "Online.h"
+#include "Interfaces/OnlineFriendsInterface.h"
 #include "Interfaces/OnlinePresenceInterface.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -33,18 +34,23 @@ void UGetFriendsCallbackProxy::Activate()
 		return;
 	}
 
-	IOnlineFriendsPtr Friends = Online::GetFriendsInterface();
-	if (Friends.IsValid())
-	{	
-		ULocalPlayer* Player = Cast<ULocalPlayer>(PlayerControllerWeakPtr->Player);
+	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("GetFriends"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
+	Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
 
-		Friends->ReadFriendsList(Player->GetControllerId(), EFriendsLists::ToString((EFriendsLists::Default)), FriendListReadCompleteDelegate);
-		return;
+	if (Helper.IsValid())
+	{
+		IOnlineFriendsPtr Friends = Helper.OnlineSub->GetFriendsInterface();
+		if (Friends.IsValid())
+		{
+			ULocalPlayer* Player = Cast<ULocalPlayer>(PlayerControllerWeakPtr->Player);
+
+			Friends->ReadFriendsList(Player->GetControllerId(), EFriendsLists::ToString((EFriendsLists::Default)), FriendListReadCompleteDelegate);
+			return;
+		}
 	}
 
 	// Fail immediately
 	TArray<FBPFriendInfo> EmptyArray;
-
 	OnFailure.Broadcast(EmptyArray);
 }
 
@@ -52,7 +58,17 @@ void UGetFriendsCallbackProxy::OnReadFriendsListCompleted(int32 LocalUserNum, bo
 {
 	if (bWasSuccessful)
 	{
-		IOnlineFriendsPtr Friends = Online::GetFriendsInterface();
+		FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("GetFriends"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
+		Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
+
+		if (!Helper.IsValid())
+		{
+			TArray<FBPFriendInfo> EmptyArray;
+			OnFailure.Broadcast(EmptyArray);
+			return;
+		}
+
+		auto Friends = Helper.OnlineSub->GetFriendsInterface();
 		if (Friends.IsValid())
 		{
 			// Not actually needed anymore, plus was not being validated and causing a crash

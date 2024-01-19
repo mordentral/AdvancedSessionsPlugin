@@ -30,7 +30,7 @@ UUpdateSessionCallbackProxyAdvanced* UUpdateSessionCallbackProxyAdvanced::Update
 
 void UUpdateSessionCallbackProxyAdvanced::Activate()
 {
-	const FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("UpdateSession"), GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull));
+	const FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("UpdateSession"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
 
 	if (Helper.OnlineSub != nullptr)
 	{
@@ -105,7 +105,7 @@ void UUpdateSessionCallbackProxyAdvanced::Activate()
 
 void UUpdateSessionCallbackProxyAdvanced::OnUpdateCompleted(FName SessionName, bool bWasSuccessful)
 {
-	const FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("UpdateSessionCallback"), GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull));
+	const FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("UpdateSessionCallback"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
 
 	if (Helper.OnlineSub != nullptr)
 	{

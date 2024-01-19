@@ -40,7 +40,15 @@ void USendFriendInviteCallbackProxy::Activate()
 		return;
 	}
 
-	IOnlineFriendsPtr Friends = Online::GetFriendsInterface();
+	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("SendFriendInvite"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
+
+	if (!Helper.OnlineSub)
+	{
+		OnFailure.Broadcast();
+		return;
+	}
+
+	auto Friends = Helper.OnlineSub->GetFriendsInterface();
 	if (Friends.IsValid())
 	{	
 		ULocalPlayer* Player = Cast<ULocalPlayer>(PlayerControllerWeakPtr->Player);

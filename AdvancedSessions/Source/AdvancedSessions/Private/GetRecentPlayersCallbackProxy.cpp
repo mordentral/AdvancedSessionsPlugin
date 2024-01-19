@@ -32,7 +32,16 @@ void UGetRecentPlayersCallbackProxy::Activate()
 		return;
 	}
 
-	IOnlineFriendsPtr Friends = Online::GetFriendsInterface();
+	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("GetRecentPlayers"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
+
+	if (!Helper.OnlineSub)
+	{
+		TArray<FBPOnlineRecentPlayer> EmptyArray;
+		OnFailure.Broadcast(EmptyArray);
+		return;
+	}
+
+	IOnlineFriendsPtr Friends = Helper.OnlineSub->GetFriendsInterface();
 	if (Friends.IsValid())
 	{	
 		DelegateHandle = Friends->AddOnQueryRecentPlayersCompleteDelegate_Handle(QueryRecentPlayersCompleteDelegate);
@@ -49,7 +58,16 @@ void UGetRecentPlayersCallbackProxy::Activate()
 void UGetRecentPlayersCallbackProxy::OnQueryRecentPlayersCompleted(const FUniqueNetId &UserID, const FString &Namespace, bool bWasSuccessful, const FString& ErrorString)
 {
 	
-	IOnlineFriendsPtr Friends = Online::GetFriendsInterface();
+	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("GetRecentPlayers"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
+
+	if (!Helper.OnlineSub)
+	{
+		TArray<FBPOnlineRecentPlayer> EmptyArray;
+		OnFailure.Broadcast(EmptyArray);
+		return;
+	}
+
+	IOnlineFriendsPtr Friends = Helper.OnlineSub->GetFriendsInterface();
 	if (Friends.IsValid())
 		Friends->ClearOnQueryRecentPlayersCompleteDelegate_Handle(DelegateHandle);
 

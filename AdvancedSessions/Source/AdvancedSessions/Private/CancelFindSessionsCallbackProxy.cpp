@@ -21,7 +21,7 @@ UCancelFindSessionsCallbackProxy* UCancelFindSessionsCallbackProxy::CancelFindSe
 
 void UCancelFindSessionsCallbackProxy::Activate()
 {
-	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("CancelFindSessions"), GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull));
+	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("CancelFindSessions"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
 	Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
 
 	if (Helper.IsValid())
@@ -47,7 +47,7 @@ void UCancelFindSessionsCallbackProxy::Activate()
 
 void UCancelFindSessionsCallbackProxy::OnCompleted(bool bWasSuccessful)
 {
-	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("CancelFindSessionsCallback"), GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull));
+	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("CancelFindSessionsCallback"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
 	Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
 
 	if (Helper.IsValid())

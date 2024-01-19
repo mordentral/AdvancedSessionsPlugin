@@ -38,7 +38,7 @@ UCreateSessionCallbackProxyAdvanced* UCreateSessionCallbackProxyAdvanced::Create
 
 void UCreateSessionCallbackProxyAdvanced::Activate()
 {
-	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("CreateSession"), GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull));
+	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("CreateSession"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
 	
 	if (PlayerControllerWeakPtr.IsValid() )
 		Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
@@ -121,7 +121,7 @@ void UCreateSessionCallbackProxyAdvanced::Activate()
 
 void UCreateSessionCallbackProxyAdvanced::OnCreateCompleted(FName SessionName, bool bWasSuccessful)
 {
-	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("CreateSessionCallback"), GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull));
+	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("CreateSessionCallback"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
 	//Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
 
 	if (Helper.OnlineSub != nullptr)
@@ -159,7 +159,7 @@ void UCreateSessionCallbackProxyAdvanced::OnCreateCompleted(FName SessionName, b
 
 void UCreateSessionCallbackProxyAdvanced::OnStartCompleted(FName SessionName, bool bWasSuccessful)
 {
-	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("StartSessionCallback"), GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull));
+	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("StartSessionCallback"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
 	//Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
 
 	if (Helper.OnlineSub != nullptr)

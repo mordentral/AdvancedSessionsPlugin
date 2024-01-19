@@ -7,7 +7,7 @@ UStartSessionCallbackProxyAdvanced::UStartSessionCallbackProxyAdvanced(const FOb
 }
 
 UStartSessionCallbackProxyAdvanced* UStartSessionCallbackProxyAdvanced::StartAdvancedSession(
-	const UObject* WorldContextObject)
+	UObject* WorldContextObject)
 {
 	UStartSessionCallbackProxyAdvanced* Proxy = NewObject<UStartSessionCallbackProxyAdvanced>();
 	Proxy->WorldContextObject = WorldContextObject;
@@ -16,9 +16,7 @@ UStartSessionCallbackProxyAdvanced* UStartSessionCallbackProxyAdvanced::StartAdv
 
 void UStartSessionCallbackProxyAdvanced::Activate()
 {
-	const FOnlineSubsystemBPCallHelperAdvanced Helper(
-		TEXT("StartSession"),
-		GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull));
+	const FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("StartSession"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
 
 	if (Helper.OnlineSub != nullptr)
 	{
@@ -38,13 +36,11 @@ void UStartSessionCallbackProxyAdvanced::Activate()
 
 void UStartSessionCallbackProxyAdvanced::OnStartCompleted(FName SessionName, bool bWasSuccessful)
 {
-	const FOnlineSubsystemBPCallHelperAdvanced Helper(
-		TEXT("StartSessionCallback"),
-		GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull));
+	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("StartSessionCallback"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
 
 	if (Helper.OnlineSub != nullptr)
 	{
-		const auto Sessions = Helper.OnlineSub->GetSessionInterface();
+		auto Sessions = Helper.OnlineSub->GetSessionInterface();
 		if (Sessions.IsValid())
 		{
 			Sessions->ClearOnStartSessionCompleteDelegate_Handle(StartCompleteDelegateHandle);

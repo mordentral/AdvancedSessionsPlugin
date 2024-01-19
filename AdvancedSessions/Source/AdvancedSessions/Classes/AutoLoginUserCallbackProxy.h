@@ -51,5 +51,5 @@ private:
 	FDelegateHandle DelegateHandle;
 
 	// The world context object in which this call is taking place
-	UObject* WorldContextObject;
+	TWeakObjectPtr<UObject> WorldContextObject;
 };
