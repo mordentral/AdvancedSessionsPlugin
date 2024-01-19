@@ -346,15 +346,14 @@ UTexture2D * UAdvancedSteamFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueN
 				FMemory::Memcpy(MipData, (void*)oAvatarRGBA, Height * Width * 4);
 				PlatformData->Mips[0].BulkData.Unlock();
 
-				// Original implementation was missing this!!
-				// the hell man......
-				delete[] oAvatarRGBA;
-
 				//Setting some Parameters for the Texture and finally returning it
 				PlatformData->SetNumSlices(1);
 				Avatar->NeverStream = true;
 				//Avatar->CompressionSettings = TC_EditorIcon;
 			}
+
+			// Free RGBA buffer regardless of whether it was used or not
+			delete[] oAvatarRGBA;
 
 			Avatar->UpdateResource();
 
