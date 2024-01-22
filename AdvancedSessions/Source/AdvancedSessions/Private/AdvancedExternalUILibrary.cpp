@@ -6,9 +6,17 @@
 //General Log
 DEFINE_LOG_CATEGORY(AdvancedExternalUILog);
 
-void UAdvancedExternalUILibrary::ShowAccountUpgradeUI(const FBPUniqueNetId PlayerRequestingAccountUpgradeUI, EBlueprintResultSwitch &Result)
+void UAdvancedExternalUILibrary::ShowAccountUpgradeUI(UObject* WorldContextObject, const FBPUniqueNetId PlayerRequestingAccountUpgradeUI, EBlueprintResultSwitch &Result)
 {
-	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface();
+
+	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	if (!IsValid(World))
+	{
+		Result = EBlueprintResultSwitch::OnFailure;
+		return;
+	}
+
+	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface(World);
 
 	if (!ExternalUIInterface.IsValid())
 	{
@@ -21,10 +29,17 @@ void UAdvancedExternalUILibrary::ShowAccountUpgradeUI(const FBPUniqueNetId Playe
 	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
-void UAdvancedExternalUILibrary::ShowProfileUI(const FBPUniqueNetId PlayerViewingProfile, const FBPUniqueNetId PlayerToViewProfileOf, EBlueprintResultSwitch &Result)
+void UAdvancedExternalUILibrary::ShowProfileUI(UObject* WorldContextObject, const FBPUniqueNetId PlayerViewingProfile, const FBPUniqueNetId PlayerToViewProfileOf, EBlueprintResultSwitch &Result)
 {
 
-	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface();
+	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	if (!IsValid(World))
+	{
+		Result = EBlueprintResultSwitch::OnFailure;
+		return;
+	}
+
+	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface(World);
 
 	if (!ExternalUIInterface.IsValid())
 	{
@@ -39,9 +54,16 @@ void UAdvancedExternalUILibrary::ShowProfileUI(const FBPUniqueNetId PlayerViewin
 
 
 
-void UAdvancedExternalUILibrary::ShowWebURLUI(FString URLToShow, EBlueprintResultSwitch &Result, TArray<FString>& AllowedDomains, bool bEmbedded, bool bShowBackground, bool bShowCloseButton, int32 OffsetX, int32 OffsetY, int32 SizeX, int32 SizeY)
+void UAdvancedExternalUILibrary::ShowWebURLUI(UObject* WorldContextObject, FString URLToShow, EBlueprintResultSwitch &Result, TArray<FString>& AllowedDomains, bool bEmbedded, bool bShowBackground, bool bShowCloseButton, int32 OffsetX, int32 OffsetY, int32 SizeX, int32 SizeY)
 {
-	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface();
+	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	if (!IsValid(World))
+	{
+		Result = EBlueprintResultSwitch::OnFailure;
+		return;
+	}
+
+	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface(World);
 
 	if (!ExternalUIInterface.IsValid())
 	{
@@ -67,9 +89,15 @@ void UAdvancedExternalUILibrary::ShowWebURLUI(FString URLToShow, EBlueprintResul
 	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
-void UAdvancedExternalUILibrary::CloseWebURLUI()
+void UAdvancedExternalUILibrary::CloseWebURLUI(UObject* WorldContextObject)
 {
-	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface();
+	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	if (!IsValid(World))
+	{
+		return;
+	}
+
+	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface(World);
 
 	if (!ExternalUIInterface.IsValid())
 	{
@@ -80,9 +108,16 @@ void UAdvancedExternalUILibrary::CloseWebURLUI()
 	ExternalUIInterface->CloseWebURL();
 }
 
-void UAdvancedExternalUILibrary::ShowLeaderBoardUI(FString LeaderboardName, EBlueprintResultSwitch &Result)
+void UAdvancedExternalUILibrary::ShowLeaderBoardUI(UObject* WorldContextObject, FString LeaderboardName, EBlueprintResultSwitch &Result)
 {
-	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface();
+	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	if (!IsValid(World))
+	{
+		Result = EBlueprintResultSwitch::OnFailure;
+		return;
+	}
+
+	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface(World);
 
 	if (!ExternalUIInterface.IsValid())
 	{
@@ -97,7 +132,7 @@ void UAdvancedExternalUILibrary::ShowLeaderBoardUI(FString LeaderboardName, EBlu
 }
 
 
-void UAdvancedExternalUILibrary::ShowInviteUI(APlayerController *PlayerController, EBlueprintResultSwitch &Result)
+void UAdvancedExternalUILibrary::ShowInviteUI(UObject* WorldContextObject, APlayerController *PlayerController, EBlueprintResultSwitch &Result)
 {
 	if (!PlayerController)
 	{
@@ -106,7 +141,14 @@ void UAdvancedExternalUILibrary::ShowInviteUI(APlayerController *PlayerControlle
 		return;
 	}
 
-	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface();
+	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	if (!IsValid(World))
+	{
+		Result = EBlueprintResultSwitch::OnFailure;
+		return;
+	}
+
+	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface(World);
 
 	if (!ExternalUIInterface.IsValid())
 	{
@@ -128,7 +170,7 @@ void UAdvancedExternalUILibrary::ShowInviteUI(APlayerController *PlayerControlle
 	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
-void UAdvancedExternalUILibrary::ShowFriendsUI(APlayerController *PlayerController, EBlueprintResultSwitch &Result)
+void UAdvancedExternalUILibrary::ShowFriendsUI(UObject* WorldContextObject, APlayerController *PlayerController, EBlueprintResultSwitch &Result)
 {
 	if (!PlayerController)
 	{
@@ -137,7 +179,14 @@ void UAdvancedExternalUILibrary::ShowFriendsUI(APlayerController *PlayerControll
 		return;
 	}
 
-	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface();
+	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	if (!IsValid(World))
+	{
+		Result = EBlueprintResultSwitch::OnFailure;
+		return;
+	}
+
+	IOnlineExternalUIPtr ExternalUIInterface = Online::GetExternalUIInterface(World);
 
 	if (!ExternalUIInterface.IsValid())
 	{

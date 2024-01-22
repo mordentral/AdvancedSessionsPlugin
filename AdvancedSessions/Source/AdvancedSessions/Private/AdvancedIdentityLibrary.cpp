@@ -5,7 +5,7 @@
 DEFINE_LOG_CATEGORY(AdvancedIdentityLog);
 
 
-void UAdvancedIdentityLibrary::GetPlayerAuthToken(APlayerController * PlayerController, FString & AuthToken, EBlueprintResultSwitch &Result)
+void UAdvancedIdentityLibrary::GetPlayerAuthToken(UObject* WorldContextObject, APlayerController * PlayerController, FString & AuthToken, EBlueprintResultSwitch &Result)
 {
 	if (!PlayerController)
 	{
@@ -23,7 +23,14 @@ void UAdvancedIdentityLibrary::GetPlayerAuthToken(APlayerController * PlayerCont
 		return;
 	}
 
-	IOnlineIdentityPtr IdentityInterface = Online::GetIdentityInterface();
+	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	if (!IsValid(World))
+	{
+		Result = EBlueprintResultSwitch::OnFailure;
+		return;
+	}
+
+	IOnlineIdentityPtr IdentityInterface = Online::GetIdentityInterface(World);
 
 	if (!IdentityInterface.IsValid())
 	{
@@ -36,15 +43,21 @@ void UAdvancedIdentityLibrary::GetPlayerAuthToken(APlayerController * PlayerCont
 	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
-void UAdvancedIdentityLibrary::GetPlayerNickname(const FBPUniqueNetId & UniqueNetID, FString & PlayerNickname)
-{
+void UAdvancedIdentityLibrary::GetPlayerNickname(UObject* WorldContextObject, const FBPUniqueNetId & UniqueNetID, FString & PlayerNickname)
+{ 
 	if (!UniqueNetID.IsValid())
 	{
 		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetPlayerNickname was passed a bad player uniquenetid!"));
 		return;
 	}
 
-	IOnlineIdentityPtr IdentityInterface = Online::GetIdentityInterface();
+	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	if (!IsValid(World))
+	{
+		return;
+	}
+
+	IOnlineIdentityPtr IdentityInterface = Online::GetIdentityInterface(World);
 
 	if (!IdentityInterface.IsValid())
 	{
@@ -55,7 +68,7 @@ void UAdvancedIdentityLibrary::GetPlayerNickname(const FBPUniqueNetId & UniqueNe
 }
 
 
-void UAdvancedIdentityLibrary::GetLoginStatus(const FBPUniqueNetId & UniqueNetID, EBPLoginStatus & LoginStatus, EBlueprintResultSwitch &Result)
+void UAdvancedIdentityLibrary::GetLoginStatus(UObject* WorldContextObject, const FBPUniqueNetId & UniqueNetID, EBPLoginStatus & LoginStatus, EBlueprintResultSwitch &Result)
 {
 	if (!UniqueNetID.IsValid())
 	{
@@ -64,7 +77,14 @@ void UAdvancedIdentityLibrary::GetLoginStatus(const FBPUniqueNetId & UniqueNetID
 		return;
 	}
 
-	IOnlineIdentityPtr IdentityInterface = Online::GetIdentityInterface();
+	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	if (!IsValid(World))
+	{
+		Result = EBlueprintResultSwitch::OnFailure;
+		return;
+	}
+
+	IOnlineIdentityPtr IdentityInterface = Online::GetIdentityInterface(World);
 
 	if (!IdentityInterface.IsValid())
 	{
@@ -78,9 +98,17 @@ void UAdvancedIdentityLibrary::GetLoginStatus(const FBPUniqueNetId & UniqueNetID
 }
 
 
-void UAdvancedIdentityLibrary::GetAllUserAccounts(TArray<FBPUserOnlineAccount> & AccountInfos, EBlueprintResultSwitch &Result)
+void UAdvancedIdentityLibrary::GetAllUserAccounts(UObject* WorldContextObject, TArray<FBPUserOnlineAccount> & AccountInfos, EBlueprintResultSwitch &Result)
 {
-	IOnlineIdentityPtr IdentityInterface = Online::GetIdentityInterface();
+
+	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	if (!IsValid(World))
+	{
+		Result = EBlueprintResultSwitch::OnFailure;
+		return;
+	}
+
+	IOnlineIdentityPtr IdentityInterface = Online::GetIdentityInterface(World);
 
 	if (!IdentityInterface.IsValid())
 	{
@@ -99,9 +127,17 @@ void UAdvancedIdentityLibrary::GetAllUserAccounts(TArray<FBPUserOnlineAccount> &
 	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
-void UAdvancedIdentityLibrary::GetUserAccount(const FBPUniqueNetId & UniqueNetId, FBPUserOnlineAccount & AccountInfo, EBlueprintResultSwitch &Result)
+void UAdvancedIdentityLibrary::GetUserAccount(UObject* WorldContextObject, const FBPUniqueNetId & UniqueNetId, FBPUserOnlineAccount & AccountInfo, EBlueprintResultSwitch &Result)
 {
-	IOnlineIdentityPtr IdentityInterface = Online::GetIdentityInterface();
+
+	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	if (!IsValid(World))
+	{
+		Result = EBlueprintResultSwitch::OnFailure;
+		return;
+	}
+
+	IOnlineIdentityPtr IdentityInterface = Online::GetIdentityInterface(World);
 
 	if(!UniqueNetId.IsValid())
 	{

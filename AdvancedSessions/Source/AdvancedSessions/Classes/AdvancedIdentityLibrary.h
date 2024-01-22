@@ -28,26 +28,26 @@ public:
 	//********* Identity Functions *************//
 
 	// Get the login status of a local player
-	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedIdentity", meta = (ExpandEnumAsExecs = "Result"))
-	static void GetLoginStatus(const FBPUniqueNetId & UniqueNetID, EBPLoginStatus & LoginStatus, EBlueprintResultSwitch &Result);
+	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedIdentity", meta = (ExpandEnumAsExecs = "Result", WorldContext = "WorldContextObject"))
+	static void GetLoginStatus(UObject* WorldContextObject, const FBPUniqueNetId & UniqueNetID, EBPLoginStatus & LoginStatus, EBlueprintResultSwitch &Result);
 
 	// Get the auth token for a local player
-	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedIdentity", meta = (ExpandEnumAsExecs = "Result"))
-	static void GetPlayerAuthToken(APlayerController * PlayerController, FString & AuthToken, EBlueprintResultSwitch &Result);
+	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedIdentity", meta = (ExpandEnumAsExecs = "Result", WorldContext = "WorldContextObject"))
+	static void GetPlayerAuthToken(UObject* WorldContextObject, APlayerController * PlayerController, FString & AuthToken, EBlueprintResultSwitch &Result);
 
 	// Get a players nickname
-	UFUNCTION(BlueprintPure, Category = "Online|AdvancedIdentity")
-	static void GetPlayerNickname(const FBPUniqueNetId & UniqueNetID, FString & PlayerNickname);
+	UFUNCTION(BlueprintPure, Category = "Online|AdvancedIdentity", meta = (WorldContext = "WorldContextObject"))
+	static void GetPlayerNickname(UObject* WorldContextObject, const FBPUniqueNetId & UniqueNetID, FString & PlayerNickname);
 
 	//********* User Account Functions *************//
 
 	// Get a users account
-	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedIdentity|UserAccount", meta = (ExpandEnumAsExecs = "Result"))
-	static void GetUserAccount(const FBPUniqueNetId & UniqueNetId, FBPUserOnlineAccount & AccountInfo, EBlueprintResultSwitch &Result);
+	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedIdentity|UserAccount", meta = (ExpandEnumAsExecs = "Result", WorldContext = "WorldContextObject"))
+	static void GetUserAccount(UObject* WorldContextObject, const FBPUniqueNetId & UniqueNetId, FBPUserOnlineAccount & AccountInfo, EBlueprintResultSwitch &Result);
 
 	// Get all known users accounts
-	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedIdentity|UserAccount", meta = (ExpandEnumAsExecs = "Result"))
-	static void GetAllUserAccounts(TArray<FBPUserOnlineAccount> & AccountInfos, EBlueprintResultSwitch &Result);
+	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedIdentity|UserAccount", meta = (ExpandEnumAsExecs = "Result", WorldContext = "WorldContextObject"))
+	static void GetAllUserAccounts(UObject* WorldContextObject, TArray<FBPUserOnlineAccount> & AccountInfos, EBlueprintResultSwitch &Result);
 
 	// Get a user account access token
 	UFUNCTION(BlueprintPure, Category = "Online|AdvancedIdentity|UserAccount")
