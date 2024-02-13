@@ -172,6 +172,10 @@ public:
 		UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal Unique Net ID", CompactNodeTitle = "==", Keywords = "== equal"), Category = "Online|AdvancedSessions|PlayerInfo|PlayerID")
 		static bool EqualEqual_UNetIDUnetID(const FBPUniqueNetId &A, const FBPUniqueNetId &B);
 
+		/** Converts a FBPUniqueNetID into a FUniqueNetID_Repl */
+		UFUNCTION(BlueprintPure, meta = (DisplayName = "ToUniqueNetIDRepl (Unique Net ID)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Online|AdvancedSessions|PlayerInfo|PlayerID")
+			static FUniqueNetIdRepl Conv_BPUniqueIDToUniqueNetIDRepl(const FBPUniqueNetId& InUniqueID);
+
 		// Check if a UniqueNetId is a friend
 		UFUNCTION(BlueprintPure, Category = "Online|AdvancedSessions|UniqueNetId")
 		static void UniqueNetIdToString(const FBPUniqueNetId &UniqueNetId, FString &String);
