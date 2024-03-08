@@ -115,8 +115,8 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 			case EBPServerPresenceSearchType::ClientServersOnly:
 			{
 				tem.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
-
-				if (bSearchLobbies)
+				
+				if (bSearchLobbies && !IOnlineSubsystem::DoesInstanceExist("STEAM"))
 					tem.Set(SEARCH_LOBBIES, true, EOnlineComparisonOp::Equals);
 			}
 			break;
@@ -142,7 +142,7 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 
 				tem.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
 
-				if (bSearchLobbies)
+				if (bSearchLobbies && !IOnlineSubsystem::DoesInstanceExist("STEAM"))
 					tem.Set(SEARCH_LOBBIES, true, EOnlineComparisonOp::Equals);
 
 				//DedicatedOnly.Set(SEARCH_DEDICATED_ONLY, true, EOnlineComparisonOp::Equals);
