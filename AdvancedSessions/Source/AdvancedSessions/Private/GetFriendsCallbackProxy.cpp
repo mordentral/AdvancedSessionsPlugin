@@ -81,7 +81,7 @@ void UGetFriendsCallbackProxy::OnReadFriendsListCompleted(int32 LocalUserNum, bo
 				for (int32 i = 0; i < FriendList.Num(); i++)
 				{
 					FBPFriendInfo BPF;
-					FOnlineUserPresence pres = FriendList[i]->GetPresence();
+					const FOnlineUserPresence& pres = FriendList[i]->GetPresence();
 					BPF.OnlineState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
 					BPF.DisplayName = FriendList[i]->GetDisplayName();
 					BPF.RealName = FriendList[i]->GetRealName();
@@ -92,7 +92,9 @@ void UGetFriendsCallbackProxy::OnReadFriendsListCompleted(int32 LocalUserNum, bo
 					BPF.PresenceInfo.bHasVoiceSupport = pres.bHasVoiceSupport;
 					BPF.PresenceInfo.bIsPlaying = pres.bIsPlaying;
 					BPF.PresenceInfo.PresenceState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
-					BPF.PresenceInfo.StatusString = pres.Status.StatusStr;
+					
+					// #TODO: Check back in on this in shipping, epic is missing the UTF8_TO_TCHAR call on converting this and its making an invalid string
+					//BPF.PresenceInfo.StatusString = pres.Status.StatusStr;
 					BPF.PresenceInfo.bIsJoinable = pres.bIsJoinable;
 					BPF.PresenceInfo.bIsPlayingThisGame = pres.bIsPlayingThisGame;
 
