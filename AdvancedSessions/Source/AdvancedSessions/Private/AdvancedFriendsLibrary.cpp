@@ -247,28 +247,33 @@ void UAdvancedFriendsLibrary::GetStoredFriendsList(APlayerController *PlayerCont
 
 
 	TArray< TSharedRef<FOnlineFriend> > FriendList;
-	FriendsInterface->GetFriendsList(Player->GetControllerId(), EFriendsLists::ToString((EFriendsLists::Default)), FriendList);
-
-	for (int32 i = 0; i < FriendList.Num(); i++)
+	if (FriendsInterface->GetFriendsList(Player->GetControllerId(), EFriendsLists::ToString((EFriendsLists::Default)), FriendList))
 	{
-		TSharedRef<FOnlineFriend> Friend = FriendList[i];
-		FBPFriendInfo BPF;
-		FOnlineUserPresence pres = Friend->GetPresence();
+		for (int32 i = 0; i < FriendList.Num(); i++)
+		{
+			FBPFriendInfo BPF;
+			FOnlineUserPresence pres = FriendList[i]->GetPresence();
 
-		BPF.OnlineState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
-		BPF.DisplayName = Friend->GetDisplayName();
-		BPF.RealName = Friend->GetRealName();
-		BPF.UniqueNetId.SetUniqueNetId(Friend->GetUserId());
-		BPF.bIsPlayingSameGame = pres.bIsPlayingThisGame;
+			BPF.OnlineState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
+			BPF.DisplayName = FriendList[i]->GetDisplayName();
+			BPF.RealName = FriendList[i]->GetRealName();
+			BPF.UniqueNetId.SetUniqueNetId(FriendList[i]->GetUserId());
+			BPF.bIsPlayingSameGame = pres.bIsPlayingThisGame;
 
-		BPF.PresenceInfo.bIsOnline = pres.bIsOnline;
-		BPF.PresenceInfo.bHasVoiceSupport = pres.bHasVoiceSupport;
-		BPF.PresenceInfo.bIsPlaying = pres.bIsPlaying;
-		BPF.PresenceInfo.PresenceState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
-		BPF.PresenceInfo.StatusString = pres.Status.StatusStr;
-		BPF.PresenceInfo.bIsJoinable = pres.bIsJoinable;
-		BPF.PresenceInfo.bIsPlayingThisGame = pres.bIsPlayingThisGame;
+			BPF.PresenceInfo.bIsOnline = pres.bIsOnline;
+			BPF.PresenceInfo.bHasVoiceSupport = pres.bHasVoiceSupport;
+			BPF.PresenceInfo.bIsPlaying = pres.bIsPlaying;
+			BPF.PresenceInfo.PresenceState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
+			BPF.PresenceInfo.StatusString = pres.Status.StatusStr;
+			BPF.PresenceInfo.bIsJoinable = pres.bIsJoinable;
+			BPF.PresenceInfo.bIsPlayingThisGame = pres.bIsPlayingThisGame;
 
-		FriendsList.Add(BPF);
+			FriendsList.Add(BPF);
+		}
+
+		return;
 	}
+
+	UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetFriendsList Failed to get any friends!"));
+	return;
 }

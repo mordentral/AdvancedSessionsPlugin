@@ -76,29 +76,29 @@ void UGetFriendsCallbackProxy::OnReadFriendsListCompleted(int32 LocalUserNum, bo
 
 			TArray<FBPFriendInfo> FriendsListOut;
 			TArray< TSharedRef<FOnlineFriend> > FriendList;
-			Friends->GetFriendsList(LocalUserNum, ListName, FriendList);
-
-			for (int32 i = 0; i < FriendList.Num(); i++)
+			if (Friends->GetFriendsList(LocalUserNum, ListName, FriendList))
 			{
-				TSharedRef<FOnlineFriend> Friend = FriendList[i];
-				FBPFriendInfo BPF;
-				FOnlineUserPresence pres = Friend->GetPresence();
-				BPF.OnlineState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
-				BPF.DisplayName = Friend->GetDisplayName();
-				BPF.RealName = Friend->GetRealName();
-				BPF.UniqueNetId.SetUniqueNetId(Friend->GetUserId());
-				BPF.bIsPlayingSameGame = pres.bIsPlayingThisGame;
+				for (int32 i = 0; i < FriendList.Num(); i++)
+				{
+					FBPFriendInfo BPF;
+					FOnlineUserPresence pres = FriendList[i]->GetPresence();
+					BPF.OnlineState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
+					BPF.DisplayName = FriendList[i]->GetDisplayName();
+					BPF.RealName = FriendList[i]->GetRealName();
+					BPF.UniqueNetId.SetUniqueNetId(FriendList[i]->GetUserId());
+					BPF.bIsPlayingSameGame = pres.bIsPlayingThisGame;
 
-				BPF.PresenceInfo.bIsOnline = pres.bIsOnline;
-				BPF.PresenceInfo.bHasVoiceSupport = pres.bHasVoiceSupport;
-				BPF.PresenceInfo.bIsPlaying = pres.bIsPlaying;
-				BPF.PresenceInfo.PresenceState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
-				BPF.PresenceInfo.StatusString = pres.Status.StatusStr;
-				BPF.PresenceInfo.bIsJoinable = pres.bIsJoinable;
-				BPF.PresenceInfo.bIsPlayingThisGame = pres.bIsPlayingThisGame;
+					BPF.PresenceInfo.bIsOnline = pres.bIsOnline;
+					BPF.PresenceInfo.bHasVoiceSupport = pres.bHasVoiceSupport;
+					BPF.PresenceInfo.bIsPlaying = pres.bIsPlaying;
+					BPF.PresenceInfo.PresenceState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
+					BPF.PresenceInfo.StatusString = pres.Status.StatusStr;
+					BPF.PresenceInfo.bIsJoinable = pres.bIsJoinable;
+					BPF.PresenceInfo.bIsPlayingThisGame = pres.bIsPlayingThisGame;
 
 
-				FriendsListOut.Add(BPF);
+					FriendsListOut.Add(BPF);
+				}
 			}
 
 			OnSuccess.Broadcast(FriendsListOut);
