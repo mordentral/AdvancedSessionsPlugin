@@ -15,7 +15,7 @@
 #pragma warning(disable:4265) // SteamAPI CCallback< specifically, this warning is off by default but 4.17 turned it on....
 #endif
 
-#if STEAM_SDK_INSTALLED && (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX)
+#if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 
 //#include "OnlineSubsystemSteam.h"
 
@@ -87,7 +87,7 @@ class USteamRequestGroupOfficersCallbackProxy : public UOnlineBlueprintCallProxy
 
 private:
 
-#if STEAM_SDK_INSTALLED && (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX)
+#if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 	void OnRequestGroupOfficerDetails( ClanOfficerListResponse_t *pResult, bool bIOFailure);
 	CCallResult<USteamRequestGroupOfficersCallbackProxy, ClanOfficerListResponse_t> m_callResultGroupOfficerRequestDetails;
 

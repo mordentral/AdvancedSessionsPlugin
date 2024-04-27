@@ -2,7 +2,7 @@
 
 #include "SteamWSRequestUGCDetailsCallbackProxy.h"
 #include "OnlineSubSystemHeader.h"
-#if STEAM_SDK_INSTALLED && (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX)
+#if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 #include "steam/isteamugc.h"
 #endif
 
@@ -25,7 +25,7 @@ USteamWSRequestUGCDetailsCallbackProxy* USteamWSRequestUGCDetailsCallbackProxy::
 
 void USteamWSRequestUGCDetailsCallbackProxy::Activate()
 {
-#if STEAM_SDK_INSTALLED && (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX)
+#if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 	if (SteamAPI_Init())
 	{
 		// #TODO: Support arrays instead in the future?
@@ -49,7 +49,7 @@ void USteamWSRequestUGCDetailsCallbackProxy::Activate()
 	OnFailure.Broadcast(FBPSteamWorkshopItemDetails());
 }
 
-#if STEAM_SDK_INSTALLED && (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX)
+#if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 void USteamWSRequestUGCDetailsCallbackProxy::OnUGCRequestUGCDetails(SteamUGCQueryCompleted_t *pResult, bool bIOFailure)
 {	
 	//FOnlineSubsystemSteam* SteamSubsystem = (FOnlineSubsystemSteam*)(IOnlineSubsystem::Get(STEAM_SUBSYSTEM));
