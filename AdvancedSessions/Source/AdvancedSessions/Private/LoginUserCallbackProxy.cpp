@@ -33,7 +33,7 @@ void ULoginUserCallbackProxy::Activate()
 		return;
 	}
 
-	ULocalPlayer* Player = Cast<ULocalPlayer>(PlayerControllerWeakPtr->Player);
+	ULocalPlayer* Player = Cast<ULocalPlayer>(PlayerControllerWeakPtr->GetLocalPlayer());
 
 	if (!Player)
 	{
@@ -71,7 +71,7 @@ void ULoginUserCallbackProxy::OnCompleted(int32 LocalUserNum, bool bWasSuccessfu
 {
 	if (PlayerControllerWeakPtr.IsValid())
 	{
-		ULocalPlayer* Player = Cast<ULocalPlayer>(PlayerControllerWeakPtr->Player);
+		ULocalPlayer* Player = Cast<ULocalPlayer>(PlayerControllerWeakPtr->GetLocalPlayer());
 
 		FUniqueNetIdRepl UniqueID(UserId.AsShared());
 
