@@ -20,6 +20,37 @@ UAdvancedFriendsGameInstance::UAdvancedFriendsGameInstance(const FObjectInitiali
 {
 }
 
+void UAdvancedFriendsGameInstance::OnSessionUserInviteAccepted(const bool bWasSuccessful, const int32 ControllerId, FUniqueNetIdPtr UserId, const FOnlineSessionSearchResult& InviteResult)
+{
+	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(GetWorld());
+	if (SessionInterface.IsValid())
+	{
+		SessionInterface->ClearOnJoinSessionCompleteDelegate_Handle(OnJoinSessionCompleteDelegateHandle);
+		OnJoinSessionCompleteDelegateHandle = SessionInterface->AddOnJoinSessionCompleteDelegate_Handle(
+			FOnJoinSessionCompleteDelegate::CreateUObject(this, &UAdvancedFriendsGameInstance::OnJoinSessionComplete));
+
+		SessionInterface->JoinSession(0, NAME_GameSession, InviteResult);
+	}
+	UE_LOG(AdvancedFriendsInterfaceLog, Log, TEXT("Called Join Session for Steam Friends List UI InviteResults: %s, UserId: %s"), *InviteResult.GetSessionIdStr(), *UserId->ToString());
+}
+
+void UAdvancedFriendsGameInstance::OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result)
+{
+	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(GetWorld());
+	if (SessionInterface.IsValid())
+	{
+		FString ConnectInfo;
+		if (SessionInterface->GetResolvedConnectString(NAME_GameSession, ConnectInfo))
+		{
+			APlayerController* PlayerController = GetFirstLocalPlayerController();
+			if (PlayerController)
+			{
+				PlayerController->ClientTravel(ConnectInfo, ETravelType::TRAVEL_Absolute);
+			}
+		}
+	}
+}
+
 void UAdvancedFriendsGameInstance::Shutdown()
 {
 	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(GetWorld());
@@ -34,6 +65,7 @@ void UAdvancedFriendsGameInstance::Shutdown()
 		// Clear all of the delegate handles here
 		SessionInterface->ClearOnSessionUserInviteAcceptedDelegate_Handle(SessionInviteAcceptedDelegateHandle);
 		SessionInterface->ClearOnSessionInviteReceivedDelegate_Handle(SessionInviteReceivedDelegateHandle);
+		SessionInterface->ClearOnJoinSessionCompleteDelegate_Handle(OnJoinSessionCompleteDelegateHandle);
 	}
 
 
@@ -80,6 +112,9 @@ void UAdvancedFriendsGameInstance::Init()
 		SessionInviteAcceptedDelegateHandle = SessionInterface->AddOnSessionUserInviteAcceptedDelegate_Handle(SessionInviteAcceptedDelegate);
 
 		SessionInviteReceivedDelegateHandle = SessionInterface->AddOnSessionInviteReceivedDelegate_Handle(SessionInviteReceivedDelegate);
+		
+		// Custom steam join game delegate
+		SessionInterface->OnSessionUserInviteAcceptedDelegates.AddUObject(this, &UAdvancedFriendsGameInstance::OnSessionUserInviteAccepted);
 	}
 	else
 	{
