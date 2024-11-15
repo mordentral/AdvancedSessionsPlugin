@@ -14,7 +14,7 @@
 			{
 				"Name": "AdvancedSteamSessions",
 				"Type": "RunTime",
-				"LoadingPhase": "Default"
+				"LoadingPhase": "PostDefault"
 			} 
     ],
 	"Plugins": [
