@@ -86,7 +86,6 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 			/** #define SEARCH_SWITCH_SELECTION_METHOD FName(TEXT("SWITCHSELECTIONMETHOD"))*/
 			/** Whether to use lobbies vs sessions */
 			/** #define SEARCH_LOBBIES FName(TEXT("LOBBYSEARCH"))*/
-
 			if (bEmptyServersOnly)
 				tem.Set(SEARCH_EMPTY_SERVERS_ONLY, true, EOnlineComparisonOp::Equals);
 
@@ -225,6 +224,14 @@ void UFindSessionsCallbackProxyAdvanced::OnCompleted(bool bSuccess)
 
 					FBlueprintSessionResult BPResult;
 					BPResult.OnlineResult = Result;
+
+					// Temp for 5.5, force the values if epic isn't setting them, lobbies should always have these true
+					if (ServerSearchType != EBPServerPresenceSearchType::DedicatedServersOnly )
+					{
+						BPResult.OnlineResult.Session.SessionSettings.bUseLobbiesIfAvailable = true;
+						BPResult.OnlineResult.Session.SessionSettings.bUsesPresence = true;
+					}
+
 					SessionSearchResults.AddUnique(BPResult);
 				}
 				if (!bRunSecondSearch)

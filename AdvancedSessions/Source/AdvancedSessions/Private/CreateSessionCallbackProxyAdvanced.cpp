@@ -13,7 +13,7 @@ UCreateSessionCallbackProxyAdvanced::UCreateSessionCallbackProxyAdvanced(const F
 {
 }
 
-UCreateSessionCallbackProxyAdvanced* UCreateSessionCallbackProxyAdvanced::CreateAdvancedSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair>& ExtraSettings, class APlayerController* PlayerController, int32 PublicConnections, int32 PrivateConnections, bool bUseLAN, bool bAllowInvites, bool bIsDedicatedServer, bool bUsePresence, bool bUseLobbiesIfAvailable, bool bAllowJoinViaPresence, bool bAllowJoinViaPresenceFriendsOnly, bool bAntiCheatProtected, bool bUsesStats, bool bShouldAdvertise, bool bUseLobbiesVoiceChatIfAvailable, bool bStartAfterCreate)
+UCreateSessionCallbackProxyAdvanced* UCreateSessionCallbackProxyAdvanced::CreateAdvancedSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair>& ExtraSettings, class APlayerController* PlayerController, int32 PublicConnections, int32 PrivateConnections, bool bUseLAN, bool bAllowInvites, bool bIsDedicatedServer, /*bool bUsePresence,*/ bool bUseLobbiesIfAvailable, bool bAllowJoinViaPresence, bool bAllowJoinViaPresenceFriendsOnly, bool bAntiCheatProtected, bool bUsesStats, bool bShouldAdvertise, bool bUseLobbiesVoiceChatIfAvailable, bool bStartAfterCreate)
 {
 	UCreateSessionCallbackProxyAdvanced* Proxy = NewObject<UCreateSessionCallbackProxyAdvanced>();
 	Proxy->PlayerControllerWeakPtr = PlayerController;
@@ -24,7 +24,7 @@ UCreateSessionCallbackProxyAdvanced* UCreateSessionCallbackProxyAdvanced::Create
 	Proxy->bAllowInvites = bAllowInvites;
 	Proxy->ExtraSettings = ExtraSettings;
 	Proxy->bDedicatedServer = bIsDedicatedServer;
-	Proxy->bUsePresence = bUsePresence;
+	/*Proxy->bUsePresence = bUsePresence;*/
 	Proxy->bUseLobbiesIfAvailable = bUseLobbiesIfAvailable;
 	Proxy->bAllowJoinViaPresence = bAllowJoinViaPresence;
 	Proxy->bAllowJoinViaPresenceFriendsOnly = bAllowJoinViaPresenceFriendsOnly;
@@ -61,13 +61,13 @@ void UCreateSessionCallbackProxyAdvanced::Activate()
 
 			if (bDedicatedServer)
 			{
-				Settings.bUsesPresence = false;
 				Settings.bUseLobbiesIfAvailable = false;
+				Settings.bUsesPresence = false;
 			}
 			else
 			{
-				Settings.bUsesPresence = bUsePresence;
 				Settings.bUseLobbiesIfAvailable = bUseLobbiesIfAvailable;
+				Settings.bUsesPresence = bUseLobbiesIfAvailable;
 			}
 
 			Settings.bUseLobbiesVoiceChatIfAvailable = bUseLobbiesIfAvailable ? bUseLobbiesVoiceChatIfAvailable : false;

@@ -27,9 +27,20 @@ void UAdvancedFriendsGameInstance::OnSessionUserInviteAccepted(const bool bWasSu
 	{
 		SessionInterface->ClearOnJoinSessionCompleteDelegate_Handle(OnJoinSessionCompleteDelegateHandle);
 		OnJoinSessionCompleteDelegateHandle = SessionInterface->AddOnJoinSessionCompleteDelegate_Handle(
-			FOnJoinSessionCompleteDelegate::CreateUObject(this, &UAdvancedFriendsGameInstance::OnJoinSessionComplete));
+		FOnJoinSessionCompleteDelegate::CreateUObject(this, &UAdvancedFriendsGameInstance::OnJoinSessionComplete));
 
-		SessionInterface->JoinSession(0, NAME_GameSession, InviteResult);
+		// Temp for 5.5, they aren't filling in the struct correctly
+		if (!InviteResult.Session.SessionSettings.bIsDedicated)
+		{
+			FOnlineSessionSearchResult ModResult = InviteResult;
+			ModResult.Session.SessionSettings.bUsesPresence = true;
+			ModResult.Session.SessionSettings.bUseLobbiesIfAvailable = true;
+			SessionInterface->JoinSession(0, NAME_GameSession, ModResult);
+		}
+		else
+		{
+			SessionInterface->JoinSession(0, NAME_GameSession, InviteResult);
+		}
 	}
 	UE_LOG(AdvancedFriendsInterfaceLog, Log, TEXT("Called Join Session for Steam Friends List UI InviteResults: %s, UserId: %s"), *InviteResult.GetSessionIdStr(), *UserId->ToString());
 }
@@ -306,6 +317,13 @@ void UAdvancedFriendsGameInstance::OnSessionInviteReceivedMaster(const FUniqueNe
 			}
 		}
 
+		// Temp for 5.5, they aren't filling in the struct correctly
+		if (!BluePrintResult.OnlineResult.Session.SessionSettings.bIsDedicated)
+		{
+			BluePrintResult.OnlineResult.Session.SessionSettings.bUsesPresence = true;
+			BluePrintResult.OnlineResult.Session.SessionSettings.bUseLobbiesIfAvailable = true;
+		}
+
 		OnSessionInviteReceived(LocalPlayer, PInviting, AppId, BluePrintResult);
 
 		//IAdvancedFriendsInterface* TheInterface = NULL;
@@ -341,6 +359,13 @@ void UAdvancedFriendsGameInstance::OnSessionInviteAcceptedMaster(const bool bWas
 
 			FBPUniqueNetId PInvited;
 			PInvited.SetUniqueNetId(PersonInvited);
+
+			// Temp for 5.5, they aren't filling in the struct correctly
+			if (!BluePrintResult.OnlineResult.Session.SessionSettings.bIsDedicated)
+			{
+				BluePrintResult.OnlineResult.Session.SessionSettings.bUsesPresence = true;
+				BluePrintResult.OnlineResult.Session.SessionSettings.bUseLobbiesIfAvailable = true;
+			}
 
 			OnSessionInviteAccepted(LocalPlayer,PInvited, BluePrintResult);
 
