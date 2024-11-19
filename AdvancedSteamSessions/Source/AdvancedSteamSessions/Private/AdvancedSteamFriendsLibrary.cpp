@@ -3,6 +3,7 @@
 #include "OnlineSubSystemHeader.h"
 #include "Engine/Texture.h"
 #include "Engine/Texture2D.h"
+#include "TextureResource.h"
 #include "PixelFormat.h"
 
 //General Log
