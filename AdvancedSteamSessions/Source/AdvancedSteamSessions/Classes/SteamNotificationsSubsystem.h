@@ -38,14 +38,27 @@ public:
 		void Initialize(USteamNotificationsSubsystem* MyParent)
 		{
 			ParentSubsystem = MyParent;
+
+#if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
+			OnExternalUITriggeredCallback.Register(this, &USteamNotificationsSubsystem::cSteamEventsStore::OnExternalUITriggered);
+#endif
+		}
+
+		void UnInitialize(USteamNotificationsSubsystem* MyParent)
+		{
+#if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
+			OnExternalUITriggeredCallback.Unregister();
+#endif
 		}
 
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
-		cSteamEventsStore() :
-		OnExternalUITriggeredCallback(this, &cSteamEventsStore::OnExternalUITriggered)
+		cSteamEventsStore()
+		{}
+			//:
+		/*OnExternalUITriggeredCallback(this, &cSteamEventsStore::OnExternalUITriggered)
 		{
 
-		}
+		}*/
 #else
 		//cSteamEventsStore()
 		//{
@@ -57,7 +70,8 @@ public:
 
 	private:
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
-		STEAM_CALLBACK(cSteamEventsStore, OnExternalUITriggered, GameOverlayActivated_t, OnExternalUITriggeredCallback);
+		//STEAM_CALLBACK(cSteamEventsStore, OnExternalUITriggered, GameOverlayActivated_t, OnExternalUITriggeredCallback);
+		STEAM_CALLBACK_MANUAL(cSteamEventsStore, OnExternalUITriggered, GameOverlayActivated_t, OnExternalUITriggeredCallback);
 #endif
 	};
 
@@ -72,7 +86,7 @@ public:
 	/** Implement this for deinitialization of instances of the system */
 	virtual void Deinitialize() override
 	{
-
+		MyEvents.UnInitialize(this);
 	}
 };
 
