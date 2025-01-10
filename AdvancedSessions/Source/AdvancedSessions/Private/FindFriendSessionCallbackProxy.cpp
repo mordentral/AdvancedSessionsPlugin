@@ -102,6 +102,14 @@ void UFindFriendSessionCallbackProxy::OnFindFriendSessionCompleted(int32 LocalPl
 				{
 					FBlueprintSessionResult BSesh;
 					BSesh.OnlineResult = Sesh;
+
+					// Temp for 5.5, force the values if epic isn't setting them, lobbies should always have these true
+					if (!BSesh.OnlineResult.Session.SessionSettings.bIsDedicated)
+					{
+						BSesh.OnlineResult.Session.SessionSettings.bUseLobbiesIfAvailable = true;
+						BSesh.OnlineResult.Session.SessionSettings.bUsesPresence = true;
+					}
+
 					Result.Add(BSesh);
 				}
 			}
