@@ -113,7 +113,7 @@ void UFindSessionsCallbackProxyAdvanced::Activate()
 
 			case EBPServerPresenceSearchType::ClientServersOnly:
 			{
-				//tem.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
+				tem.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
 				
 				//if (bSearchLobbies)// && !IOnlineSubsystem::DoesInstanceExist("STEAM"))
 					tem.Set(SEARCH_LOBBIES, true, EOnlineComparisonOp::Equals);
