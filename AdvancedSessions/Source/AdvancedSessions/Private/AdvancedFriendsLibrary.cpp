@@ -152,7 +152,7 @@ void UAdvancedFriendsLibrary::GetFriend(APlayerController *PlayerController, con
 		Friend.PresenceInfo.bIsPlayingThisGame = pres.bIsPlayingThisGame;
 		Friend.PresenceInfo.PresenceState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
 		// #TODO: Check back in on this in shipping, epic is missing the UTF8_TO_TCHAR call on converting this and its making an invalid string
-		//Friend.PresenceInfo.StatusString = pres.Status.StatusStr;
+		Friend.PresenceInfo.StatusString = pres.Status.StatusStr;
 	}
 }
 
@@ -266,7 +266,7 @@ void UAdvancedFriendsLibrary::GetStoredFriendsList(APlayerController *PlayerCont
 			BPF.PresenceInfo.bIsPlaying = pres.bIsPlaying;
 			BPF.PresenceInfo.PresenceState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
 			// #TODO: Check back in on this in shipping, epic is missing the UTF8_TO_TCHAR call on converting this and its making an invalid string
-			//BPF.PresenceInfo.StatusString = pres.Status.StatusStr;
+			BPF.PresenceInfo.StatusString = pres.Status.StatusStr;
 			BPF.PresenceInfo.bIsJoinable = pres.bIsJoinable;
 			BPF.PresenceInfo.bIsPlayingThisGame = pres.bIsPlayingThisGame;
 

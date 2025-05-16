@@ -94,7 +94,7 @@ void UGetFriendsCallbackProxy::OnReadFriendsListCompleted(int32 LocalUserNum, bo
 					BPF.PresenceInfo.PresenceState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
 					
 					// #TODO: Check back in on this in shipping, epic is missing the UTF8_TO_TCHAR call on converting this and its making an invalid string
-					//BPF.PresenceInfo.StatusString = pres.Status.StatusStr;
+					BPF.PresenceInfo.StatusString = pres.Status.StatusStr;
 					BPF.PresenceInfo.bIsJoinable = pres.bIsJoinable;
 					BPF.PresenceInfo.bIsPlayingThisGame = pres.bIsPlayingThisGame;
 
