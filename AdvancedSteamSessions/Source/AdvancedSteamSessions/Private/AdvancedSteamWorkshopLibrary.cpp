@@ -1,11 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "AdvancedSteamWorkshopLibrary.h"
 #include "OnlineSubSystemHeader.h"
-//General Log
+// General Log
 DEFINE_LOG_CATEGORY(AdvancedSteamWorkshopLog);
 
-
-void UAdvancedSteamWorkshopLibrary::GetNumSubscribedWorkshopItems(int32 & NumberOfItems)
+void UAdvancedSteamWorkshopLibrary::GetNumSubscribedWorkshopItems(int32& NumberOfItems)
 {
 	NumberOfItems = 0;
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
@@ -26,7 +25,7 @@ void UAdvancedSteamWorkshopLibrary::GetNumSubscribedWorkshopItems(int32 & Number
 #endif
 }
 
-TArray<FBPSteamWorkshopID> UAdvancedSteamWorkshopLibrary::GetSubscribedWorkshopItems(int32 & NumberOfItems)
+TArray<FBPSteamWorkshopID> UAdvancedSteamWorkshopLibrary::GetSubscribedWorkshopItems(int32& NumberOfItems)
 {
 	TArray<FBPSteamWorkshopID> outArray;
 	NumberOfItems = 0;
@@ -36,16 +35,18 @@ TArray<FBPSteamWorkshopID> UAdvancedSteamWorkshopLibrary::GetSubscribedWorkshopI
 	if (SteamAPI_Init())
 	{
 		uint32 NumItems = SteamUGC()->GetNumSubscribedItems();
-		
+
 		if (NumItems == 0)
+		{
 			return outArray;
+		}
 
 		// Not using the actual variable above in case someone somehow goes past int32 limits
 		// Don't want to go negative on the iteration.
 		NumberOfItems = NumItems;
 
-		PublishedFileId_t *fileIds = new PublishedFileId_t[NumItems];
-		
+		PublishedFileId_t* fileIds = new PublishedFileId_t[NumItems];
+
 		uint32 subItems = SteamUGC()->GetSubscribedItems(fileIds, NumItems);
 
 		for (uint32 i = 0; i < subItems; ++i)

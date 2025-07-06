@@ -1,14 +1,14 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #pragma once
 
-#include "CoreMinimal.h"
 #include "BlueprintDataDefinitions.h"
+#include "CoreMinimal.h"
 #include "Engine/LocalPlayer.h"
 #include "FindFriendSessionCallbackProxy.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(AdvancedFindFriendSessionLog, Log, All);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBlueprintFindFriendSessionDelegate, const TArray<FBlueprintSessionResult> &, SessionInfo);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FBlueprintFindFriendSessionDelegate, const TArray<FBlueprintSessionResult>&, SessionInfo);
 
 UCLASS(MinimalAPI)
 class UFindFriendSessionCallbackProxy : public UOnlineBlueprintCallProxyBase
@@ -24,8 +24,8 @@ class UFindFriendSessionCallbackProxy : public UOnlineBlueprintCallProxyBase
 	FBlueprintFindFriendSessionDelegate OnFailure;
 
 	// Attempts to get the current session that a friend is in
-	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject"), Category = "Online|AdvancedFriends")
-	static UFindFriendSessionCallbackProxy* FindFriendSession(UObject* WorldContextObject, APlayerController *PlayerController, const FBPUniqueNetId &FriendUniqueNetId);
+	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject"), Category = "Online|AdvancedFriends")
+	static UFindFriendSessionCallbackProxy* FindFriendSession(UObject* WorldContextObject, APlayerController* PlayerController, const FBPUniqueNetId& FriendUniqueNetId);
 
 	virtual void Activate() override;
 
@@ -48,4 +48,3 @@ private:
 	// The world context object in which this call is taking place
 	TWeakObjectPtr<UObject> WorldContextObject;
 };
-

@@ -1,10 +1,10 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #pragma once
 
-#include "CoreMinimal.h"
 #include "BlueprintDataDefinitions.h"
-#include "Interfaces/OnlineIdentityInterface.h"
+#include "CoreMinimal.h"
 #include "Engine/LocalPlayer.h"
+#include "Interfaces/OnlineIdentityInterface.h"
 #include "LogoutUserCallbackProxy.generated.h"
 
 UCLASS(MinimalAPI)
@@ -21,7 +21,7 @@ class ULogoutUserCallbackProxy : public UOnlineBlueprintCallProxyBase
 	FEmptyOnlineDelegate OnFailure;
 
 	// Logs out of the identity interface
-	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject"), Category = "Online|AdvancedIdentity")
+	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject"), Category = "Online|AdvancedIdentity")
 	static ULogoutUserCallbackProxy* LogoutUser(UObject* WorldContextObject, class APlayerController* PlayerController);
 
 	// UOnlineBlueprintCallProxyBase interface

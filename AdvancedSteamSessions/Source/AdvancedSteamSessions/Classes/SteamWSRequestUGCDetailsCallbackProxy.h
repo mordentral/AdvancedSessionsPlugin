@@ -1,9 +1,9 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #pragma once
 
-#include "CoreMinimal.h"
 #include "AdvancedSteamWorkshopLibrary.h"
 #include "BlueprintDataDefinitions.h"
+#include "CoreMinimal.h"
 
 // This is taken directly from UE4 - OnlineSubsystemSteamPrivatePCH.h as a fix for the array_count macro
 
@@ -11,14 +11,14 @@
 //	disable the warnings locally. Remove when this is fixed in the SDK
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4996)
+#pragma warning(disable : 4996)
 // #TODO check back on this at some point
-#pragma warning(disable:4265) // SteamAPI CCallback< specifically, this warning is off by default but 4.17 turned it on....
+#pragma warning(disable : 4265) // SteamAPI CCallback< specifically, this warning is off by default but 4.17 turned it on....
 #endif
 
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 
-//#include "OnlineSubsystemSteam.h"
+// #include "OnlineSubsystemSteam.h"
 
 #pragma push_macro("ARRAY_COUNT")
 #undef ARRAY_COUNT
@@ -26,14 +26,13 @@
 #if USING_CODE_ANALYSIS
 MSVC_PRAGMA(warning(push))
 MSVC_PRAGMA(warning(disable : ALL_CODE_ANALYSIS_WARNINGS))
-#endif	// USING_CODE_ANALYSIS
+#endif // USING_CODE_ANALYSIS
 
 #include <steam/steam_api.h>
 
 #if USING_CODE_ANALYSIS
 MSVC_PRAGMA(warning(pop))
-#endif	// USING_CODE_ANALYSIS
-
+#endif // USING_CODE_ANALYSIS
 
 #pragma pop_macro("ARRAY_COUNT")
 
@@ -43,7 +42,6 @@ MSVC_PRAGMA(warning(pop))
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif
-
 
 #include "SteamWSRequestUGCDetailsCallbackProxy.generated.h"
 
@@ -63,7 +61,7 @@ class USteamWSRequestUGCDetailsCallbackProxy : public UOnlineBlueprintCallProxyB
 	FBlueprintWorkshopDetailsDelegate OnFailure;
 
 	// Ends the current session
-	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject"), Category = "Online|AdvancedSteamWorkshop")
+	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject"), Category = "Online|AdvancedSteamWorkshop")
 	static USteamWSRequestUGCDetailsCallbackProxy* GetWorkshopItemDetails(UObject* WorldContextObject, FBPSteamWorkshopID WorkShopID);
 
 	// UOnlineBlueprintCallProxyBase interface
@@ -71,17 +69,15 @@ class USteamWSRequestUGCDetailsCallbackProxy : public UOnlineBlueprintCallProxyB
 	// End of UOnlineBlueprintCallProxyBase interface
 
 private:
-	
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 	// Internal callback when the operation completes, calls out to the public success/failure callbacks
-		
-	void OnUGCRequestUGCDetails(SteamUGCQueryCompleted_t *pResult, bool bIOFailure);
+
+	void OnUGCRequestUGCDetails(SteamUGCQueryCompleted_t* pResult, bool bIOFailure);
 	CCallResult<USteamWSRequestUGCDetailsCallbackProxy, SteamUGCQueryCompleted_t> m_callResultUGCRequestDetails;
 
 #endif
 
 private:
-
 	FBPSteamWorkshopID WorkShopID;
 	UObject* WorldContextObject;
 };

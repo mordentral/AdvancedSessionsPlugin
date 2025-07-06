@@ -1,13 +1,12 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #include "EndSessionCallbackProxy.h"
 
-
 //////////////////////////////////////////////////////////////////////////
 // UEndSessionCallbackProxy
 
 UEndSessionCallbackProxy::UEndSessionCallbackProxy(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
-	, Delegate(FOnEndSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnCompleted))
+    : Super(ObjectInitializer)
+    , Delegate(FOnEndSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnCompleted))
 {
 }
 
@@ -31,7 +30,7 @@ void UEndSessionCallbackProxy::Activate()
 		{
 			FNamedOnlineSession* Session = Sessions->GetNamedSession(NAME_GameSession);
 			if (Session &&
-				Session->SessionState == EOnlineSessionState::InProgress)
+			    Session->SessionState == EOnlineSessionState::InProgress)
 			{
 				DelegateHandle = Sessions->AddOnEndSessionCompleteDelegate_Handle(Delegate);
 				Sessions->EndSession(NAME_GameSession);

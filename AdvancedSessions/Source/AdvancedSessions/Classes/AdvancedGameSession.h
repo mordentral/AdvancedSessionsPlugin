@@ -3,19 +3,16 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Engine/Engine.h"
-#include "Online.h"
-#include "OnlineSubsystem.h"
 #include "Engine/GameInstance.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameFramework/GameSession.h"
 #include "GameFramework/PlayerState.h"
+#include "Online.h"
+#include "OnlineSubsystem.h"
 
-//#include "UObjectIterator.h"
+// #include "UObjectIterator.h"
 
 #include "AdvancedGameSession.generated.h"
-
-
-
 
 /**
  A quick wrapper around the game session to add a partial ban implementation. Just bans for the duration of the current session
@@ -26,7 +23,6 @@ class AAdvancedGameSession : public AGameSession
 	GENERATED_UCLASS_BODY()
 
 public:
-
 	UPROPERTY(Transient)
 	TMap<FUniqueNetIdRepl, FText> BanList;
 
@@ -45,7 +41,7 @@ public:
 
 			return bWasKicked;
 		}
-		
+
 		return false;
 	}
 
@@ -66,6 +62,6 @@ public:
 };
 
 AAdvancedGameSession::AAdvancedGameSession(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
+    : Super(ObjectInitializer)
 {
 }

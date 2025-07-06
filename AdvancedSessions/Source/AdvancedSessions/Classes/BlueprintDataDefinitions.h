@@ -1,20 +1,20 @@
 #pragma once
 #include "CoreMinimal.h"
-//#include "EngineMinimal.h"
+// #include "EngineMinimal.h"
 #include "Engine/Engine.h"
 #include "GameFramework/PlayerState.h"
-//#include "Core.h"
+// #include "Core.h"
+#include "GameFramework/PlayerController.h"
 #include "Interfaces/OnlineSessionInterface.h"
-#include "OnlineSessionSettings.h"
+#include "Modules/ModuleManager.h"
 #include "OnlineDelegateMacros.h"
+#include "OnlineSessionSettings.h"
 #include "OnlineSubsystem.h"
 #include "OnlineSubsystemImpl.h"
 #include "OnlineSubsystemUtils.h"
-#include "OnlineSubsystemUtilsModule.h"
-#include "GameFramework/PlayerController.h"
-#include "Modules/ModuleManager.h"
 #include "OnlineSubsystemUtilsClasses.h"
-#include "BlueprintDataDefinitions.generated.h"	
+#include "OnlineSubsystemUtilsModule.h"
+#include "BlueprintDataDefinitions.generated.h"
 
 UENUM(BlueprintType)
 enum class EBPUserPrivileges : uint8
@@ -29,7 +29,6 @@ enum class EBPUserPrivileges : uint8
 	CanUseUserGeneratedContent
 };
 
-
 UENUM(BlueprintType)
 enum class EBPLoginStatus : uint8
 {
@@ -41,7 +40,6 @@ enum class EBPLoginStatus : uint8
 	LoggedIn
 };
 
-
 USTRUCT(BlueprintType)
 struct FBPUserOnlineAccount
 {
@@ -52,7 +50,6 @@ public:
 
 	FBPUserOnlineAccount()
 	{
-
 	}
 
 	FBPUserOnlineAccount(TSharedPtr<FUserOnlineAccount> UserAccount)
@@ -152,19 +149,18 @@ struct FBPUniqueNetId
 private:
 	bool bUseDirectPointer;
 
-
 public:
 	TSharedPtr<const FUniqueNetId> UniqueNetId;
-	const FUniqueNetId * UniqueNetIdPtr;
+	const FUniqueNetId* UniqueNetIdPtr;
 
-	void SetUniqueNetId(const TSharedPtr<const FUniqueNetId> &ID)
+	void SetUniqueNetId(const TSharedPtr<const FUniqueNetId>& ID)
 	{
 		bUseDirectPointer = false;
 		UniqueNetIdPtr = nullptr;
 		UniqueNetId = ID;
 	}
 
-	void SetUniqueNetId(const FUniqueNetId *ID)
+	void SetUniqueNetId(const FUniqueNetId* ID)
 	{
 		bUseDirectPointer = true;
 		UniqueNetIdPtr = ID;
@@ -181,8 +177,9 @@ public:
 			return true;
 		}
 		else
+		{
 			return false;
-
+		}
 	}
 
 	const FUniqueNetId* GetUniqueNetId() const
@@ -190,14 +187,16 @@ public:
 		if (bUseDirectPointer && UniqueNetIdPtr != nullptr)
 		{
 			// No longer converting to non const as all functions now pass const UniqueNetIds
-			return /*const_cast<FUniqueNetId*>*/(UniqueNetIdPtr);
+			return /*const_cast<FUniqueNetId*>*/ (UniqueNetIdPtr);
 		}
 		else if (UniqueNetId.IsValid())
 		{
 			return UniqueNetId.Get();
 		}
 		else
+		{
 			return nullptr;
+		}
 	}
 
 	// Adding in a compare operator so that std functions will work with this struct
@@ -225,11 +224,11 @@ struct FBPOnlineUser
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
-		FBPUniqueNetId UniqueNetId;
+	FBPUniqueNetId UniqueNetId;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
-		FString DisplayName;
+	FString DisplayName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
-		FString RealName;
+	FString RealName;
 };
 
 USTRUCT(BluePrintType)
@@ -239,9 +238,8 @@ struct FBPOnlineRecentPlayer : public FBPOnlineUser
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
-		FString LastSeen;
+	FString LastSeen;
 };
-
 
 USTRUCT(BlueprintType)
 struct FBPFriendPresenceInfo
@@ -249,21 +247,20 @@ struct FBPFriendPresenceInfo
 	GENERATED_USTRUCT_BODY()
 
 public:
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
-		bool bIsOnline = false;
+	bool bIsOnline = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
-		bool bIsPlaying = false;
+	bool bIsPlaying = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
-		bool bIsPlayingThisGame = false;
+	bool bIsPlayingThisGame = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
-		bool bIsJoinable = false;
+	bool bIsJoinable = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
-		bool bHasVoiceSupport = false;
+	bool bHasVoiceSupport = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
-		EBPOnlinePresenceState PresenceState = EBPOnlinePresenceState::Offline;
+	EBPOnlinePresenceState PresenceState = EBPOnlinePresenceState::Offline;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
-		FString StatusString;
+	FString StatusString;
 
 	FBPFriendPresenceInfo()
 	{
@@ -282,7 +279,6 @@ struct FBPFriendInfo
 	GENERATED_USTRUCT_BODY()
 
 public:
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
 	FString DisplayName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Online|Friend")
@@ -303,7 +299,6 @@ public:
 	}
 };
 
-
 /** The types of comparison operations for a given search query */
 // Used to compare session properties
 UENUM(BlueprintType)
@@ -317,7 +312,6 @@ enum class EOnlineComparisonOpRedux : uint8
 	LessThanEquals,
 };
 
-
 // Used to store session properties before converting to FVariantData
 USTRUCT(BlueprintType)
 struct FSessionPropertyKeyPair
@@ -328,14 +322,12 @@ struct FSessionPropertyKeyPair
 	FVariantData Data;
 };
 
-
 // Sent to the FindSessionsAdvanced to filter the end results
 USTRUCT(BlueprintType)
 struct FSessionsSearchSetting
 {
 	GENERATED_USTRUCT_BODY()
-	//UPROPERTY()
-
+	// UPROPERTY()
 
 	// Had to make a copy of this to account for the original not being exposed to blueprints
 	/** How is this session setting compared on the backend searches */
@@ -351,8 +343,8 @@ struct FOnlineSubsystemBPCallHelperAdvanced
 {
 public:
 	FOnlineSubsystemBPCallHelperAdvanced(const TCHAR* CallFunctionContext, UWorld* World, FName SystemName = NAME_None)
-		: OnlineSub(Online::GetSubsystem(World, SystemName))
-		, FunctionContext(CallFunctionContext)
+	    : OnlineSub(Online::GetSubsystem(World, SystemName))
+	    , FunctionContext(CallFunctionContext)
 	{
 		if (OnlineSub == nullptr)
 		{
@@ -363,7 +355,7 @@ public:
 	void QueryIDFromPlayerController(APlayerController* PlayerController)
 	{
 		UserID.Reset();
-		//return const_cast<FUniqueNetId*>(UniqueNetIdPtr);
+		// return const_cast<FUniqueNetId*>(UniqueNetIdPtr);
 		if (APlayerState* PlayerState = (PlayerController != NULL) ? PlayerController->PlayerState : NULL)
 		{
 			UserID = PlayerState->GetUniqueId().GetUniqueNetId();
@@ -378,14 +370,13 @@ public:
 		}
 	}
 
-
 	bool IsValid() const
 	{
 		return UserID.IsValid() && (OnlineSub != nullptr);
 	}
 
 public:
-	//TSharedPtr<const FUniqueNetId>& GetUniqueNetId()
+	// TSharedPtr<const FUniqueNetId>& GetUniqueNetId()
 	TSharedPtr</*class*/ const FUniqueNetId> UserID;
 	IOnlineSubsystem* const OnlineSub;
 	const TCHAR* FunctionContext;
@@ -393,14 +384,13 @@ public:
 class FOnlineSearchSettingsEx : public FOnlineSearchSettings
 {
 	/**
-	*	Sets a key value pair combination that defines a search parameter
-	*
-	* @param Key key for the setting
-	* @param Value value of the setting
-	* @param InType type of comparison
-	*/
+	 *	Sets a key value pair combination that defines a search parameter
+	 *
+	 * @param Key key for the setting
+	 * @param Value value of the setting
+	 * @param InType type of comparison
+	 */
 public:
-
 	void HardSet(FName Key, const FVariantData& Value, EOnlineComparisonOpRedux CompOp)
 	{
 		FOnlineSessionSearchParam* SearchParam = SearchParams.Find(Key);
@@ -409,13 +399,13 @@ public:
 
 		switch (CompOp)
 		{
-		case EOnlineComparisonOpRedux::Equals: op = EOnlineComparisonOp::Equals; break;
-		case EOnlineComparisonOpRedux::GreaterThan: op = EOnlineComparisonOp::GreaterThan; break;
-		case EOnlineComparisonOpRedux::GreaterThanEquals: op = EOnlineComparisonOp::GreaterThanEquals; break;
-		case EOnlineComparisonOpRedux::LessThan: op = EOnlineComparisonOp::LessThan; break;
-		case EOnlineComparisonOpRedux::LessThanEquals: op = EOnlineComparisonOp::LessThanEquals; break;
-		case EOnlineComparisonOpRedux::NotEquals: op = EOnlineComparisonOp::NotEquals; break;
-		default: op = EOnlineComparisonOp::Equals; break;
+			case EOnlineComparisonOpRedux::Equals: op = EOnlineComparisonOp::Equals; break;
+			case EOnlineComparisonOpRedux::GreaterThan: op = EOnlineComparisonOp::GreaterThan; break;
+			case EOnlineComparisonOpRedux::GreaterThanEquals: op = EOnlineComparisonOp::GreaterThanEquals; break;
+			case EOnlineComparisonOpRedux::LessThan: op = EOnlineComparisonOp::LessThan; break;
+			case EOnlineComparisonOpRedux::LessThanEquals: op = EOnlineComparisonOp::LessThanEquals; break;
+			case EOnlineComparisonOpRedux::NotEquals: op = EOnlineComparisonOp::NotEquals; break;
+			default: op = EOnlineComparisonOp::Equals; break;
 		}
 
 		if (SearchParam)

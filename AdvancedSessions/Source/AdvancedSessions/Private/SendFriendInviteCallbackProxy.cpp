@@ -1,6 +1,5 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #include "SendFriendInviteCallbackProxy.h"
-
 #include "Online.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -8,12 +7,12 @@
 DEFINE_LOG_CATEGORY(AdvancedSendFriendInviteLog);
 
 USendFriendInviteCallbackProxy::USendFriendInviteCallbackProxy(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
-	, OnSendInviteCompleteDelegate(FOnSendInviteComplete::CreateUObject(this, &ThisClass::OnSendInviteComplete))
+    : Super(ObjectInitializer)
+    , OnSendInviteCompleteDelegate(FOnSendInviteComplete::CreateUObject(this, &ThisClass::OnSendInviteComplete))
 {
 }
 
-USendFriendInviteCallbackProxy* USendFriendInviteCallbackProxy::SendFriendInvite(UObject* WorldContextObject, APlayerController *PlayerController, const FBPUniqueNetId &UniqueNetIDInvited)
+USendFriendInviteCallbackProxy* USendFriendInviteCallbackProxy::SendFriendInvite(UObject* WorldContextObject, APlayerController* PlayerController, const FBPUniqueNetId& UniqueNetIDInvited)
 {
 	USendFriendInviteCallbackProxy* Proxy = NewObject<USendFriendInviteCallbackProxy>();
 	Proxy->PlayerControllerWeakPtr = PlayerController;
@@ -50,9 +49,9 @@ void USendFriendInviteCallbackProxy::Activate()
 
 	auto Friends = Helper.OnlineSub->GetFriendsInterface();
 	if (Friends.IsValid())
-	{	
+	{
 		ULocalPlayer* Player = Cast<ULocalPlayer>(PlayerControllerWeakPtr->Player);
-		
+
 		if (!Player)
 		{
 			// Fail immediately
@@ -68,10 +67,10 @@ void USendFriendInviteCallbackProxy::Activate()
 	OnFailure.Broadcast();
 }
 
-void USendFriendInviteCallbackProxy::OnSendInviteComplete(int32 LocalPlayerNum, bool bWasSuccessful, const FUniqueNetId &InvitedPlayer, const FString &ListName, const FString &ErrorString)
+void USendFriendInviteCallbackProxy::OnSendInviteComplete(int32 LocalPlayerNum, bool bWasSuccessful, const FUniqueNetId& InvitedPlayer, const FString& ListName, const FString& ErrorString)
 {
-	if ( bWasSuccessful )
-	{ 
+	if (bWasSuccessful)
+	{
 		OnSuccess.Broadcast();
 	}
 	else

@@ -1,8 +1,8 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #pragma once
 
-#include "CoreMinimal.h"
 #include "BlueprintDataDefinitions.h"
+#include "CoreMinimal.h"
 #include "GetRecentPlayersCallbackProxy.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(AdvancedGetRecentPlayersLog, Log, All);
@@ -23,19 +23,19 @@ class UGetRecentPlayersCallbackProxy : public UOnlineBlueprintCallProxyBase
 	FBlueprintGetRecentPlayersDelegate OnFailure;
 
 	// Gets the list of recent players from the OnlineSubsystem and returns it, can be retrieved later with GetStoredRecentPlayersList, can fail if no recent players are found
-	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject"), Category = "Online|AdvancedFriends")
-	static UGetRecentPlayersCallbackProxy* GetAndStoreRecentPlayersList(UObject* WorldContextObject, const FBPUniqueNetId &UniqueNetId);
+	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject"), Category = "Online|AdvancedFriends")
+	static UGetRecentPlayersCallbackProxy* GetAndStoreRecentPlayersList(UObject* WorldContextObject, const FBPUniqueNetId& UniqueNetId);
 
 	virtual void Activate() override;
 
 private:
 	// Internal callback when the friends list is retrieved
-	void OnQueryRecentPlayersCompleted(const FUniqueNetId &UserID, const FString &Namespace, bool bWasSuccessful, const FString& ErrorString);
+	void OnQueryRecentPlayersCompleted(const FUniqueNetId& UserID, const FString& Namespace, bool bWasSuccessful, const FString& ErrorString);
 	// Handle to the registered OnFindSessionsComplete delegate
 	FDelegateHandle DelegateHandle;
 
 	// The player controller triggering things
-	//TWeakObjectPtr<APlayerController> PlayerControllerWeakPtr;
+	// TWeakObjectPtr<APlayerController> PlayerControllerWeakPtr;
 
 	// The UniqueNetID of the person to get recent players for
 	FBPUniqueNetId cUniqueNetId;
@@ -46,4 +46,3 @@ private:
 	// The world context object in which this call is taking place
 	TWeakObjectPtr<UObject> WorldContextObject;
 };
-

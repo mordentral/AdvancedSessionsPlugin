@@ -1,18 +1,17 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #include "UpdateSessionCallbackProxyAdvanced.h"
 
-
 //////////////////////////////////////////////////////////////////////////
 // UUpdateSessionCallbackProxyAdvanced
 
 UUpdateSessionCallbackProxyAdvanced::UUpdateSessionCallbackProxyAdvanced(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
-	, OnUpdateSessionCompleteDelegate(FOnUpdateSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnUpdateCompleted))
-	, NumPublicConnections(1)
+    : Super(ObjectInitializer)
+    , OnUpdateSessionCompleteDelegate(FOnUpdateSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnUpdateCompleted))
+    , NumPublicConnections(1)
 {
-}	
+}
 
-UUpdateSessionCallbackProxyAdvanced* UUpdateSessionCallbackProxyAdvanced::UpdateSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair> &ExtraSettings, int32 PublicConnections, int32 PrivateConnections, bool bUseLAN, bool bAllowInvites, bool bAllowJoinInProgress, bool bRefreshOnlineData, bool bIsDedicatedServer, bool bShouldAdvertise)
+UUpdateSessionCallbackProxyAdvanced* UUpdateSessionCallbackProxyAdvanced::UpdateSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair>& ExtraSettings, int32 PublicConnections, int32 PrivateConnections, bool bUseLAN, bool bAllowInvites, bool bAllowJoinInProgress, bool bRefreshOnlineData, bool bIsDedicatedServer, bool bShouldAdvertise)
 {
 	UUpdateSessionCallbackProxyAdvanced* Proxy = NewObject<UUpdateSessionCallbackProxyAdvanced>();
 	Proxy->NumPublicConnections = PublicConnections;
@@ -25,7 +24,7 @@ UUpdateSessionCallbackProxyAdvanced* UUpdateSessionCallbackProxyAdvanced::Update
 	Proxy->bAllowJoinInProgress = bAllowJoinInProgress;
 	Proxy->bDedicatedServer = bIsDedicatedServer;
 	Proxy->bShouldAdvertise = bShouldAdvertise;
-	return Proxy;	
+	return Proxy;
 }
 
 void UUpdateSessionCallbackProxyAdvanced::Activate()
@@ -45,7 +44,7 @@ void UUpdateSessionCallbackProxyAdvanced::Activate()
 			}
 
 			// This gets the actual session itself
-			//FNamedOnlineSession * curSession = Sessions->GetNamedSession(NAME_GameSession);
+			// FNamedOnlineSession * curSession = Sessions->GetNamedSession(NAME_GameSession);
 			FOnlineSessionSettings* Settings = Sessions->GetSessionSettings(NAME_GameSession);
 
 			if (!Settings)
@@ -57,20 +56,20 @@ void UUpdateSessionCallbackProxyAdvanced::Activate()
 
 			OnUpdateSessionCompleteDelegateHandle = Sessions->AddOnUpdateSessionCompleteDelegate_Handle(OnUpdateSessionCompleteDelegate);
 
-		//	FOnlineSessionSettings Settings;
-			//Settings->BuildUniqueId = GetBuildUniqueId();
+			//	FOnlineSessionSettings Settings;
+			// Settings->BuildUniqueId = GetBuildUniqueId();
 			Settings->NumPublicConnections = NumPublicConnections;
 			Settings->NumPrivateConnections = NumPrivateConnections;
 			Settings->bShouldAdvertise = bShouldAdvertise;
 			Settings->bAllowJoinInProgress = bAllowJoinInProgress;
 			Settings->bIsLANMatch = bUseLAN;
-			//Settings->bUsesPresence = true;
-			//Settings->bAllowJoinViaPresence = true;
+			// Settings->bUsesPresence = true;
+			// Settings->bAllowJoinViaPresence = true;
 			Settings->bAllowInvites = bAllowInvites;
 			Settings->bAllowJoinInProgress = bAllowJoinInProgress;
 			Settings->bIsDedicated = bDedicatedServer;
 
-			FOnlineSessionSetting * fSetting = NULL;
+			FOnlineSessionSetting* fSetting = NULL;
 			FOnlineSessionSetting ExtraSetting;
 			for (int i = 0; i < ExtraSettings.Num(); i++)
 			{
@@ -113,7 +112,7 @@ void UUpdateSessionCallbackProxyAdvanced::OnUpdateCompleted(FName SessionName, b
 		if (Sessions.IsValid())
 		{
 			Sessions->ClearOnUpdateSessionCompleteDelegate_Handle(OnUpdateSessionCompleteDelegateHandle);
-				
+
 			if (bWasSuccessful)
 			{
 				OnSuccess.Broadcast();

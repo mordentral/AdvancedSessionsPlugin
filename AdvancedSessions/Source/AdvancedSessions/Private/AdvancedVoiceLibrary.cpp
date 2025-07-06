@@ -1,11 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "AdvancedVoiceLibrary.h"
 
-
-//General Log
+// General Log
 DEFINE_LOG_CATEGORY(AdvancedVoiceLog);
 
-void UAdvancedVoiceLibrary::IsHeadsetPresent(UObject* WorldContextObject, bool & bHasHeadset, uint8 LocalPlayerNum)
+void UAdvancedVoiceLibrary::IsHeadsetPresent(UObject* WorldContextObject, bool& bHasHeadset, uint8 LocalPlayerNum)
 {
 
 	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
@@ -104,7 +103,6 @@ void UAdvancedVoiceLibrary::RegisterAllLocalTalkers(UObject* WorldContextObject)
 
 	VoiceInterface->RegisterLocalTalkers();
 }
-
 
 void UAdvancedVoiceLibrary::UnRegisterLocalTalker(UObject* WorldContextObject, uint8 LocalPlayerNum)
 {
@@ -336,8 +334,7 @@ bool UAdvancedVoiceLibrary::UnMuteRemoteTalker(UObject* WorldContextObject, uint
 	return VoiceInterface->UnmuteRemoteTalker(LocalUserNum, *UniqueNetId.GetUniqueNetId(), bIsSystemWide);
 }
 
-
-void UAdvancedVoiceLibrary::GetNumLocalTalkers(UObject* WorldContextObject, int32 & NumLocalTalkers)
+void UAdvancedVoiceLibrary::GetNumLocalTalkers(UObject* WorldContextObject, int32& NumLocalTalkers)
 {
 
 	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
