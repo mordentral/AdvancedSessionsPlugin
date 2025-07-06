@@ -1,18 +1,17 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 
 #include "GetUserPrivilegeCallbackProxy.h"
-
 #include "Online.h"
 
 //////////////////////////////////////////////////////////////////////////
 // UGetUserPrivilegeCallbackProxy
 
 UGetUserPrivilegeCallbackProxy::UGetUserPrivilegeCallbackProxy(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
+    : Super(ObjectInitializer)
 {
 }
 
-UGetUserPrivilegeCallbackProxy* UGetUserPrivilegeCallbackProxy::GetUserPrivilege(UObject* WorldContextObject, const EBPUserPrivileges & PrivilegeToCheck, const FBPUniqueNetId & PlayerUniqueNetID)
+UGetUserPrivilegeCallbackProxy* UGetUserPrivilegeCallbackProxy::GetUserPrivilege(UObject* WorldContextObject, const EBPUserPrivileges& PrivilegeToCheck, const FBPUniqueNetId& PlayerUniqueNetID)
 {
 	UGetUserPrivilegeCallbackProxy* Proxy = NewObject<UGetUserPrivilegeCallbackProxy>();
 	Proxy->PlayerUniqueNetID.SetUniqueNetId(PlayerUniqueNetID.GetUniqueNetId());

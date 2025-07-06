@@ -1,21 +1,20 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
+#include "BlueprintDataDefinitions.h"
 #include "CoreMinimal.h"
-#include "Kismet/BlueprintFunctionLibrary.h"
-#include "Online.h"
-#include "OnlineSubsystem.h"
+#include "Engine/GameInstance.h"
 #include "Interfaces/OnlineFriendsInterface.h"
-#include "Interfaces/OnlineUserInterface.h"
 #include "Interfaces/OnlineMessageInterface.h"
 #include "Interfaces/OnlinePresenceInterface.h"
-#include "Engine/GameInstance.h"
 #include "Interfaces/OnlineSessionInterface.h"
+#include "Interfaces/OnlineUserInterface.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
+#include "Online.h"
 #include "OnlineSessionSettings.h"
+#include "OnlineSubsystem.h"
 #include "UObject/UObjectIterator.h"
-#include "BlueprintDataDefinitions.h"
 #include "AdvancedFriendsInterface.generated.h"
-
 
 UINTERFACE(MinimalAPI)
 class UAdvancedFriendsInterface : public UInterface
@@ -27,7 +26,6 @@ class IAdvancedFriendsInterface
 {
 	GENERATED_IINTERFACE_BODY()
 public:
-	
 	// Called when the designated LocalUser has accepted a session invite, use JoinSession on result to connect
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnSessionInviteReceived"))
 	void OnSessionInviteReceived(FBPUniqueNetId PersonInviting, const FBlueprintSessionResult& SearchResult);
@@ -50,7 +48,6 @@ public:
 
 	// REMOVED BECAUSE IT WAS NEVER BEING CALLED
 	// Called when the designated LocalUser has received a session invite, use JoinSession on result to connect
-	//UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "OnSessionInviteReceived"))
-	//void OnSessionInviteReceived(const FBPUniqueNetId &FriendInviting, const FBlueprintSessionResult &Session);
-
-};	
+	// UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "OnSessionInviteReceived"))
+	// void OnSessionInviteReceived(const FBPUniqueNetId &FriendInviting, const FBlueprintSessionResult &Session);
+};

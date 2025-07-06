@@ -1,13 +1,12 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #include "CancelFindSessionsCallbackProxy.h"
 
-
 //////////////////////////////////////////////////////////////////////////
 // UCancelFindSessionsCallbackProxy
 
 UCancelFindSessionsCallbackProxy::UCancelFindSessionsCallbackProxy(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
-	, Delegate(FOnCancelFindSessionsCompleteDelegate::CreateUObject(this, &ThisClass::OnCompleted))
+    : Super(ObjectInitializer)
+    , Delegate(FOnCancelFindSessionsCompleteDelegate::CreateUObject(this, &ThisClass::OnCompleted))
 {
 }
 
@@ -27,7 +26,7 @@ void UCancelFindSessionsCallbackProxy::Activate()
 	if (Helper.IsValid())
 	{
 		auto Sessions = Helper.OnlineSub->GetSessionInterface();
-		if (Sessions.IsValid())		
+		if (Sessions.IsValid())
 		{
 			DelegateHandle = Sessions->AddOnCancelFindSessionsCompleteDelegate_Handle(Delegate);
 			Sessions->CancelFindSessions();

@@ -1,11 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "AdvancedIdentityLibrary.h"
 
-//General Log
+// General Log
 DEFINE_LOG_CATEGORY(AdvancedIdentityLog);
 
-
-void UAdvancedIdentityLibrary::GetPlayerAuthToken(UObject* WorldContextObject, APlayerController * PlayerController, FString & AuthToken, EBlueprintResultSwitch &Result)
+void UAdvancedIdentityLibrary::GetPlayerAuthToken(UObject* WorldContextObject, APlayerController* PlayerController, FString& AuthToken, EBlueprintResultSwitch& Result)
 {
 	if (!PlayerController)
 	{
@@ -43,8 +42,8 @@ void UAdvancedIdentityLibrary::GetPlayerAuthToken(UObject* WorldContextObject, A
 	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
-void UAdvancedIdentityLibrary::GetPlayerNickname(UObject* WorldContextObject, const FBPUniqueNetId & UniqueNetID, FString & PlayerNickname)
-{ 
+void UAdvancedIdentityLibrary::GetPlayerNickname(UObject* WorldContextObject, const FBPUniqueNetId& UniqueNetID, FString& PlayerNickname)
+{
 	if (!UniqueNetID.IsValid())
 	{
 		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetPlayerNickname was passed a bad player uniquenetid!"));
@@ -67,8 +66,7 @@ void UAdvancedIdentityLibrary::GetPlayerNickname(UObject* WorldContextObject, co
 	PlayerNickname = IdentityInterface->GetPlayerNickname(*UniqueNetID.GetUniqueNetId());
 }
 
-
-void UAdvancedIdentityLibrary::GetLoginStatus(UObject* WorldContextObject, const FBPUniqueNetId & UniqueNetID, EBPLoginStatus & LoginStatus, EBlueprintResultSwitch &Result)
+void UAdvancedIdentityLibrary::GetLoginStatus(UObject* WorldContextObject, const FBPUniqueNetId& UniqueNetID, EBPLoginStatus& LoginStatus, EBlueprintResultSwitch& Result)
 {
 	if (!UniqueNetID.IsValid())
 	{
@@ -97,8 +95,7 @@ void UAdvancedIdentityLibrary::GetLoginStatus(UObject* WorldContextObject, const
 	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
-
-void UAdvancedIdentityLibrary::GetAllUserAccounts(UObject* WorldContextObject, TArray<FBPUserOnlineAccount> & AccountInfos, EBlueprintResultSwitch &Result)
+void UAdvancedIdentityLibrary::GetAllUserAccounts(UObject* WorldContextObject, TArray<FBPUserOnlineAccount>& AccountInfos, EBlueprintResultSwitch& Result)
 {
 
 	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
@@ -127,7 +124,7 @@ void UAdvancedIdentityLibrary::GetAllUserAccounts(UObject* WorldContextObject, T
 	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
-void UAdvancedIdentityLibrary::GetUserAccount(UObject* WorldContextObject, const FBPUniqueNetId & UniqueNetId, FBPUserOnlineAccount & AccountInfo, EBlueprintResultSwitch &Result)
+void UAdvancedIdentityLibrary::GetUserAccount(UObject* WorldContextObject, const FBPUniqueNetId& UniqueNetId, FBPUserOnlineAccount& AccountInfo, EBlueprintResultSwitch& Result)
 {
 
 	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
@@ -139,7 +136,7 @@ void UAdvancedIdentityLibrary::GetUserAccount(UObject* WorldContextObject, const
 
 	IOnlineIdentityPtr IdentityInterface = Online::GetIdentityInterface(World);
 
-	if(!UniqueNetId.IsValid())
+	if (!UniqueNetId.IsValid())
 	{
 		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetUserAccount was passed a bad unique net id!"));
 		Result = EBlueprintResultSwitch::OnFailure;
@@ -166,7 +163,7 @@ void UAdvancedIdentityLibrary::GetUserAccount(UObject* WorldContextObject, const
 	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
-void UAdvancedIdentityLibrary::GetUserAccountAccessToken(const FBPUserOnlineAccount & AccountInfo, FString & AccessToken)
+void UAdvancedIdentityLibrary::GetUserAccountAccessToken(const FBPUserOnlineAccount& AccountInfo, FString& AccessToken)
 {
 	if (!AccountInfo.UserAccountInfo.IsValid())
 	{
@@ -177,7 +174,7 @@ void UAdvancedIdentityLibrary::GetUserAccountAccessToken(const FBPUserOnlineAcco
 	AccessToken = AccountInfo.UserAccountInfo->GetAccessToken();
 }
 
-void UAdvancedIdentityLibrary::GetUserAccountAuthAttribute(const FBPUserOnlineAccount & AccountInfo, const FString & AttributeName, FString & AuthAttribute, EBlueprintResultSwitch &Result)
+void UAdvancedIdentityLibrary::GetUserAccountAuthAttribute(const FBPUserOnlineAccount& AccountInfo, const FString& AttributeName, FString& AuthAttribute, EBlueprintResultSwitch& Result)
 {
 	if (!AccountInfo.UserAccountInfo.IsValid())
 	{
@@ -196,7 +193,7 @@ void UAdvancedIdentityLibrary::GetUserAccountAuthAttribute(const FBPUserOnlineAc
 	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
-void UAdvancedIdentityLibrary::SetUserAccountAttribute(const FBPUserOnlineAccount & AccountInfo, const FString & AttributeName, const FString & NewAttributeValue, EBlueprintResultSwitch &Result)
+void UAdvancedIdentityLibrary::SetUserAccountAttribute(const FBPUserOnlineAccount& AccountInfo, const FString& AttributeName, const FString& NewAttributeValue, EBlueprintResultSwitch& Result)
 {
 	if (!AccountInfo.UserAccountInfo.IsValid())
 	{
@@ -215,7 +212,7 @@ void UAdvancedIdentityLibrary::SetUserAccountAttribute(const FBPUserOnlineAccoun
 	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
-void UAdvancedIdentityLibrary::GetUserID(const FBPUserOnlineAccount & AccountInfo, FBPUniqueNetId & UniqueNetID)
+void UAdvancedIdentityLibrary::GetUserID(const FBPUserOnlineAccount& AccountInfo, FBPUniqueNetId& UniqueNetID)
 {
 	if (!AccountInfo.UserAccountInfo.IsValid())
 	{
@@ -223,11 +220,10 @@ void UAdvancedIdentityLibrary::GetUserID(const FBPUserOnlineAccount & AccountInf
 		return;
 	}
 
-	
 	UniqueNetID.SetUniqueNetId(AccountInfo.UserAccountInfo->GetUserId());
 }
 
-void UAdvancedIdentityLibrary::GetUserAccountRealName(const FBPUserOnlineAccount & AccountInfo, FString & UserName)
+void UAdvancedIdentityLibrary::GetUserAccountRealName(const FBPUserOnlineAccount& AccountInfo, FString& UserName)
 {
 	if (!AccountInfo.UserAccountInfo.IsValid())
 	{
@@ -235,11 +231,10 @@ void UAdvancedIdentityLibrary::GetUserAccountRealName(const FBPUserOnlineAccount
 		return;
 	}
 
-
 	UserName = AccountInfo.UserAccountInfo->GetRealName();
 }
 
-void UAdvancedIdentityLibrary::GetUserAccountDisplayName(const FBPUserOnlineAccount & AccountInfo, FString & DisplayName)
+void UAdvancedIdentityLibrary::GetUserAccountDisplayName(const FBPUserOnlineAccount& AccountInfo, FString& DisplayName)
 {
 	if (!AccountInfo.UserAccountInfo.IsValid())
 	{
@@ -247,11 +242,10 @@ void UAdvancedIdentityLibrary::GetUserAccountDisplayName(const FBPUserOnlineAcco
 		return;
 	}
 
-
 	DisplayName = AccountInfo.UserAccountInfo->GetDisplayName();
 }
 
-void UAdvancedIdentityLibrary::GetUserAccountAttribute(const FBPUserOnlineAccount & AccountInfo, const FString & AttributeName, FString & AttributeValue, EBlueprintResultSwitch &Result)
+void UAdvancedIdentityLibrary::GetUserAccountAttribute(const FBPUserOnlineAccount& AccountInfo, const FString& AttributeName, FString& AttributeValue, EBlueprintResultSwitch& Result)
 {
 	if (!AccountInfo.UserAccountInfo.IsValid())
 	{

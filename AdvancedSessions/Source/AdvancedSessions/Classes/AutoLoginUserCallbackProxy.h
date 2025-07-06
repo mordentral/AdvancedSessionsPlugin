@@ -1,10 +1,10 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #pragma once
 
-#include "CoreMinimal.h"
 #include "BlueprintDataDefinitions.h"
-#include "Interfaces/OnlineIdentityInterface.h"
+#include "CoreMinimal.h"
 #include "Engine/LocalPlayer.h"
+#include "Interfaces/OnlineIdentityInterface.h"
 #include "AutoLoginUserCallbackProxy.generated.h"
 
 UCLASS(MinimalAPI)
@@ -29,7 +29,7 @@ class UAutoLoginUserCallbackProxy : public UOnlineBlueprintCallProxyBase
 	 * @param LocalUserNum the controller number of the associated user
 	 *
 	 */
-	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject"), Category = "Online|AdvancedIdentity")
+	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject"), Category = "Online|AdvancedIdentity")
 	static UAutoLoginUserCallbackProxy* AutoLoginUser(UObject* WorldContextObject, int32 LocalUserNum);
 
 	// UOnlineBlueprintCallProxyBase interface

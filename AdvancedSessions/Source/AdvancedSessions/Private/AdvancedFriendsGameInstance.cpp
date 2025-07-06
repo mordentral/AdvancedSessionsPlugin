@@ -1,22 +1,22 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "AdvancedFriendsGameInstance.h"
-#include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
+#include "Kismet/GameplayStatics.h"
 
-//General Log
+// General Log
 DEFINE_LOG_CATEGORY(AdvancedFriendsInterfaceLog);
 
-UAdvancedFriendsGameInstance::UAdvancedFriendsGameInstance(const FObjectInitializer& ObjectInitializer) 
-	: Super(ObjectInitializer)
-	, bCallFriendInterfaceEventsOnPlayerControllers(true)
-	, bCallIdentityInterfaceEventsOnPlayerControllers(true)
-	, bCallVoiceInterfaceEventsOnPlayerControllers(true)
-	, bEnableTalkingStatusDelegate(true)
-	, SessionInviteReceivedDelegate(FOnSessionInviteReceivedDelegate::CreateUObject(this, &ThisClass::OnSessionInviteReceivedMaster))
-	, SessionInviteAcceptedDelegate(FOnSessionUserInviteAcceptedDelegate::CreateUObject(this, &ThisClass::OnSessionInviteAcceptedMaster))
-	, PlayerTalkingStateChangedDelegate(FOnPlayerTalkingStateChangedDelegate::CreateUObject(this, &ThisClass::OnPlayerTalkingStateChangedMaster))
-	, PlayerLoginChangedDelegate(FOnLoginChangedDelegate::CreateUObject(this, &ThisClass::OnPlayerLoginChangedMaster))
-	, PlayerLoginStatusChangedDelegate(FOnLoginStatusChangedDelegate::CreateUObject(this, &ThisClass::OnPlayerLoginStatusChangedMaster))
+UAdvancedFriendsGameInstance::UAdvancedFriendsGameInstance(const FObjectInitializer& ObjectInitializer)
+    : Super(ObjectInitializer)
+    , bCallFriendInterfaceEventsOnPlayerControllers(true)
+    , bCallIdentityInterfaceEventsOnPlayerControllers(true)
+    , bCallVoiceInterfaceEventsOnPlayerControllers(true)
+    , bEnableTalkingStatusDelegate(true)
+    , SessionInviteReceivedDelegate(FOnSessionInviteReceivedDelegate::CreateUObject(this, &ThisClass::OnSessionInviteReceivedMaster))
+    , SessionInviteAcceptedDelegate(FOnSessionUserInviteAcceptedDelegate::CreateUObject(this, &ThisClass::OnSessionInviteAcceptedMaster))
+    , PlayerTalkingStateChangedDelegate(FOnPlayerTalkingStateChangedDelegate::CreateUObject(this, &ThisClass::OnPlayerTalkingStateChangedMaster))
+    , PlayerLoginChangedDelegate(FOnLoginChangedDelegate::CreateUObject(this, &ThisClass::OnPlayerLoginChangedMaster))
+    , PlayerLoginStatusChangedDelegate(FOnLoginStatusChangedDelegate::CreateUObject(this, &ThisClass::OnPlayerLoginStatusChangedMaster))
 {
 }
 
@@ -27,7 +27,7 @@ void UAdvancedFriendsGameInstance::OnSessionUserInviteAccepted(const bool bWasSu
 	{
 		SessionInterface->ClearOnJoinSessionCompleteDelegate_Handle(OnJoinSessionCompleteDelegateHandle);
 		OnJoinSessionCompleteDelegateHandle = SessionInterface->AddOnJoinSessionCompleteDelegate_Handle(
-		FOnJoinSessionCompleteDelegate::CreateUObject(this, &UAdvancedFriendsGameInstance::OnJoinSessionComplete));
+		    FOnJoinSessionCompleteDelegate::CreateUObject(this, &UAdvancedFriendsGameInstance::OnJoinSessionComplete));
 
 		// Temp for 5.5, they aren't filling in the struct correctly
 		if (!InviteResult.Session.SessionSettings.bIsDedicated)
@@ -65,11 +65,11 @@ void UAdvancedFriendsGameInstance::OnJoinSessionComplete(FName SessionName, EOnJ
 void UAdvancedFriendsGameInstance::Shutdown()
 {
 	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(GetWorld());
-	
+
 	if (!SessionInterface.IsValid())
 	{
 		UE_LOG(AdvancedFriendsInterfaceLog, Warning, TEXT("UAdvancedFriendsGameInstance Failed to get session system!"));
-		//return;
+		// return;
 	}
 	else
 	{
@@ -78,7 +78,6 @@ void UAdvancedFriendsGameInstance::Shutdown()
 		SessionInterface->ClearOnSessionInviteReceivedDelegate_Handle(SessionInviteReceivedDelegateHandle);
 		SessionInterface->ClearOnJoinSessionCompleteDelegate_Handle(OnJoinSessionCompleteDelegateHandle);
 	}
-
 
 	if (bEnableTalkingStatusDelegate)
 	{
@@ -100,19 +99,17 @@ void UAdvancedFriendsGameInstance::Shutdown()
 	if (IdentityInterface.IsValid())
 	{
 		IdentityInterface->ClearOnLoginChangedDelegate_Handle(PlayerLoginChangedDelegateHandle);
-		
 
 		// I am just defaulting to player 1
 		IdentityInterface->ClearOnLoginStatusChangedDelegate_Handle(0, PlayerLoginStatusChangedDelegateHandle);
 	}
-
 
 	Super::Shutdown();
 }
 
 void UAdvancedFriendsGameInstance::Init()
 {
-	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(GetWorld());//OnlineSub->GetSessionInterface();
+	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(GetWorld()); // OnlineSub->GetSessionInterface();
 
 	if (SessionInterface.IsValid())
 	{
@@ -123,14 +120,14 @@ void UAdvancedFriendsGameInstance::Init()
 		SessionInviteAcceptedDelegateHandle = SessionInterface->AddOnSessionUserInviteAcceptedDelegate_Handle(SessionInviteAcceptedDelegate);
 
 		SessionInviteReceivedDelegateHandle = SessionInterface->AddOnSessionInviteReceivedDelegate_Handle(SessionInviteReceivedDelegate);
-		
+
 		// Custom steam join game delegate
 		SessionInterface->OnSessionUserInviteAcceptedDelegates.AddUObject(this, &UAdvancedFriendsGameInstance::OnSessionUserInviteAccepted);
 	}
 	else
 	{
 		UE_LOG(AdvancedFriendsInterfaceLog, Warning, TEXT("UAdvancedFriendsInstance Failed to get session interface!"));
-		//return;
+		// return;
 	}
 
 	// Beginning work on the voice interface
@@ -163,57 +160,54 @@ void UAdvancedFriendsGameInstance::Init()
 		UE_LOG(AdvancedFriendsInterfaceLog, Warning, TEXT("UAdvancedFriendsInstance Failed to get identity interface!"));
 	}
 
-
 	Super::Init();
 }
 
 /*void UAdvancedFriendsGameInstance::PostLoad()
 {
-	Super::PostLoad();
+    Super::PostLoad();
 }*/
-
 
 // Removed because it never gets called by the online subsystems
 /*void UAdvancedFriendsGameInstance::OnSessionInviteReceivedMaster(const FUniqueNetId &InvitedPlayer, const FUniqueNetId &FriendInviting, const FOnlineSessionSearchResult& Session)
 {
-	// Just call the blueprint event to let the user handle this
+    // Just call the blueprint event to let the user handle this
 
-	FBPUniqueNetId IP, FI;
+    FBPUniqueNetId IP, FI;
 
-	IP.SetUniqueNetId(&InvitedPlayer);
+    IP.SetUniqueNetId(&InvitedPlayer);
 
-	FI.SetUniqueNetId(&FriendInviting);
+    FI.SetUniqueNetId(&FriendInviting);
 
-	FBlueprintSessionResult BPS;
-	BPS.OnlineResult = Session;
-	OnSessionInviteReceived(IP,FI,BPS);
+    FBlueprintSessionResult BPS;
+    BPS.OnlineResult = Session;
+    OnSessionInviteReceived(IP,FI,BPS);
 
-	TArray<class APlayerState*>& PlayerArray = GetWorld()->GetGameState()->PlayerArray;
-	const TArray<class ULocalPlayer*>&ControllerArray = this->GetLocalPlayers();
+    TArray<class APlayerState*>& PlayerArray = GetWorld()->GetGameState()->PlayerArray;
+    const TArray<class ULocalPlayer*>&ControllerArray = this->GetLocalPlayers();
 
-	for (int i = 0; i < ControllerArray.Num(); i++)
-	{
-		if (*PlayerArray[ControllerArray[i]->PlayerController->NetPlayerIndex]->UniqueId.GetUniqueNetId().Get() == InvitedPlayer)
-		{
-			//Run the Event specific to the actor, if the actor has the interface, otherwise ignore
-			if (ControllerArray[i]->PlayerController->GetClass()->ImplementsInterface(UAdvancedFriendsInterface::StaticClass()))
-			{
-				IAdvancedFriendsInterface::Execute_OnSessionInviteReceived(ControllerArray[i]->PlayerController, FI, BPS);
-			}
-			break;
-		}
-	}
+    for (int i = 0; i < ControllerArray.Num(); i++)
+    {
+        if (*PlayerArray[ControllerArray[i]->PlayerController->NetPlayerIndex]->UniqueId.GetUniqueNetId().Get() == InvitedPlayer)
+        {
+            //Run the Event specific to the actor, if the actor has the interface, otherwise ignore
+            if (ControllerArray[i]->PlayerController->GetClass()->ImplementsInterface(UAdvancedFriendsInterface::StaticClass()))
+            {
+                IAdvancedFriendsInterface::Execute_OnSessionInviteReceived(ControllerArray[i]->PlayerController, FI, BPS);
+            }
+            break;
+        }
+    }
 }*/
 
-void UAdvancedFriendsGameInstance::OnPlayerLoginStatusChangedMaster(int32 PlayerNum, ELoginStatus::Type PreviousStatus, ELoginStatus::Type NewStatus, const FUniqueNetId & NewPlayerUniqueNetID)
+void UAdvancedFriendsGameInstance::OnPlayerLoginStatusChangedMaster(int32 PlayerNum, ELoginStatus::Type PreviousStatus, ELoginStatus::Type NewStatus, const FUniqueNetId& NewPlayerUniqueNetID)
 {
 	EBPLoginStatus OrigStatus = (EBPLoginStatus)PreviousStatus;
 	EBPLoginStatus CurrentStatus = (EBPLoginStatus)NewStatus;
 	FBPUniqueNetId PlayerID;
 	PlayerID.SetUniqueNetId(&NewPlayerUniqueNetID);
 
-	OnPlayerLoginStatusChanged(PlayerNum, OrigStatus,CurrentStatus,PlayerID);
-
+	OnPlayerLoginStatusChanged(PlayerNum, OrigStatus, CurrentStatus, PlayerID);
 
 	if (bCallIdentityInterfaceEventsOnPlayerControllers)
 	{
@@ -221,7 +215,7 @@ void UAdvancedFriendsGameInstance::OnPlayerLoginStatusChangedMaster(int32 Player
 
 		if (Player != NULL)
 		{
-			//Run the Event specific to the actor, if the actor has the interface, otherwise ignore
+			// Run the Event specific to the actor, if the actor has the interface, otherwise ignore
 			if (Player->GetClass()->ImplementsInterface(UAdvancedFriendsInterface::StaticClass()))
 			{
 				IAdvancedFriendsInterface::Execute_OnPlayerLoginStatusChanged(Player, OrigStatus, CurrentStatus, PlayerID);
@@ -244,7 +238,7 @@ void UAdvancedFriendsGameInstance::OnPlayerLoginChangedMaster(int32 PlayerNum)
 
 		if (Player != NULL)
 		{
-			//Run the Event specific to the actor, if the actor has the interface, otherwise ignore
+			// Run the Event specific to the actor, if the actor has the interface, otherwise ignore
 			if (Player->GetClass()->ImplementsInterface(UAdvancedFriendsInterface::StaticClass()))
 			{
 				IAdvancedFriendsInterface::Execute_OnPlayerLoginChanged(Player, PlayerNum);
@@ -273,7 +267,7 @@ void UAdvancedFriendsGameInstance::OnPlayerTalkingStateChangedMaster(TSharedRef<
 
 			if (Player != NULL)
 			{
-				//Run the Event specific to the actor, if the actor has the interface, otherwise ignore
+				// Run the Event specific to the actor, if the actor has the interface, otherwise ignore
 				if (Player->GetClass()->ImplementsInterface(UAdvancedFriendsInterface::StaticClass()))
 				{
 					IAdvancedFriendsInterface::Execute_OnPlayerVoiceStateChanged(Player, PlayerTalking, bIsTalking);
@@ -287,7 +281,7 @@ void UAdvancedFriendsGameInstance::OnPlayerTalkingStateChangedMaster(TSharedRef<
 	}
 }
 
-void UAdvancedFriendsGameInstance::OnSessionInviteReceivedMaster(const FUniqueNetId & PersonInvited, const FUniqueNetId & PersonInviting, const FString& AppId, const FOnlineSessionSearchResult& SessionToJoin)
+void UAdvancedFriendsGameInstance::OnSessionInviteReceivedMaster(const FUniqueNetId& PersonInvited, const FUniqueNetId& PersonInviting, const FString& AppId, const FOnlineSessionSearchResult& SessionToJoin)
 {
 	if (SessionToJoin.IsValid())
 	{
@@ -299,7 +293,6 @@ void UAdvancedFriendsGameInstance::OnSessionInviteReceivedMaster(const FUniqueNe
 
 		FBPUniqueNetId PInviting;
 		PInviting.SetUniqueNetId(&PersonInviting);
-
 
 		TArray<APlayerController*> PlayerList;
 		GEngine->GetAllLocalPlayerControllers(PlayerList);
@@ -326,11 +319,11 @@ void UAdvancedFriendsGameInstance::OnSessionInviteReceivedMaster(const FUniqueNe
 
 		OnSessionInviteReceived(LocalPlayer, PInviting, AppId, BluePrintResult);
 
-		//IAdvancedFriendsInterface* TheInterface = NULL;
+		// IAdvancedFriendsInterface* TheInterface = NULL;
 
 		if (Player != NULL)
 		{
-			//Run the Event specific to the actor, if the actor has the interface, otherwise ignore
+			// Run the Event specific to the actor, if the actor has the interface, otherwise ignore
 			if (Player->GetClass()->ImplementsInterface(UAdvancedFriendsInterface::StaticClass()))
 			{
 				IAdvancedFriendsInterface::Execute_OnSessionInviteReceived(Player, PInviting, BluePrintResult);
@@ -367,22 +360,22 @@ void UAdvancedFriendsGameInstance::OnSessionInviteAcceptedMaster(const bool bWas
 				BluePrintResult.OnlineResult.Session.SessionSettings.bUseLobbiesIfAvailable = true;
 			}
 
-			OnSessionInviteAccepted(LocalPlayer,PInvited, BluePrintResult);
+			OnSessionInviteAccepted(LocalPlayer, PInvited, BluePrintResult);
 
 			APlayerController* Player = UGameplayStatics::GetPlayerController(GetWorld(), LocalPlayer);
 
-			//IAdvancedFriendsInterface* TheInterface = NULL;
+			// IAdvancedFriendsInterface* TheInterface = NULL;
 
 			if (Player != NULL)
 			{
-				//Run the Event specific to the actor, if the actor has the interface, otherwise ignore
+				// Run the Event specific to the actor, if the actor has the interface, otherwise ignore
 				if (Player->GetClass()->ImplementsInterface(UAdvancedFriendsInterface::StaticClass()))
 				{
-					IAdvancedFriendsInterface::Execute_OnSessionInviteAccepted(Player,PInvited, BluePrintResult);
+					IAdvancedFriendsInterface::Execute_OnSessionInviteAccepted(Player, PInvited, BluePrintResult);
 				}
 			}
 			else
-			{ 
+			{
 				UE_LOG(AdvancedFriendsInterfaceLog, Warning, TEXT("UAdvancedFriendsInstance Failed to get a controller with the specified index in OnSessionInviteAccepted!"));
 			}
 		}

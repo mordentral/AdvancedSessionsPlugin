@@ -2,15 +2,14 @@
 
 #include "AutoLoginUserCallbackProxy.h"
 #include "Kismet/GameplayStatics.h"
-
 #include "Online.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ULoginUserCallbackProxy
 
 UAutoLoginUserCallbackProxy::UAutoLoginUserCallbackProxy(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
-	, Delegate(FOnLoginCompleteDelegate::CreateUObject(this, &ThisClass::OnCompleted))
+    : Super(ObjectInitializer)
+    , Delegate(FOnLoginCompleteDelegate::CreateUObject(this, &ThisClass::OnCompleted))
 {
 }
 
@@ -26,7 +25,7 @@ void UAutoLoginUserCallbackProxy::Activate()
 {
 
 	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("AutoLoginUser"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
-	
+
 	if (Helper.OnlineSub != nullptr)
 	{
 		auto Identity = Helper.OnlineSub->GetIdentityInterface();
@@ -46,7 +45,7 @@ void UAutoLoginUserCallbackProxy::Activate()
 void UAutoLoginUserCallbackProxy::OnCompleted(int32 LocalUserNum, bool bWasSuccessful, const FUniqueNetId& UserId, const FString& ErrorVal)
 {
 	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("AutoLoginUser"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
-	
+
 	if (Helper.OnlineSub != nullptr)
 	{
 		auto Identity = Helper.OnlineSub->GetIdentityInterface();
@@ -73,7 +72,6 @@ void UAutoLoginUserCallbackProxy::OnCompleted(int32 LocalUserNum, bool bWasSucce
 				State->SetUniqueId(uniqueId);
 			}
 		}
-
 
 		if (bWasSuccessful)
 		{

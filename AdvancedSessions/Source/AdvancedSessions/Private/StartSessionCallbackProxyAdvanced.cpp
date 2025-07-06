@@ -1,13 +1,13 @@
 #include "StartSessionCallbackProxyAdvanced.h"
 
 UStartSessionCallbackProxyAdvanced::UStartSessionCallbackProxyAdvanced(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
-	  , StartCompleteDelegate(FOnStartSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnStartCompleted))
+    : Super(ObjectInitializer)
+    , StartCompleteDelegate(FOnStartSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnStartCompleted))
 {
 }
 
 UStartSessionCallbackProxyAdvanced* UStartSessionCallbackProxyAdvanced::StartAdvancedSession(
-	UObject* WorldContextObject)
+    UObject* WorldContextObject)
 {
 	UStartSessionCallbackProxyAdvanced* Proxy = NewObject<UStartSessionCallbackProxyAdvanced>();
 	Proxy->WorldContextObject = WorldContextObject;

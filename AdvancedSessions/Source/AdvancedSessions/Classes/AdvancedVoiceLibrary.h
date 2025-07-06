@@ -1,39 +1,35 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-#include "CoreMinimal.h"
-#include "Kismet/BlueprintFunctionLibrary.h"
 #include "BlueprintDataDefinitions.h"
+#include "CoreMinimal.h"
+#include "Interfaces/VoiceInterface.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
 #include "Online.h"
 #include "OnlineSubsystem.h"
-#include "Interfaces/VoiceInterface.h"
-//#include "OnlineFriendsInterface.h"
-//#include "OnlineUserInterface.h"
-//#include "OnlineMessageInterface.h"
-//#include "OnlinePresenceInterface.h"
+// #include "OnlineFriendsInterface.h"
+// #include "OnlineUserInterface.h"
+// #include "OnlineMessageInterface.h"
+// #include "OnlinePresenceInterface.h"
 #include "Engine/GameInstance.h"
-//#include "OnlineSessionInterface.h"
+// #include "OnlineSessionInterface.h"
 
 #include "UObject/UObjectIterator.h"
-
 #include "AdvancedVoiceLibrary.generated.h"
 
-
-//General Advanced Sessions Log
+// General Advanced Sessions Log
 DECLARE_LOG_CATEGORY_EXTERN(AdvancedVoiceLog, Log, All);
-
 
 UCLASS()
 class UAdvancedVoiceLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 public:
-	
 	//********* Voice Library Functions *************//
 
 	// Get if a headset is present for the specified local user
 	UFUNCTION(BlueprintPure, Category = "Online|AdvancedVoice|VoiceInfo", meta = (WorldContext = "WorldContextObject"))
-	static void IsHeadsetPresent(UObject* WorldContextObject, bool & bHasHeadset, uint8 LocalPlayerNum = 0);
+	static void IsHeadsetPresent(UObject* WorldContextObject, bool& bHasHeadset, uint8 LocalPlayerNum = 0);
 
 	// Starts networked voice, allows push to talk in coordination with StopNetworkedVoice
 	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedVoice", meta = (WorldContext = "WorldContextObject"))
@@ -95,5 +91,5 @@ public:
 
 	// Gets the number of local talkers for this system
 	UFUNCTION(BlueprintPure, Category = "Online|AdvancedVoice|VoiceInfo", meta = (WorldContext = "WorldContextObject"))
-	static void GetNumLocalTalkers(UObject* WorldContextObject, int32 & NumLocalTalkers);
-};	
+	static void GetNumLocalTalkers(UObject* WorldContextObject, int32& NumLocalTalkers);
+};

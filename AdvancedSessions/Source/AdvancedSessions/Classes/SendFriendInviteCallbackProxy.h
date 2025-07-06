@@ -1,8 +1,8 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #pragma once
 
-#include "CoreMinimal.h"
 #include "BlueprintDataDefinitions.h"
+#include "CoreMinimal.h"
 #include "Engine/LocalPlayer.h"
 #include "SendFriendInviteCallbackProxy.generated.h"
 
@@ -24,15 +24,14 @@ class USendFriendInviteCallbackProxy : public UOnlineBlueprintCallProxyBase
 	FBlueprintSendFriendInviteDelegate OnFailure;
 
 	// Adds a friend who is using the defined UniqueNetId, some interfaces do now allow this function to be called (INCLUDING STEAM)
-	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject"), Category = "Online|AdvancedFriends")
-	static USendFriendInviteCallbackProxy* SendFriendInvite(UObject* WorldContextObject, APlayerController *PlayerController, const FBPUniqueNetId &UniqueNetIDInvited);
+	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject"), Category = "Online|AdvancedFriends")
+	static USendFriendInviteCallbackProxy* SendFriendInvite(UObject* WorldContextObject, APlayerController* PlayerController, const FBPUniqueNetId& UniqueNetIDInvited);
 
 	virtual void Activate() override;
 
 private:
 	// Internal callback when the friends list is retrieved
-	void OnSendInviteComplete(int32 LocalPlayerNum, bool bWasSuccessful, const FUniqueNetId &InvitedPlayer, const FString &ListName, const FString &ErrorString);
-
+	void OnSendInviteComplete(int32 LocalPlayerNum, bool bWasSuccessful, const FUniqueNetId& InvitedPlayer, const FString& ListName, const FString& ErrorString);
 
 	// The player controller triggering things
 	TWeakObjectPtr<APlayerController> PlayerControllerWeakPtr;
@@ -46,4 +45,3 @@ private:
 	// The world context object in which this call is taking place
 	TWeakObjectPtr<UObject> WorldContextObject;
 };
-

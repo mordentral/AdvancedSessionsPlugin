@@ -1,18 +1,17 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #include "FindFriendSessionCallbackProxy.h"
 
-
 //////////////////////////////////////////////////////////////////////////
 // UGetRecentPlayersCallbackProxy
 DEFINE_LOG_CATEGORY(AdvancedFindFriendSessionLog);
 
 UFindFriendSessionCallbackProxy::UFindFriendSessionCallbackProxy(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
-	, OnFindFriendSessionCompleteDelegate(FOnFindFriendSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnFindFriendSessionCompleted))
+    : Super(ObjectInitializer)
+    , OnFindFriendSessionCompleteDelegate(FOnFindFriendSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnFindFriendSessionCompleted))
 {
 }
 
-UFindFriendSessionCallbackProxy* UFindFriendSessionCallbackProxy::FindFriendSession(UObject* WorldContextObject, APlayerController *PlayerController, const FBPUniqueNetId &FriendUniqueNetId)
+UFindFriendSessionCallbackProxy* UFindFriendSessionCallbackProxy::FindFriendSession(UObject* WorldContextObject, APlayerController* PlayerController, const FBPUniqueNetId& FriendUniqueNetId)
 {
 	UFindFriendSessionCallbackProxy* Proxy = NewObject<UFindFriendSessionCallbackProxy>();
 	Proxy->PlayerControllerWeakPtr = PlayerController;
@@ -55,9 +54,9 @@ void UFindFriendSessionCallbackProxy::Activate()
 	IOnlineSessionPtr Sessions = Helper.OnlineSub->GetSessionInterface();
 
 	if (Sessions.IsValid())
-	{	
+	{
 		ULocalPlayer* Player = Cast<ULocalPlayer>(PlayerControllerWeakPtr->Player);
-		
+
 		if (!Player)
 		{
 			// Fail immediately
@@ -79,7 +78,6 @@ void UFindFriendSessionCallbackProxy::Activate()
 	OnFailure.Broadcast(EmptyResult);
 }
 
-
 void UFindFriendSessionCallbackProxy::OnFindFriendSessionCompleted(int32 LocalPlayer, bool bWasSuccessful, const TArray<FOnlineSessionSearchResult>& SessionInfo)
 {
 	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("EndSessionCallback"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
@@ -90,7 +88,9 @@ void UFindFriendSessionCallbackProxy::OnFindFriendSessionCompleted(int32 LocalPl
 		IOnlineSessionPtr Sessions = Helper.OnlineSub->GetSessionInterface();
 
 		if (Sessions.IsValid())
+		{
 			Sessions->ClearOnFindFriendSessionCompleteDelegate_Handle(LocalPlayer, FindFriendSessionCompleteDelegateHandle);
+		}
 
 		if (bWasSuccessful)
 		{
@@ -115,7 +115,9 @@ void UFindFriendSessionCallbackProxy::OnFindFriendSessionCompleted(int32 LocalPl
 			}
 
 			if (Result.Num() > 0)
+			{
 				OnSuccess.Broadcast(Result);
+			}
 			else
 			{
 				UE_LOG(AdvancedFindFriendSessionLog, Warning, TEXT("FindFriendSession Failed, returned an invalid session."));

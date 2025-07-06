@@ -1,68 +1,67 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "AdvancedSteamFriendsLibrary.h"
-#include "OnlineSubSystemHeader.h"
 #include "Engine/Texture.h"
 #include "Engine/Texture2D.h"
-#include "TextureResource.h"
+#include "OnlineSubSystemHeader.h"
 #include "PixelFormat.h"
+#include "TextureResource.h"
 
-//General Log
+// General Log
 DEFINE_LOG_CATEGORY(AdvancedSteamFriendsLog);
-
 
 // Clan functions, add in soon
 /*int32 UAdvancedSteamFriendsLibrary::GetFriendSteamLevel(const FBPUniqueNetId UniqueNetId)
 {
 
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
-	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid() || UniqueNetId.UniqueNetId->GetType() != STEAM_SUBSYSTEM)
-	{
-		UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("IsAFriend Had a bad UniqueNetId!"));
-		return 0;
-	}
+    if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid() || UniqueNetId.UniqueNetId->GetType() != STEAM_SUBSYSTEM)
+    {
+        UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("IsAFriend Had a bad UniqueNetId!"));
+        return 0;
+    }
 
-	if (SteamAPI_Init())
-	{
-		uint64 id = *((uint64*)UniqueNetId.UniqueNetId->GetBytes());
-
-
-		// clan (group) iteration and access functions
-		//virtual int GetClanCount() = 0;
-		//virtual CSteamID GetClanByIndex(int iClan) = 0;
-		//virtual const char *GetClanName(CSteamID steamIDClan) = 0;
-		//virtual const char *GetClanTag(CSteamID steamIDClan) = 0;
-		// returns the most recent information we have about what's happening in a clan
-		//virtual bool GetClanActivityCounts(CSteamID steamIDClan, int *pnOnline, int *pnInGame, int *pnChatting) = 0;
-		// for clans a user is a member of, they will have reasonably up-to-date information, but for others you'll have to download the info to have the latest
-		//virtual SteamAPICall_t DownloadClanActivityCounts(ARRAY_COUNT(cClansToRequest) CSteamID *psteamIDClans, int cClansToRequest) = 0;
-
-		// requests information about a clan officer list
-		// when complete, data is returned in ClanOfficerListResponse_t call result
-		// this makes available the calls below
-		// you can only ask about clans that a user is a member of
-		// note that this won't download avatars automatically; if you get an officer,
-		// and no avatar image is available, call RequestUserInformation( steamID, false ) to download the avatar
-		//virtual SteamAPICall_t RequestClanOfficerList(CSteamID steamIDClan) = 0;
+    if (SteamAPI_Init())
+    {
+        uint64 id = *((uint64*)UniqueNetId.UniqueNetId->GetBytes());
 
 
-		// returns the steamID of the clan owner
-		//virtual CSteamID GetClanOwner(CSteamID steamIDClan) = 0;
-		// returns the number of officers in a clan (including the owner)
-		//virtual int GetClanOfficerCount(CSteamID steamIDClan) = 0;
-		// returns the steamID of a clan officer, by index, of range [0,GetClanOfficerCount)
-		//virtual CSteamID GetClanOfficerByIndex(CSteamID steamIDClan, int iOfficer) = 0;
+        // clan (group) iteration and access functions
+        //virtual int GetClanCount() = 0;
+        //virtual CSteamID GetClanByIndex(int iClan) = 0;
+        //virtual const char *GetClanName(CSteamID steamIDClan) = 0;
+        //virtual const char *GetClanTag(CSteamID steamIDClan) = 0;
+        // returns the most recent information we have about what's happening in a clan
+        //virtual bool GetClanActivityCounts(CSteamID steamIDClan, int *pnOnline, int *pnInGame, int *pnChatting) = 0;
+        // for clans a user is a member of, they will have reasonably up-to-date information, but for others you'll have to download the info to have the latest
+        //virtual SteamAPICall_t DownloadClanActivityCounts(ARRAY_COUNT(cClansToRequest) CSteamID *psteamIDClans, int cClansToRequest) = 0;
+
+        // requests information about a clan officer list
+        // when complete, data is returned in ClanOfficerListResponse_t call result
+        // this makes available the calls below
+        // you can only ask about clans that a user is a member of
+        // note that this won't download avatars automatically; if you get an officer,
+        // and no avatar image is available, call RequestUserInformation( steamID, false ) to download the avatar
+        //virtual SteamAPICall_t RequestClanOfficerList(CSteamID steamIDClan) = 0;
 
 
-		return SteamFriends()->GetFriendSteamLevel(id);
-	}
+        // returns the steamID of the clan owner
+        //virtual CSteamID GetClanOwner(CSteamID steamIDClan) = 0;
+        // returns the number of officers in a clan (including the owner)
+        //virtual int GetClanOfficerCount(CSteamID steamIDClan) = 0;
+        // returns the steamID of a clan officer, by index, of range [0,GetClanOfficerCount)
+        //virtual CSteamID GetClanOfficerByIndex(CSteamID steamIDClan, int iOfficer) = 0;
+
+
+        return SteamFriends()->GetFriendSteamLevel(id);
+    }
 #endif
 
-	return 0;
+    return 0;
 }*/
 
-void UAdvancedSteamFriendsLibrary::GetSteamGroups(TArray<FBPSteamGroupInfo> & SteamGroups)
+void UAdvancedSteamFriendsLibrary::GetSteamGroups(TArray<FBPSteamGroupInfo>& SteamGroups)
 {
-	
+
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 
 	if (SteamAPI_Init())
@@ -73,8 +72,10 @@ void UAdvancedSteamFriendsLibrary::GetSteamGroups(TArray<FBPSteamGroupInfo> & St
 		{
 			CSteamID SteamGroupID = SteamFriends()->GetClanByIndex(i);
 
-			if(!SteamGroupID.IsValid())
+			if (!SteamGroupID.IsValid())
+			{
 				continue;
+			}
 
 			FBPSteamGroupInfo GroupInfo;
 
@@ -88,10 +89,9 @@ void UAdvancedSteamFriendsLibrary::GetSteamGroups(TArray<FBPSteamGroupInfo> & St
 		}
 	}
 #endif
-
 }
 
-void UAdvancedSteamFriendsLibrary::GetSteamFriendGamePlayed(const FBPUniqueNetId UniqueNetId, EBlueprintResultSwitch &Result/*, FString & GameName*/, int32 & AppID)
+void UAdvancedSteamFriendsLibrary::GetSteamFriendGamePlayed(const FBPUniqueNetId UniqueNetId, EBlueprintResultSwitch& Result /*, FString & GameName*/, int32& AppID)
 {
 
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
@@ -120,13 +120,12 @@ void UAdvancedSteamFriendsLibrary::GetSteamFriendGamePlayed(const FBPUniqueNetId
 
 			if (Len != -1) // Invalid
 			{
-				GameName = FString(UTF8_TO_TCHAR(NameBuffer));
+			    GameName = FString(UTF8_TO_TCHAR(NameBuffer));
 			}*/
 
 			Result = EBlueprintResultSwitch::OnSuccess;
 			return;
 		}
-
 	}
 #endif
 
@@ -178,7 +177,7 @@ FString UAdvancedSteamFriendsLibrary::GetSteamPersonaName(const FBPUniqueNetId U
 FBPUniqueNetId UAdvancedSteamFriendsLibrary::CreateSteamIDFromString(const FString SteamID64)
 {
 	FBPUniqueNetId netId;
-	
+
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 	if (!(SteamID64.Len() > 0))
 	{
@@ -190,8 +189,8 @@ FBPUniqueNetId UAdvancedSteamFriendsLibrary::CreateSteamIDFromString(const FStri
 	{
 		// Already does the conversion
 		TSharedPtr<const FUniqueNetId> ValueID(new const FUniqueNetIdSteam2(SteamID64));
-		//FCString::Atoi64(*SteamID64));
-		
+		// FCString::Atoi64(*SteamID64));
+
 		netId.SetUniqueNetId(ValueID);
 		return netId;
 	}
@@ -236,7 +235,6 @@ bool UAdvancedSteamFriendsLibrary::RequestSteamFriendInfo(const FBPUniqueNetId U
 	return false;
 }
 
-
 bool UAdvancedSteamFriendsLibrary::OpenSteamUserOverlay(const FBPUniqueNetId UniqueNetId, ESteamUserOverlayType DialogType)
 {
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
@@ -279,7 +277,7 @@ bool UAdvancedSteamFriendsLibrary::IsOverlayEnabled()
 	return false;
 }
 
-UTexture2D * UAdvancedSteamFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueNetId UniqueNetId, EBlueprintAsyncResultSwitch &Result, SteamAvatarSize AvatarSize)
+UTexture2D* UAdvancedSteamFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueNetId UniqueNetId, EBlueprintAsyncResultSwitch& Result, SteamAvatarSize AvatarSize)
 {
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid() || UniqueNetId.UniqueNetId->GetType() != STEAM_SUBSYSTEM)
@@ -294,19 +292,18 @@ UTexture2D * UAdvancedSteamFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueN
 
 	if (SteamAPI_Init())
 	{
-		//Getting the PictureID from the SteamAPI and getting the Size with the ID
-		//virtual bool RequestUserInformation( CSteamID steamIDUser, bool bRequireNameOnly ) = 0;
+		// Getting the PictureID from the SteamAPI and getting the Size with the ID
+		// virtual bool RequestUserInformation( CSteamID steamIDUser, bool bRequireNameOnly ) = 0;
 
-		
 		uint64 id = *((uint64*)UniqueNetId.UniqueNetId->GetBytes());
 		int Picture = 0;
-		
-		switch(AvatarSize)
+
+		switch (AvatarSize)
 		{
-		case SteamAvatarSize::SteamAvatar_Small: Picture = SteamFriends()->GetSmallFriendAvatar(id); break;
-		case SteamAvatarSize::SteamAvatar_Medium: Picture = SteamFriends()->GetMediumFriendAvatar(id); break;
-		case SteamAvatarSize::SteamAvatar_Large: Picture = SteamFriends()->GetLargeFriendAvatar(id); break;
-		default: break;
+			case SteamAvatarSize::SteamAvatar_Small: Picture = SteamFriends()->GetSmallFriendAvatar(id); break;
+			case SteamAvatarSize::SteamAvatar_Medium: Picture = SteamFriends()->GetMediumFriendAvatar(id); break;
+			case SteamAvatarSize::SteamAvatar_Large: Picture = SteamFriends()->GetLargeFriendAvatar(id); break;
+			default: break;
 		}
 
 		if (Picture == -1)
@@ -323,22 +320,20 @@ UTexture2D * UAdvancedSteamFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueN
 
 		if (Width > 0 && Height > 0)
 		{
-			//Creating the buffer "oAvatarRGBA" and then filling it with the RGBA Stream from the Steam Avatar
-			uint8 *oAvatarRGBA = new uint8[Width * Height * 4];
+			// Creating the buffer "oAvatarRGBA" and then filling it with the RGBA Stream from the Steam Avatar
+			uint8* oAvatarRGBA = new uint8[Width * Height * 4];
 
-
-			//Filling the buffer with the RGBA Stream from the Steam Avatar and creating a UTextur2D to parse the RGBA Steam in
+			// Filling the buffer with the RGBA Stream from the Steam Avatar and creating a UTextur2D to parse the RGBA Steam in
 			SteamUtils()->GetImageRGBA(Picture, (uint8*)oAvatarRGBA, 4 * Height * Width * sizeof(char));
-
 
 			// Removed as I changed the image bit code to be RGB, I think the original author was unaware that there were different pixel formats
 			/*
 			//Swap R and B channels because for some reason the games whack
 			for (uint32 i = 0; i < (Width * Height * 4); i += 4)
 			{
-				uint8 Temp = oAvatarRGBA[i + 0];
-				oAvatarRGBA[i + 0] = oAvatarRGBA[i + 2];
-				oAvatarRGBA[i + 2] = Temp;
+			    uint8 Temp = oAvatarRGBA[i + 0];
+			    oAvatarRGBA[i + 0] = oAvatarRGBA[i + 2];
+			    oAvatarRGBA[i + 2] = Temp;
 			}*/
 
 			UTexture2D* Avatar = UTexture2D::CreateTransient(Width, Height, PF_R8G8B8A8);
@@ -350,10 +345,10 @@ UTexture2D * UAdvancedSteamFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueN
 				FMemory::Memcpy(MipData, (void*)oAvatarRGBA, Height * Width * 4);
 				PlatformData->Mips[0].BulkData.Unlock();
 
-				//Setting some Parameters for the Texture and finally returning it
+				// Setting some Parameters for the Texture and finally returning it
 				PlatformData->SetNumSlices(1);
 				Avatar->NeverStream = true;
-				//Avatar->CompressionSettings = TC_EditorIcon;
+				// Avatar->CompressionSettings = TC_EditorIcon;
 			}
 
 			// Free RGBA buffer regardless of whether it was used or not
@@ -401,14 +396,14 @@ bool UAdvancedSteamFriendsLibrary::FilterText(FString TextToFilter, EBPTextFilte
 	{
 		uint32 BufferLen = TextToFilter.Len() + 10; // Docs say 1 byte excess min, going with 10
 		char* OutText = new char[BufferLen];
-		
+
 		uint64 id = 0;
 
 		if (TextSourceID.IsValid())
 		{
 			id = *((uint64*)TextSourceID.UniqueNetId->GetBytes());
 		}
-		
+
 		int FilterCount = SteamUtils()->FilterText((ETextFilteringContext)Context, id, TCHAR_TO_ANSI(*TextToFilter), OutText, BufferLen);
 
 		if (FilterCount > 0)

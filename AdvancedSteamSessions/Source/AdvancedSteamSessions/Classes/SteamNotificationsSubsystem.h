@@ -21,14 +21,13 @@ class ADVANCEDSTEAMSESSIONS_API USteamNotificationsSubsystem : public UGameInsta
 	GENERATED_BODY()
 
 public:
-	
 	// Event thrown when the steam overlay switches states
 	UPROPERTY(BlueprintAssignable, Category = "SteamEvents")
-		FOnSteamOverlayActivated OnSteamOverlayActivated_Bind;
-	
-	USteamNotificationsSubsystem() : Super()
-	{
+	FOnSteamOverlayActivated OnSteamOverlayActivated_Bind;
 
+	USteamNotificationsSubsystem()
+	    : Super()
+	{
 	}
 
 	class cSteamEventsStore
@@ -54,13 +53,13 @@ public:
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 		cSteamEventsStore()
 		{}
-			//:
+		//:
 		/*OnExternalUITriggeredCallback(this, &cSteamEventsStore::OnExternalUITriggered)
 		{
 
 		}*/
 #else
-		//cSteamEventsStore()
+		// cSteamEventsStore()
 		//{
 
 		//}
@@ -70,7 +69,7 @@ public:
 
 	private:
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
-		//STEAM_CALLBACK(cSteamEventsStore, OnExternalUITriggered, GameOverlayActivated_t, OnExternalUITriggeredCallback);
+		// STEAM_CALLBACK(cSteamEventsStore, OnExternalUITriggered, GameOverlayActivated_t, OnExternalUITriggeredCallback);
 		STEAM_CALLBACK_MANUAL(cSteamEventsStore, OnExternalUITriggered, GameOverlayActivated_t, OnExternalUITriggeredCallback);
 #endif
 	};

@@ -1,15 +1,14 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #include "CreateSessionCallbackProxyAdvanced.h"
 
-
 //////////////////////////////////////////////////////////////////////////
 // UCreateSessionCallbackProxyAdvanced
 
 UCreateSessionCallbackProxyAdvanced::UCreateSessionCallbackProxyAdvanced(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
-	, CreateCompleteDelegate(FOnCreateSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnCreateCompleted))
-	, StartCompleteDelegate(FOnStartSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnStartCompleted))
-	, NumPublicConnections(1)
+    : Super(ObjectInitializer)
+    , CreateCompleteDelegate(FOnCreateSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnCreateCompleted))
+    , StartCompleteDelegate(FOnStartSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnStartCompleted))
+    , NumPublicConnections(1)
 {
 }
 
@@ -39,9 +38,11 @@ UCreateSessionCallbackProxyAdvanced* UCreateSessionCallbackProxyAdvanced::Create
 void UCreateSessionCallbackProxyAdvanced::Activate()
 {
 	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("CreateSession"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
-	
-	if (PlayerControllerWeakPtr.IsValid() )
+
+	if (PlayerControllerWeakPtr.IsValid())
+	{
 		Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
+	}
 
 	if (Helper.OnlineSub != nullptr)
 	{
@@ -49,7 +50,7 @@ void UCreateSessionCallbackProxyAdvanced::Activate()
 		if (Sessions.IsValid())
 		{
 			CreateCompleteDelegateHandle = Sessions->AddOnCreateSessionCompleteDelegate_Handle(CreateCompleteDelegate);
-			
+
 			FOnlineSessionSettings Settings;
 			Settings.NumPublicConnections = NumPublicConnections;
 			Settings.NumPrivateConnections = NumPrivateConnections;
@@ -77,7 +78,7 @@ void UCreateSessionCallbackProxyAdvanced::Activate()
 
 			// These are about the only changes over the standard Create Sessions Node
 			Settings.bAllowInvites = bAllowInvites;
-			
+
 			FOnlineSessionSetting ExtraSetting;
 			for (int i = 0; i < ExtraSettings.Num(); i++)
 			{
@@ -86,9 +87,8 @@ void UCreateSessionCallbackProxyAdvanced::Activate()
 				ExtraSetting.AdvertisementType = EOnlineDataAdvertisementType::ViaOnlineService;
 				Settings.Settings.Add(ExtraSettings[i].Key, ExtraSetting);
 			}
-			
-			
-			if (!bDedicatedServer )
+
+			if (!bDedicatedServer)
 			{
 				if (PlayerControllerWeakPtr.IsValid() && Helper.UserID.IsValid())
 				{
@@ -98,13 +98,15 @@ void UCreateSessionCallbackProxyAdvanced::Activate()
 				{
 					FFrame::KismetExecutionMessage(TEXT("Invalid Player controller when attempting to start a session"), ELogVerbosity::Warning);
 					Sessions->ClearOnCreateSessionCompleteDelegate_Handle(CreateCompleteDelegateHandle);
-					
+
 					// Fail immediately
 					OnFailure.Broadcast();
 				}
 			}
 			else
+			{
 				Sessions->CreateSession(0, NAME_GameSession, Settings);
+			}
 
 			// OnCreateCompleted will get called, nothing more to do now
 			return;
@@ -122,7 +124,7 @@ void UCreateSessionCallbackProxyAdvanced::Activate()
 void UCreateSessionCallbackProxyAdvanced::OnCreateCompleted(FName SessionName, bool bWasSuccessful)
 {
 	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("CreateSessionCallback"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
-	//Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
+	// Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
 
 	if (Helper.OnlineSub != nullptr)
 	{
@@ -130,7 +132,7 @@ void UCreateSessionCallbackProxyAdvanced::OnCreateCompleted(FName SessionName, b
 		if (Sessions.IsValid())
 		{
 			Sessions->ClearOnCreateSessionCompleteDelegate_Handle(CreateCompleteDelegateHandle);
-			
+
 			if (bWasSuccessful)
 			{
 				if (this->bStartAfterCreate)
@@ -160,7 +162,7 @@ void UCreateSessionCallbackProxyAdvanced::OnCreateCompleted(FName SessionName, b
 void UCreateSessionCallbackProxyAdvanced::OnStartCompleted(FName SessionName, bool bWasSuccessful)
 {
 	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("StartSessionCallback"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
-	//Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
+	// Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
 
 	if (Helper.OnlineSub != nullptr)
 	{

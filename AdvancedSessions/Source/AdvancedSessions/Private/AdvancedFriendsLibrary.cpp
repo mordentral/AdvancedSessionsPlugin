@@ -1,14 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "AdvancedFriendsLibrary.h"
 
-
-
 // This is taken directly from UE4 - OnlineSubsystemSteamPrivatePCH.h as a fix for the array_count macro
 
-//General Log
+// General Log
 DEFINE_LOG_CATEGORY(AdvancedFriendsLog);
 
-void UAdvancedFriendsLibrary::SendSessionInviteToFriends(APlayerController *PlayerController, const TArray<FBPUniqueNetId> &Friends, EBlueprintResultSwitch &Result)
+void UAdvancedFriendsLibrary::SendSessionInviteToFriends(APlayerController* PlayerController, const TArray<FBPUniqueNetId>& Friends, EBlueprintResultSwitch& Result)
 {
 	if (!PlayerController)
 	{
@@ -46,7 +44,7 @@ void UAdvancedFriendsLibrary::SendSessionInviteToFriends(APlayerController *Play
 	for (int i = 0; i < Friends.Num(); i++)
 	{
 		TSharedRef<const FUniqueNetId> val(Friends[i].UniqueNetId.ToSharedRef());
-		//TSharedRef<const FUniqueNetId> val(Friends[i].GetUniqueNetId());
+		// TSharedRef<const FUniqueNetId> val(Friends[i].GetUniqueNetId());
 		List.Add(val);
 	}
 
@@ -60,7 +58,7 @@ void UAdvancedFriendsLibrary::SendSessionInviteToFriends(APlayerController *Play
 	return;
 }
 
-void UAdvancedFriendsLibrary::SendSessionInviteToFriend(APlayerController *PlayerController, const FBPUniqueNetId &FriendUniqueNetId, EBlueprintResultSwitch &Result)
+void UAdvancedFriendsLibrary::SendSessionInviteToFriend(APlayerController* PlayerController, const FBPUniqueNetId& FriendUniqueNetId, EBlueprintResultSwitch& Result)
 {
 	if (!PlayerController)
 	{
@@ -104,7 +102,7 @@ void UAdvancedFriendsLibrary::SendSessionInviteToFriend(APlayerController *Playe
 	return;
 }
 
-void UAdvancedFriendsLibrary::GetFriend(APlayerController *PlayerController, const FBPUniqueNetId FriendUniqueNetId, FBPFriendInfo &Friend)
+void UAdvancedFriendsLibrary::GetFriend(APlayerController* PlayerController, const FBPUniqueNetId FriendUniqueNetId, FBPFriendInfo& Friend)
 {
 
 	if (!PlayerController)
@@ -152,11 +150,11 @@ void UAdvancedFriendsLibrary::GetFriend(APlayerController *PlayerController, con
 		Friend.PresenceInfo.bIsPlayingThisGame = pres.bIsPlayingThisGame;
 		Friend.PresenceInfo.PresenceState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
 		// #TODO: Check back in on this in shipping, epic is missing the UTF8_TO_TCHAR call on converting this and its making an invalid string
-		//Friend.PresenceInfo.StatusString = pres.Status.StatusStr;
+		// Friend.PresenceInfo.StatusString = pres.Status.StatusStr;
 	}
 }
 
-void UAdvancedFriendsLibrary::IsAFriend(APlayerController *PlayerController, const FBPUniqueNetId UniqueNetId, bool &IsFriend)
+void UAdvancedFriendsLibrary::IsAFriend(APlayerController* PlayerController, const FBPUniqueNetId UniqueNetId, bool& IsFriend)
 {
 	if (!PlayerController)
 	{
@@ -189,10 +187,10 @@ void UAdvancedFriendsLibrary::IsAFriend(APlayerController *PlayerController, con
 	IsFriend = FriendsInterface->IsFriend(Player->GetControllerId(), *UniqueNetId.GetUniqueNetId(), EFriendsLists::ToString(EFriendsLists::Default));
 }
 
-void UAdvancedFriendsLibrary::GetStoredRecentPlayersList(FBPUniqueNetId UniqueNetId, TArray<FBPOnlineRecentPlayer> &PlayersList)
+void UAdvancedFriendsLibrary::GetStoredRecentPlayersList(FBPUniqueNetId UniqueNetId, TArray<FBPOnlineRecentPlayer>& PlayersList)
 {
 	IOnlineFriendsPtr FriendsInterface = Online::GetFriendsInterface();
-	
+
 	if (!FriendsInterface.IsValid())
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetRecentPlayersList Failed to get friends interface!"));
@@ -205,10 +203,10 @@ void UAdvancedFriendsLibrary::GetStoredRecentPlayersList(FBPUniqueNetId UniqueNe
 		return;
 	}
 
-	TArray< TSharedRef<FOnlineRecentPlayer> > PlayerList;
-	
+	TArray<TSharedRef<FOnlineRecentPlayer>> PlayerList;
+
 	// For now getting all namespaces
-	FriendsInterface->GetRecentPlayers(*(UniqueNetId.GetUniqueNetId()),"", PlayerList);
+	FriendsInterface->GetRecentPlayers(*(UniqueNetId.GetUniqueNetId()), "", PlayerList);
 
 	for (int32 i = 0; i < PlayerList.Num(); i++)
 	{
@@ -221,7 +219,7 @@ void UAdvancedFriendsLibrary::GetStoredRecentPlayersList(FBPUniqueNetId UniqueNe
 	}
 }
 
-void UAdvancedFriendsLibrary::GetStoredFriendsList(APlayerController *PlayerController, TArray<FBPFriendInfo> &FriendsList)
+void UAdvancedFriendsLibrary::GetStoredFriendsList(APlayerController* PlayerController, TArray<FBPFriendInfo>& FriendsList)
 {
 
 	if (!PlayerController)
@@ -231,7 +229,7 @@ void UAdvancedFriendsLibrary::GetStoredFriendsList(APlayerController *PlayerCont
 	}
 
 	IOnlineFriendsPtr FriendsInterface = Online::GetFriendsInterface();
-	
+
 	if (!FriendsInterface.IsValid())
 	{
 		UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetFriendsList Failed to get friends interface!"));
@@ -246,8 +244,7 @@ void UAdvancedFriendsLibrary::GetStoredFriendsList(APlayerController *PlayerCont
 		return;
 	}
 
-
-	TArray< TSharedRef<FOnlineFriend> > FriendList;
+	TArray<TSharedRef<FOnlineFriend>> FriendList;
 	if (FriendsInterface->GetFriendsList(Player->GetControllerId(), EFriendsLists::ToString((EFriendsLists::Default)), FriendList))
 	{
 		for (int32 i = 0; i < FriendList.Num(); i++)
@@ -266,7 +263,7 @@ void UAdvancedFriendsLibrary::GetStoredFriendsList(APlayerController *PlayerCont
 			BPF.PresenceInfo.bIsPlaying = pres.bIsPlaying;
 			BPF.PresenceInfo.PresenceState = ((EBPOnlinePresenceState)((int32)pres.Status.State));
 			// #TODO: Check back in on this in shipping, epic is missing the UTF8_TO_TCHAR call on converting this and its making an invalid string
-			//BPF.PresenceInfo.StatusString = pres.Status.StatusStr;
+			// BPF.PresenceInfo.StatusString = pres.Status.StatusStr;
 			BPF.PresenceInfo.bIsJoinable = pres.bIsJoinable;
 			BPF.PresenceInfo.bIsPlayingThisGame = pres.bIsPlayingThisGame;
 

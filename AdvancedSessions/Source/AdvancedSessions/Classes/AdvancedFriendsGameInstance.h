@@ -1,27 +1,25 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
+#include "AdvancedFriendsInterface.h"
+#include "BlueprintDataDefinitions.h"
 #include "CoreMinimal.h"
 #include "Engine/Engine.h"
-#include "BlueprintDataDefinitions.h"
-#include "Kismet/BlueprintFunctionLibrary.h"
-#include "Online.h"
-#include "OnlineSubsystem.h"
-#include "Interfaces/OnlineFriendsInterface.h"
-#include "Interfaces/OnlineUserInterface.h"
-#include "Interfaces/OnlineMessageInterface.h"
-#include "Interfaces/OnlinePresenceInterface.h"
 #include "Engine/GameInstance.h"
 #include "Engine/LocalPlayer.h"
+#include "Interfaces/OnlineFriendsInterface.h"
+#include "Interfaces/OnlineMessageInterface.h"
+#include "Interfaces/OnlinePresenceInterface.h"
 #include "Interfaces/OnlineSessionInterface.h"
+#include "Interfaces/OnlineUserInterface.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
+#include "Online.h"
 #include "OnlineSessionSettings.h"
+#include "OnlineSubsystem.h"
 #include "UObject/UObjectIterator.h"
-#include "AdvancedFriendsInterface.h"
-
 #include "AdvancedFriendsGameInstance.generated.h"
 
-
-//General Advanced Sessions Log
+// General Advanced Sessions Log
 DECLARE_LOG_CATEGORY_EXTERN(AdvancedFriendsInterfaceLog, Log, All);
 
 UCLASS()
@@ -29,7 +27,6 @@ class ADVANCEDSESSIONS_API UAdvancedFriendsGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 public:
-
 	UAdvancedFriendsGameInstance(const FObjectInitializer& ObjectInitializer);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AdvancedFriendsInterface)
@@ -44,7 +41,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AdvancedVoiceInterface)
 	bool bEnableTalkingStatusDelegate;
 
-	//virtual void PostLoad() override;
+	// virtual void PostLoad() override;
 	virtual void Shutdown() override;
 	virtual void Init() override;
 
@@ -59,8 +56,8 @@ public:
 	// custom Steam UI function to client travel #Self invite#
 	void OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
 
-	//const FUniqueNetId& /*UserId*/, const FUniqueNetId& /*FromId*/, const FString& /*AppId*/, const FOnlineSessionSearchResult& /*InviteResult*/
-	void OnSessionInviteReceivedMaster(const FUniqueNetId & PersonInvited, const FUniqueNetId & PersonInviting, const FString & AppId, const FOnlineSessionSearchResult& SessionToJoin);
+	// const FUniqueNetId& /*UserId*/, const FUniqueNetId& /*FromId*/, const FString& /*AppId*/, const FOnlineSessionSearchResult& /*InviteResult*/
+	void OnSessionInviteReceivedMaster(const FUniqueNetId& PersonInvited, const FUniqueNetId& PersonInviting, const FString& AppId, const FOnlineSessionSearchResult& SessionToJoin);
 
 	// After a session invite has been accepted by the local player this event is triggered, call JoinSession on the session result to join it
 	UFUNCTION(BlueprintImplementableEvent, Category = "AdvancedFriends")
@@ -77,7 +74,6 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "AdvancedFriends")
 	void OnSessionInviteAccepted(int32 LocalPlayerNum, FBPUniqueNetId PersonInvited, const FBlueprintSessionResult& SessionToJoin);
 
-
 	// After a voice status has changed this event is triggered if the bEnableTalkingStatusDelegate property is true
 	UFUNCTION(BlueprintImplementableEvent, Category = "AdvancedVoice")
 	void OnPlayerTalkingStateChanged(FBPUniqueNetId PlayerId, bool bIsTalking);
@@ -87,9 +83,8 @@ public:
 	FOnPlayerTalkingStateChangedDelegate PlayerTalkingStateChangedDelegate;
 	FDelegateHandle PlayerTalkingStateChangedDelegateHandle;
 
-
 	// Called when the designated LocalUser has changed login state
-	UFUNCTION(BlueprintImplementableEvent , Category = "AdvancedIdentity", meta = (DisplayName = "OnPlayerLoginChanged"))
+	UFUNCTION(BlueprintImplementableEvent, Category = "AdvancedIdentity", meta = (DisplayName = "OnPlayerLoginChanged"))
 	void OnPlayerLoginChanged(int32 PlayerNum);
 
 	void OnPlayerLoginChangedMaster(int32 PlayerNum);
@@ -100,10 +95,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "AdvancedIdentity", meta = (DisplayName = "OnPlayerLoginStatusChanged"))
 	void OnPlayerLoginStatusChanged(int32 PlayerNum, EBPLoginStatus PreviousStatus, EBPLoginStatus NewStatus, FBPUniqueNetId NewPlayerUniqueNetID);
 
-	void OnPlayerLoginStatusChangedMaster(int32 PlayerNum, ELoginStatus::Type PreviousStatus, ELoginStatus::Type NewStatus, const FUniqueNetId & NewPlayerUniqueNetID);
+	void OnPlayerLoginStatusChangedMaster(int32 PlayerNum, ELoginStatus::Type PreviousStatus, ELoginStatus::Type NewStatus, const FUniqueNetId& NewPlayerUniqueNetID);
 	FOnLoginStatusChangedDelegate PlayerLoginStatusChangedDelegate;
 	FDelegateHandle PlayerLoginStatusChangedDelegateHandle;
-
 
 	//*** Session Invite Received From Friend ***//
 	// REMOVED BECAUSE IT NEVER GETS CALLED
@@ -149,4 +143,3 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "AdvancedFriends")
 	void OnRemovedByFriend(const FBPUniqueNetId &InvitedPlayer, const FBPUniqueNetId &FriendRemoved);*/
 };
-

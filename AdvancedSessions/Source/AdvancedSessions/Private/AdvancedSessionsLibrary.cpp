@@ -1,11 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "AdvancedSessionsLibrary.h"
-#include "GameFramework/PlayerState.h"
 #include "GameFramework/GameStateBase.h"
+#include "GameFramework/PlayerState.h"
 
-//General Log
+// General Log
 DEFINE_LOG_CATEGORY(AdvancedSessionsLog);
-
 
 bool UAdvancedSessionsLibrary::KickPlayer(UObject* WorldContextObject, APlayerController* PlayerToKick, FText KickReason)
 {
@@ -43,12 +42,12 @@ bool UAdvancedSessionsLibrary::BanPlayer(UObject* WorldContextObject, APlayerCon
 	return false;
 }
 
-bool UAdvancedSessionsLibrary::IsValidSession(const FBlueprintSessionResult & SessionResult)
+bool UAdvancedSessionsLibrary::IsValidSession(const FBlueprintSessionResult& SessionResult)
 {
 	return SessionResult.OnlineResult.IsValid();
 }
 
-void UAdvancedSessionsLibrary::GetSessionID_AsString(const FBlueprintSessionResult & SessionResult, FString& SessionID)
+void UAdvancedSessionsLibrary::GetSessionID_AsString(const FBlueprintSessionResult& SessionResult, FString& SessionID)
 {
 	const TSharedPtr<class FOnlineSessionInfo> SessionInfo = SessionResult.OnlineResult.Session.SessionInfo;
 	if (SessionInfo.IsValid() && SessionInfo->IsValid() && SessionInfo->GetSessionId().IsValid())
@@ -66,7 +65,7 @@ void UAdvancedSessionsLibrary::GetCurrentSessionID_AsString(UObject* WorldContex
 	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
 	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(World);
 
-	if (!SessionInterface.IsValid()) 
+	if (!SessionInterface.IsValid())
 	{
 		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetCurrentSessionID_AsString couldn't get the session interface!"));
 		SessionID.Empty();
@@ -74,10 +73,10 @@ void UAdvancedSessionsLibrary::GetCurrentSessionID_AsString(UObject* WorldContex
 	}
 
 	const FNamedOnlineSession* Session = SessionInterface->GetNamedSession(NAME_GameSession);
-	if (Session != nullptr) 
+	if (Session != nullptr)
 	{
 		const TSharedPtr<class FOnlineSessionInfo> SessionInfo = Session->SessionInfo;
-		if (SessionInfo.IsValid() && SessionInfo->IsValid() && SessionInfo->GetSessionId().IsValid()) 
+		if (SessionInfo.IsValid() && SessionInfo->IsValid() && SessionInfo->GetSessionId().IsValid())
 		{
 			SessionID = SessionInfo->GetSessionId().ToString();
 			return;
@@ -88,12 +87,12 @@ void UAdvancedSessionsLibrary::GetCurrentSessionID_AsString(UObject* WorldContex
 	SessionID.Empty();
 }
 
-void UAdvancedSessionsLibrary::GetCurrentUniqueBuildID(int32 &UniqueBuildId)
+void UAdvancedSessionsLibrary::GetCurrentUniqueBuildID(int32& UniqueBuildId)
 {
 	UniqueBuildId = GetBuildUniqueId();
 }
 
-void UAdvancedSessionsLibrary::GetUniqueBuildID(FBlueprintSessionResult SessionResult, int32 &UniqueBuildId)
+void UAdvancedSessionsLibrary::GetUniqueBuildID(FBlueprintSessionResult SessionResult, int32& UniqueBuildId)
 {
 	UniqueBuildId = SessionResult.OnlineResult.Session.SessionSettings.BuildUniqueId;
 }
@@ -103,9 +102,9 @@ FName UAdvancedSessionsLibrary::GetSessionPropertyKey(const FSessionPropertyKeyP
 	return SessionProperty.Key;
 }
 
-void UAdvancedSessionsLibrary::FindSessionPropertyByName(const TArray<FSessionPropertyKeyPair>& ExtraSettings, FName SettingName, EBlueprintResultSwitch &Result, FSessionPropertyKeyPair& OutProperty)
+void UAdvancedSessionsLibrary::FindSessionPropertyByName(const TArray<FSessionPropertyKeyPair>& ExtraSettings, FName SettingName, EBlueprintResultSwitch& Result, FSessionPropertyKeyPair& OutProperty)
 {
-	const FSessionPropertyKeyPair* prop = ExtraSettings.FindByPredicate([&](const FSessionPropertyKeyPair& it) {return it.Key == SettingName; });
+	const FSessionPropertyKeyPair* prop = ExtraSettings.FindByPredicate([&](const FSessionPropertyKeyPair& it) { return it.Key == SettingName; });
 	if (prop)
 	{
 		Result = EBlueprintResultSwitch::OnSuccess;
@@ -116,14 +115,14 @@ void UAdvancedSessionsLibrary::FindSessionPropertyByName(const TArray<FSessionPr
 	Result = EBlueprintResultSwitch::OnFailure;
 }
 
-void UAdvancedSessionsLibrary::FindSessionPropertyIndexByName(const TArray<FSessionPropertyKeyPair>& ExtraSettings, FName SettingName, EBlueprintResultSwitch &Result, int32& OutIndex)
+void UAdvancedSessionsLibrary::FindSessionPropertyIndexByName(const TArray<FSessionPropertyKeyPair>& ExtraSettings, FName SettingName, EBlueprintResultSwitch& Result, int32& OutIndex)
 {
-	OutIndex = ExtraSettings.IndexOfByPredicate([&](const FSessionPropertyKeyPair& it) {return it.Key == SettingName; });
+	OutIndex = ExtraSettings.IndexOfByPredicate([&](const FSessionPropertyKeyPair& it) { return it.Key == SettingName; });
 
 	Result = OutIndex != INDEX_NONE ? EBlueprintResultSwitch::OnSuccess : EBlueprintResultSwitch::OnFailure;
-}	
+}
 
-void UAdvancedSessionsLibrary::AddOrModifyExtraSettings(UPARAM(ref) TArray<FSessionPropertyKeyPair> & SettingsArray, UPARAM(ref) TArray<FSessionPropertyKeyPair> & NewOrChangedSettings, TArray<FSessionPropertyKeyPair> & ModifiedSettingsArray)
+void UAdvancedSessionsLibrary::AddOrModifyExtraSettings(UPARAM(ref) TArray<FSessionPropertyKeyPair>& SettingsArray, UPARAM(ref) TArray<FSessionPropertyKeyPair>& NewOrChangedSettings, TArray<FSessionPropertyKeyPair>& ModifiedSettingsArray)
 {
 	ModifiedSettingsArray = SettingsArray;
 
@@ -133,7 +132,7 @@ void UAdvancedSessionsLibrary::AddOrModifyExtraSettings(UPARAM(ref) TArray<FSess
 	{
 		bFoundSetting = false;
 
-		for (FSessionPropertyKeyPair & itr : ModifiedSettingsArray)
+		for (FSessionPropertyKeyPair& itr : ModifiedSettingsArray)
 		{
 			// Manually comparing the keys
 			if (itr.Key == Setting.Key)
@@ -149,10 +148,9 @@ void UAdvancedSessionsLibrary::AddOrModifyExtraSettings(UPARAM(ref) TArray<FSess
 			ModifiedSettingsArray.Add(Setting);
 		}
 	}
-
 }
 
-void UAdvancedSessionsLibrary::GetExtraSettings(FBlueprintSessionResult SessionResult, TArray<FSessionPropertyKeyPair> & ExtraSettings)
+void UAdvancedSessionsLibrary::GetExtraSettings(FBlueprintSessionResult SessionResult, TArray<FSessionPropertyKeyPair>& ExtraSettings)
 {
 	FSessionPropertyKeyPair NewSetting;
 	for (auto& Elem : SessionResult.OnlineResult.Session.SessionSettings.Settings)
@@ -163,7 +161,7 @@ void UAdvancedSessionsLibrary::GetExtraSettings(FBlueprintSessionResult SessionR
 	}
 }
 
-void UAdvancedSessionsLibrary::GetSessionState(UObject* WorldContextObject, EBPOnlineSessionState &SessionState)
+void UAdvancedSessionsLibrary::GetSessionState(UObject* WorldContextObject, EBPOnlineSessionState& SessionState)
 {
 	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
 	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(World);
@@ -177,7 +175,7 @@ void UAdvancedSessionsLibrary::GetSessionState(UObject* WorldContextObject, EBPO
 	SessionState = ((EBPOnlineSessionState)SessionInterface->GetSessionState(NAME_GameSession));
 }
 
-void UAdvancedSessionsLibrary::GetSessionSettings(UObject* WorldContextObject, int32 &NumConnections, int32 &NumPrivateConnections, bool &bIsLAN, bool &bIsDedicated, bool &bAllowInvites, bool &bAllowJoinInProgress, bool &bIsAnticheatEnabled, int32 &BuildUniqueID, TArray<FSessionPropertyKeyPair> &ExtraSettings, EBlueprintResultSwitch &Result)
+void UAdvancedSessionsLibrary::GetSessionSettings(UObject* WorldContextObject, int32& NumConnections, int32& NumPrivateConnections, bool& bIsLAN, bool& bIsDedicated, bool& bAllowInvites, bool& bAllowJoinInProgress, bool& bIsAnticheatEnabled, int32& BuildUniqueID, TArray<FSessionPropertyKeyPair>& ExtraSettings, EBlueprintResultSwitch& Result)
 {
 	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
 	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(World);
@@ -218,7 +216,7 @@ void UAdvancedSessionsLibrary::GetSessionSettings(UObject* WorldContextObject, i
 	Result = EBlueprintResultSwitch::OnSuccess;
 }
 
-void UAdvancedSessionsLibrary::IsPlayerInSession(UObject* WorldContextObject, const FBPUniqueNetId &PlayerToCheck, bool &bIsInSession)
+void UAdvancedSessionsLibrary::IsPlayerInSession(UObject* WorldContextObject, const FBPUniqueNetId& PlayerToCheck, bool& bIsInSession)
 {
 	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
 	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(World);
@@ -282,7 +280,7 @@ FSessionPropertyKeyPair UAdvancedSessionsLibrary::MakeLiteralSessionPropertyFloa
 	return Prop;
 }
 
-void UAdvancedSessionsLibrary::GetSessionPropertyByte(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, ESessionSettingSearchResult &SearchResult, uint8 &SettingValue)
+void UAdvancedSessionsLibrary::GetSessionPropertyByte(const TArray<FSessionPropertyKeyPair>& ExtraSettings, FName SettingName, ESessionSettingSearchResult& SearchResult, uint8& SettingValue)
 {
 	for (FSessionPropertyKeyPair itr : ExtraSettings)
 	{
@@ -307,7 +305,7 @@ void UAdvancedSessionsLibrary::GetSessionPropertyByte(const TArray<FSessionPrope
 	return;
 }
 
-void UAdvancedSessionsLibrary::GetSessionPropertyBool(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, ESessionSettingSearchResult &SearchResult, bool &SettingValue)
+void UAdvancedSessionsLibrary::GetSessionPropertyBool(const TArray<FSessionPropertyKeyPair>& ExtraSettings, FName SettingName, ESessionSettingSearchResult& SearchResult, bool& SettingValue)
 {
 	for (FSessionPropertyKeyPair itr : ExtraSettings)
 	{
@@ -330,7 +328,7 @@ void UAdvancedSessionsLibrary::GetSessionPropertyBool(const TArray<FSessionPrope
 	return;
 }
 
-void UAdvancedSessionsLibrary::GetSessionPropertyString(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, ESessionSettingSearchResult &SearchResult, FString &SettingValue)
+void UAdvancedSessionsLibrary::GetSessionPropertyString(const TArray<FSessionPropertyKeyPair>& ExtraSettings, FName SettingName, ESessionSettingSearchResult& SearchResult, FString& SettingValue)
 {
 	for (FSessionPropertyKeyPair itr : ExtraSettings)
 	{
@@ -353,7 +351,7 @@ void UAdvancedSessionsLibrary::GetSessionPropertyString(const TArray<FSessionPro
 	return;
 }
 
-void UAdvancedSessionsLibrary::GetSessionPropertyInt(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, ESessionSettingSearchResult &SearchResult, int32 &SettingValue)
+void UAdvancedSessionsLibrary::GetSessionPropertyInt(const TArray<FSessionPropertyKeyPair>& ExtraSettings, FName SettingName, ESessionSettingSearchResult& SearchResult, int32& SettingValue)
 {
 	for (FSessionPropertyKeyPair itr : ExtraSettings)
 	{
@@ -376,7 +374,7 @@ void UAdvancedSessionsLibrary::GetSessionPropertyInt(const TArray<FSessionProper
 	return;
 }
 
-void UAdvancedSessionsLibrary::GetSessionPropertyFloat(const TArray<FSessionPropertyKeyPair> & ExtraSettings, FName SettingName, ESessionSettingSearchResult &SearchResult, float &SettingValue)
+void UAdvancedSessionsLibrary::GetSessionPropertyFloat(const TArray<FSessionPropertyKeyPair>& ExtraSettings, FName SettingName, ESessionSettingSearchResult& SearchResult, float& SettingValue)
 {
 	for (FSessionPropertyKeyPair itr : ExtraSettings)
 	{
@@ -399,13 +397,12 @@ void UAdvancedSessionsLibrary::GetSessionPropertyFloat(const TArray<FSessionProp
 	return;
 }
 
-
 bool UAdvancedSessionsLibrary::HasOnlineSubsystem(FName SubSystemName)
 {
 	return IOnlineSubsystem::DoesInstanceExist(SubSystemName);
 }
 
-void UAdvancedSessionsLibrary::GetNetPlayerIndex(APlayerController *PlayerController, int32 &NetPlayerIndex)
+void UAdvancedSessionsLibrary::GetNetPlayerIndex(APlayerController* PlayerController, int32& NetPlayerIndex)
 {
 	if (!PlayerController)
 	{
@@ -418,21 +415,22 @@ void UAdvancedSessionsLibrary::GetNetPlayerIndex(APlayerController *PlayerContro
 	return;
 }
 
-void UAdvancedSessionsLibrary::UniqueNetIdToString(const FBPUniqueNetId& UniqueNetId, FString &String)
+void UAdvancedSessionsLibrary::UniqueNetIdToString(const FBPUniqueNetId& UniqueNetId, FString& String)
 {
-	const FUniqueNetId * ID = UniqueNetId.GetUniqueNetId();
+	const FUniqueNetId* ID = UniqueNetId.GetUniqueNetId();
 
-	if ( !ID )
+	if (!ID)
 	{
 		UE_LOG(AdvancedSessionsLog, Warning, TEXT("UniqueNetIdToString received a bad UniqueNetId!"));
 		String = "ERROR, BAD UNIQUE NET ID";
 	}
 	else
+	{
 		String = ID->ToString();
+	}
 }
 
-
-void UAdvancedSessionsLibrary::GetUniqueNetID(APlayerController *PlayerController, FBPUniqueNetId &UniqueNetId)
+void UAdvancedSessionsLibrary::GetUniqueNetID(APlayerController* PlayerController, FBPUniqueNetId& UniqueNetId)
 {
 	if (!PlayerController)
 	{
@@ -451,7 +449,7 @@ void UAdvancedSessionsLibrary::GetUniqueNetID(APlayerController *PlayerControlle
 	}
 }
 
-void UAdvancedSessionsLibrary::GetUniqueNetIDFromPlayerState(APlayerState *PlayerState, FBPUniqueNetId &UniqueNetId)
+void UAdvancedSessionsLibrary::GetUniqueNetIDFromPlayerState(APlayerState* PlayerState, FBPUniqueNetId& UniqueNetId)
 {
 	if (!PlayerState)
 	{
@@ -467,13 +465,13 @@ void UAdvancedSessionsLibrary::GetUniqueNetIDFromPlayerState(APlayerState *Playe
 	return;
 }
 
-bool UAdvancedSessionsLibrary::IsValidUniqueNetID(const FBPUniqueNetId &UniqueNetId)
+bool UAdvancedSessionsLibrary::IsValidUniqueNetID(const FBPUniqueNetId& UniqueNetId)
 {
 	return UniqueNetId.IsValid();
 }
 
-bool UAdvancedSessionsLibrary::EqualEqual_UNetIDUnetID(const FBPUniqueNetId &A, const FBPUniqueNetId &B)
-{	
+bool UAdvancedSessionsLibrary::EqualEqual_UNetIDUnetID(const FBPUniqueNetId& A, const FBPUniqueNetId& B)
+{
 	return ((A.IsValid() && B.IsValid()) && (*A.GetUniqueNetId() == *B.GetUniqueNetId()));
 }
 
@@ -482,7 +480,7 @@ FUniqueNetIdRepl UAdvancedSessionsLibrary::Conv_BPUniqueIDToUniqueNetIDRepl(cons
 	return FUniqueNetIdRepl(InUniqueID.GetUniqueNetId()->AsShared());
 }
 
-void UAdvancedSessionsLibrary::SetPlayerName(APlayerController *PlayerController, FString PlayerName)
+void UAdvancedSessionsLibrary::SetPlayerName(APlayerController* PlayerController, FString PlayerName)
 {
 	if (!PlayerController)
 	{
@@ -501,7 +499,7 @@ void UAdvancedSessionsLibrary::SetPlayerName(APlayerController *PlayerController
 	}
 }
 
-void UAdvancedSessionsLibrary::GetPlayerName(APlayerController *PlayerController, FString &PlayerName)
+void UAdvancedSessionsLibrary::GetPlayerName(APlayerController* PlayerController, FString& PlayerName)
 {
 	if (!PlayerController)
 	{
@@ -520,9 +518,9 @@ void UAdvancedSessionsLibrary::GetPlayerName(APlayerController *PlayerController
 	}
 }
 
-void UAdvancedSessionsLibrary::GetNumberOfNetworkPlayers(UObject* WorldContextObject, int32 &NumNetPlayers)
+void UAdvancedSessionsLibrary::GetNumberOfNetworkPlayers(UObject* WorldContextObject, int32& NumNetPlayers)
 {
-	//Get World
+	// Get World
 	UWorld* TheWorld = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
 
 	if (!TheWorld)
@@ -541,7 +539,7 @@ bool UAdvancedSessionsLibrary::ServerTravel(UObject* WorldContextObject, const F
 		return false;
 	}
 
-	//using a context object to get the world
+	// using a context object to get the world
 	UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::ReturnNull);
 	if (World)
 	{

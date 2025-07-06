@@ -1,15 +1,14 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 
 #include "LoginUserCallbackProxy.h"
-
 #include "Online.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ULoginUserCallbackProxy
 
 ULoginUserCallbackProxy::ULoginUserCallbackProxy(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
-	, Delegate(FOnLoginCompleteDelegate::CreateUObject(this, &ThisClass::OnCompleted))
+    : Super(ObjectInitializer)
+    , Delegate(FOnLoginCompleteDelegate::CreateUObject(this, &ThisClass::OnCompleted))
 {
 }
 

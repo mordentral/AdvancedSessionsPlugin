@@ -1,6 +1,5 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #include "GetRecentPlayersCallbackProxy.h"
-
 #include "Online.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -8,8 +7,8 @@
 DEFINE_LOG_CATEGORY(AdvancedGetRecentPlayersLog);
 
 UGetRecentPlayersCallbackProxy::UGetRecentPlayersCallbackProxy(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
-	, QueryRecentPlayersCompleteDelegate(FOnQueryRecentPlayersCompleteDelegate::CreateUObject(this, &ThisClass::OnQueryRecentPlayersCompleted))
+    : Super(ObjectInitializer)
+    , QueryRecentPlayersCompleteDelegate(FOnQueryRecentPlayersCompleteDelegate::CreateUObject(this, &ThisClass::OnQueryRecentPlayersCompleted))
 {
 }
 
@@ -43,7 +42,7 @@ void UGetRecentPlayersCallbackProxy::Activate()
 
 	IOnlineFriendsPtr Friends = Helper.OnlineSub->GetFriendsInterface();
 	if (Friends.IsValid())
-	{	
+	{
 		DelegateHandle = Friends->AddOnQueryRecentPlayersCompleteDelegate_Handle(QueryRecentPlayersCompleteDelegate);
 
 		// Testing with null namespace
@@ -55,9 +54,9 @@ void UGetRecentPlayersCallbackProxy::Activate()
 	OnFailure.Broadcast(EmptyArray);
 }
 
-void UGetRecentPlayersCallbackProxy::OnQueryRecentPlayersCompleted(const FUniqueNetId &UserID, const FString &Namespace, bool bWasSuccessful, const FString& ErrorString)
+void UGetRecentPlayersCallbackProxy::OnQueryRecentPlayersCompleted(const FUniqueNetId& UserID, const FString& Namespace, bool bWasSuccessful, const FString& ErrorString)
 {
-	
+
 	FOnlineSubsystemBPCallHelperAdvanced Helper(TEXT("GetRecentPlayers"), GEngine->GetWorldFromContextObject(WorldContextObject.Get(), EGetWorldErrorMode::LogAndReturnNull));
 
 	if (!Helper.OnlineSub)
@@ -69,20 +68,21 @@ void UGetRecentPlayersCallbackProxy::OnQueryRecentPlayersCompleted(const FUnique
 
 	IOnlineFriendsPtr Friends = Helper.OnlineSub->GetFriendsInterface();
 	if (Friends.IsValid())
+	{
 		Friends->ClearOnQueryRecentPlayersCompleteDelegate_Handle(DelegateHandle);
-
+	}
 
 	if (bWasSuccessful)
 	{
 		// WHOOPS
-		//IOnlineFriendsPtr Friends = Online::GetFriendsInterface();
+		// IOnlineFriendsPtr Friends = Online::GetFriendsInterface();
 		if (Friends.IsValid())
 		{
 			TArray<FBPOnlineRecentPlayer> PlayersListOut;
-			TArray< TSharedRef<FOnlineRecentPlayer> > PlayerList;
+			TArray<TSharedRef<FOnlineRecentPlayer>> PlayerList;
 
 			Friends->GetRecentPlayers(*(cUniqueNetId.GetUniqueNetId()), "", PlayerList);
-				
+
 			for (int32 i = 0; i < PlayerList.Num(); i++)
 			{
 				TSharedRef<FOnlineRecentPlayer> Player = PlayerList[i];

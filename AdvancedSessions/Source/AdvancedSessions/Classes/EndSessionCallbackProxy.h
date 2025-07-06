@@ -1,9 +1,9 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #pragma once
+#include "BlueprintDataDefinitions.h"
 #include "CoreMinimal.h"
 #include "Engine/Engine.h"
 #include "Interfaces/OnlineSessionInterface.h"
-#include "BlueprintDataDefinitions.h"
 #include "EndSessionCallbackProxy.generated.h"
 
 UCLASS(MinimalAPI)
@@ -23,7 +23,7 @@ class UEndSessionCallbackProxy : public UOnlineBlueprintCallProxyBase
 	 *	  Ends the current sessions, Generally for almost all uses you should be using the engines native Destroy Session node instead.
 	 *	  This exists for people using StartSession and optionally hand managing the session state.
 	 */
-	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject"), Category = "Online|AdvancedSessions")
+	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject"), Category = "Online|AdvancedSessions")
 	static UEndSessionCallbackProxy* EndSession(UObject* WorldContextObject, class APlayerController* PlayerController);
 
 	// UOnlineBlueprintCallProxyBase interface

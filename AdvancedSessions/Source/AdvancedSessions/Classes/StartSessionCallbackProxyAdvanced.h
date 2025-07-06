@@ -1,7 +1,7 @@
 #pragma once
 
-#include "CoreMinimal.h"
 #include "BlueprintDataDefinitions.h"
+#include "CoreMinimal.h"
 #include "StartSessionCallbackProxyAdvanced.generated.h"
 
 UCLASS(MinimalAPI)
@@ -21,10 +21,7 @@ class UStartSessionCallbackProxyAdvanced : public UOnlineBlueprintCallProxyBase
 	 * @param WorldContextObject
 	 */
 	UFUNCTION(
-		BlueprintCallable
-		, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject")
-		, Category = "Online|AdvancedSessions"
-	)
+	    BlueprintCallable, meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject"), Category = "Online|AdvancedSessions")
 	static UStartSessionCallbackProxyAdvanced* StartAdvancedSession(UObject* WorldContextObject);
 
 	// UOnlineBlueprintCallProxyBase interface

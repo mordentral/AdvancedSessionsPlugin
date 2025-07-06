@@ -1,9 +1,9 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #pragma once
+#include "BlueprintDataDefinitions.h"
 #include "CoreMinimal.h"
 #include "Engine/Engine.h"
 #include "Interfaces/OnlineSessionInterface.h"
-#include "BlueprintDataDefinitions.h"
 #include "CancelFindSessionsCallbackProxy.generated.h"
 
 UCLASS(MinimalAPI)
@@ -20,7 +20,7 @@ class UCancelFindSessionsCallbackProxy : public UOnlineBlueprintCallProxyBase
 	FEmptyOnlineDelegate OnFailure;
 
 	// Cancels finding sessions
-	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject"), Category = "Online|AdvancedSessions")
+	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject"), Category = "Online|AdvancedSessions")
 	static UCancelFindSessionsCallbackProxy* CancelFindSessions(UObject* WorldContextObject, class APlayerController* PlayerController);
 
 	// UOnlineBlueprintCallProxyBase interface

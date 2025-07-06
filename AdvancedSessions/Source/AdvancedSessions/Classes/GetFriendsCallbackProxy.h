@@ -1,8 +1,8 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 #pragma once
 
-#include "CoreMinimal.h"
 #include "BlueprintDataDefinitions.h"
+#include "CoreMinimal.h"
 #include "Engine/LocalPlayer.h"
 #include "GetFriendsCallbackProxy.generated.h"
 
@@ -24,7 +24,7 @@ class UGetFriendsCallbackProxy : public UOnlineBlueprintCallProxyBase
 	FBlueprintGetFriendsListDelegate OnFailure;
 
 	// Gets the players list of friends from the OnlineSubsystem and returns it, can be retrieved later with GetStoredFriendsList
-	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject"), Category = "Online|AdvancedFriends")
+	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject"), Category = "Online|AdvancedFriends")
 	static UGetFriendsCallbackProxy* GetAndStoreFriendsList(UObject* WorldContextObject, class APlayerController* PlayerController);
 
 	virtual void Activate() override;
@@ -41,9 +41,8 @@ private:
 
 	// The Type of friends list to get
 	// Removed because all but the facebook interfaces don't even currently support anything but the default friends list.
-	//EBPFriendsLists FriendListToGet;
+	// EBPFriendsLists FriendListToGet;
 
 	// The world context object in which this call is taking place
 	TWeakObjectPtr<UObject> WorldContextObject;
 };
-

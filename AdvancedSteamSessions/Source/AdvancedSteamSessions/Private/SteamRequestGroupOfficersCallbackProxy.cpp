@@ -1,19 +1,19 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 
 #include "SteamRequestGroupOfficersCallbackProxy.h"
-#include "Online/CoreOnline.h"
 #include "AdvancedSteamFriendsLibrary.h"
+#include "Online/CoreOnline.h"
 #include "OnlineSubSystemHeader.h"
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 #include "steam/isteamfriends.h"
 #endif
-//#include "OnlineSubsystemSteamTypes.h"
+// #include "OnlineSubsystemSteamTypes.h"
 
 //////////////////////////////////////////////////////////////////////////
 // UEndSessionCallbackProxy
 
 USteamRequestGroupOfficersCallbackProxy::USteamRequestGroupOfficersCallbackProxy(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
+    : Super(ObjectInitializer)
 {
 }
 
@@ -36,7 +36,7 @@ void USteamRequestGroupOfficersCallbackProxy::Activate()
 	{
 		uint64 id = *((uint64*)GroupUniqueID.UniqueNetId->GetBytes());
 		SteamAPICall_t hSteamAPICall = SteamFriends()->RequestClanOfficerList(id);
-	
+
 		m_callResultGroupOfficerRequestDetails.Set(hSteamAPICall, this, &USteamRequestGroupOfficersCallbackProxy::OnRequestGroupOfficerDetails);
 		return;
 	}
@@ -46,23 +46,23 @@ void USteamRequestGroupOfficersCallbackProxy::Activate()
 }
 
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
-void USteamRequestGroupOfficersCallbackProxy::OnRequestGroupOfficerDetails(ClanOfficerListResponse_t *pResult, bool bIOFailure)
+void USteamRequestGroupOfficersCallbackProxy::OnRequestGroupOfficerDetails(ClanOfficerListResponse_t* pResult, bool bIOFailure)
 {
 	TArray<FBPSteamGroupOfficer> OfficerArray;
-	
-	//FOnlineSubsystemSteam* SteamSubsystem = (FOnlineSubsystemSteam*)(IOnlineSubsystem::Get(STEAM_SUBSYSTEM));
+
+	// FOnlineSubsystemSteam* SteamSubsystem = (FOnlineSubsystemSteam*)(IOnlineSubsystem::Get(STEAM_SUBSYSTEM));
 
 	if (bIOFailure || !pResult || !pResult->m_bSuccess)
 	{
-		//if (SteamSubsystem != nullptr)
+		// if (SteamSubsystem != nullptr)
 		{
-		//	SteamSubsystem->ExecuteNextTick([this]()
+			//	SteamSubsystem->ExecuteNextTick([this]()
 			//{
-				TArray<FBPSteamGroupOfficer> FailureArray;
-				OnFailure.Broadcast(FailureArray);
+			TArray<FBPSteamGroupOfficer> FailureArray;
+			OnFailure.Broadcast(FailureArray);
 			//});
 		}
-		//OnFailure.Broadcast(OfficerArray);
+		// OnFailure.Broadcast(OfficerArray);
 		return;
 	}
 
@@ -91,31 +91,30 @@ void USteamRequestGroupOfficersCallbackProxy::OnRequestGroupOfficerDetails(ClanO
 			OfficerArray.Add(Officer);
 		}
 
-		//if (SteamSubsystem != nullptr)
+		// if (SteamSubsystem != nullptr)
 		//{
-			//SteamSubsystem->ExecuteNextTick([OfficerArray, this]()
-			//{
-				OnSuccess.Broadcast(OfficerArray);
-			//});
+		// SteamSubsystem->ExecuteNextTick([OfficerArray, this]()
+		//{
+		OnSuccess.Broadcast(OfficerArray);
+		//});
 		//}
 
-		//OnSuccess.Broadcast(OfficerArray);
+		// OnSuccess.Broadcast(OfficerArray);
 		return;
 	}
 	else
 	{
-		//if (SteamSubsystem != nullptr)
+		// if (SteamSubsystem != nullptr)
 		{
-			//SteamSubsystem->ExecuteNextTick([this]()
+			// SteamSubsystem->ExecuteNextTick([this]()
 			//{
-				TArray<FBPSteamGroupOfficer> FailureArray;
-				OnFailure.Broadcast(FailureArray);
+			TArray<FBPSteamGroupOfficer> FailureArray;
+			OnFailure.Broadcast(FailureArray);
 			//});
 		}
 	}
 
 	// Should never hit this anyway
-	//OnFailure.Broadcast(OfficerArray);
+	// OnFailure.Broadcast(OfficerArray);
 }
 #endif
-
