@@ -337,8 +337,8 @@ public:
 	static bool RequestSteamFriendInfo(const FBPUniqueNetId UniqueNetId, bool bRequireNameOnly = false);
 
 	// Opens the steam overlay to go to the specified user dialog
-	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedFriends|SteamAPI")
-		static bool OpenSteamUserOverlay(const FBPUniqueNetId UniqueNetId, ESteamUserOverlayType DialogType);
+	UFUNCTION(BlueprintCallable, Category = "Online|AdvancedFriends|SteamAPI", meta = (WorldContext = "WorldContextObject"))
+		static bool OpenSteamUserOverlay(UObject* WorldContextObject, const FBPUniqueNetId UniqueNetId, ESteamUserOverlayType DialogType);
 	
 	// Returns if the steam overlay is currently active (this can return false during initial overlay hooking)
 	UFUNCTION(BlueprintPure, Category = "Online|AdvancedFriends|SteamAPI")
