@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "AdvancedSteamFriendsLibrary.h"
 #include "OnlineSubSystemHeader.h"
+#include "OnlineSubsystemTypes.h"
 #include "Engine/Texture.h"
 #include "Engine/Texture2D.h"
 #include "TextureResource.h"
@@ -237,7 +238,7 @@ bool UAdvancedSteamFriendsLibrary::RequestSteamFriendInfo(const FBPUniqueNetId U
 }
 
 
-bool UAdvancedSteamFriendsLibrary::OpenSteamUserOverlay(const FBPUniqueNetId UniqueNetId, ESteamUserOverlayType DialogType)
+bool UAdvancedSteamFriendsLibrary::OpenSteamUserOverlay(UObject* WorldContextObject,const FBPUniqueNetId UniqueNetId, ESteamUserOverlayType DialogType)
 {
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid() || UniqueNetId.UniqueNetId->GetType() != STEAM_SUBSYSTEM)
@@ -248,13 +249,24 @@ bool UAdvancedSteamFriendsLibrary::OpenSteamUserOverlay(const FBPUniqueNetId Uni
 
 	if (SteamAPI_Init())
 	{
-		uint64 id = *((uint64*)UniqueNetId.UniqueNetId->GetBytes());
 		if (DialogType == ESteamUserOverlayType::invitetolobby)
 		{
-			SteamFriends()->ActivateGameOverlayInviteDialog(id);
+			UWorld* const World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+			IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(World);
+			if (SessionInterface.IsValid())
+			{
+				FNamedOnlineSession* CurrentSession = SessionInterface->GetNamedSession(NAME_GameSession);
+
+				if (CurrentSession && CurrentSession->SessionInfo->GetSessionId().IsValid())
+				{			
+					uint64 id = *((uint64*)CurrentSession->SessionInfo->GetSessionId().GetBytes());
+					SteamFriends()->ActivateGameOverlayInviteDialog(id);
+				}
+			}
 		}
 		else
 		{
+			uint64 id = *((uint64*)UniqueNetId.UniqueNetId->GetBytes());
 			FString DialogName = EnumToString("ESteamUserOverlayType", (uint8)DialogType);
 			SteamFriends()->ActivateGameOverlayToUser(TCHAR_TO_ANSI(*DialogName), id);
 		}
