@@ -5,6 +5,9 @@ public class AdvancedSessions : ModuleRules
 {
     public AdvancedSessions(ReadOnlyTargetRules Target) : base(Target)
     {
+        DefaultBuildSettings = BuildSettingsVersion.Latest;
+        IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
+
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
         //bEnforceIWYU = true;
 
