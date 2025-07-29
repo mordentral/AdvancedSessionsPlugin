@@ -83,6 +83,8 @@ void UAutoLoginUserCallbackProxy::OnCompleted(int32 LocalUserNum, bool bWasSucce
 		{
 			OnFailure.Broadcast();
 		}
+
+		return;
 	}
 
 	OnFailure.Broadcast();
