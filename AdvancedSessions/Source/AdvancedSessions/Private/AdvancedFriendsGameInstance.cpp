@@ -36,6 +36,13 @@ void UAdvancedFriendsGameInstance::OnSessionUserInviteAccepted(const bool bWasSu
 
 void UAdvancedFriendsGameInstance::OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result)
 {
+
+	// If we don't want to auto travel to the session instance then exit out
+	if (!bAutoTravelOnAcceptedUserInviteReceived)
+	{
+		return;
+	}
+
 	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(GetWorld());
 	if (SessionInterface.IsValid())
 	{
