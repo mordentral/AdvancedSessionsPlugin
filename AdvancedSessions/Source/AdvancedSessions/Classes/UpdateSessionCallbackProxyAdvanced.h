@@ -21,7 +21,7 @@ class UUpdateSessionCallbackProxyAdvanced : public UOnlineBlueprintCallProxyBase
 
 	// Creates a session with the default online subsystem with advanced optional inputs, you MUST fill in all categories or it will pass in values that you didn't want as default values
 	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject",AutoCreateRefTerm="ExtraSettings"), Category = "Online|AdvancedSessions")
-	static UUpdateSessionCallbackProxyAdvanced* UpdateSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair> &ExtraSettings, int32 PublicConnections = 100, int32 PrivateConnections = 0, bool bUseLAN = false, bool bAllowInvites = false, bool bAllowJoinInProgress = false, bool bRefreshOnlineData = true, bool bIsDedicatedServer = false, bool bShouldAdvertise = true);
+	static UUpdateSessionCallbackProxyAdvanced* UpdateSession(UObject* WorldContextObject, const TArray<FSessionPropertyKeyPair> &ExtraSettings, int32 PublicConnections = 100, int32 PrivateConnections = 0, bool bUseLAN = false, bool bAllowInvites = false, bool bAllowJoinInProgress = false, bool bRefreshOnlineData = true, bool bIsDedicatedServer = false, bool bShouldAdvertise = true, bool bAllowJoinViaPresence = true, bool bAllowJoinViaPresenceFriendsOnly = false);
 
 	// UOnlineBlueprintCallProxyBase interface
 	virtual void Activate() override;
@@ -57,6 +57,12 @@ private:
 
 	// Allow joining in progress
 	bool bAllowJoinInProgress = true;
+
+	// Allow joining in progress
+	bool bAllowJoinViaPresence = true;
+
+	// Allow joining in progress
+	bool bAllowJoinViaPresenceFriendsOnly = false;
 
 	// Update whether this is a dedicated server or not
 	bool bDedicatedServer = false;
