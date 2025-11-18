@@ -22,9 +22,15 @@ UAdvancedFriendsGameInstance::UAdvancedFriendsGameInstance(const FObjectInitiali
 
 void UAdvancedFriendsGameInstance::OnSessionUserInviteAccepted(const bool bWasSuccessful, const int32 ControllerId, FUniqueNetIdPtr UserId, const FOnlineSessionSearchResult& InviteResult)
 {
+	if (!bAutoJoinSessionOnAcceptedUserInviteReceived)
+		return;
+
 	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface(GetWorld());
 	if (SessionInterface.IsValid())
 	{
+		// Eventually call this?, would need another call back to run through
+		//SessionInterface->DestroySession(NAME_GameSession);
+
 		SessionInterface->ClearOnJoinSessionCompleteDelegate_Handle(OnJoinSessionCompleteDelegateHandle);
 		OnJoinSessionCompleteDelegateHandle = SessionInterface->AddOnJoinSessionCompleteDelegate_Handle(
 		FOnJoinSessionCompleteDelegate::CreateUObject(this, &UAdvancedFriendsGameInstance::OnJoinSessionComplete));
