@@ -19,7 +19,7 @@ void UAdvancedVoiceLibrary::IsHeadsetPresent(UObject* WorldContextObject, bool &
 	if (!VoiceInterface.IsValid())
 	{
 		bHasHeadset = false;
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Check For Headset couldn't get the voice interface!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Check For Headset couldn't get the voice interface!");
 		return;
 	}
 
@@ -39,7 +39,7 @@ void UAdvancedVoiceLibrary::StartNetworkedVoice(UObject* WorldContextObject, uin
 
 	if (!VoiceInterface.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Start Networked Voice couldn't get the voice interface!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Start Networked Voice couldn't get the voice interface!");
 		return;
 	}
 
@@ -59,7 +59,7 @@ void UAdvancedVoiceLibrary::StopNetworkedVoice(UObject* WorldContextObject, uint
 
 	if (!VoiceInterface.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Start Networked Voice couldn't get the voice interface!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Start Networked Voice couldn't get the voice interface!");
 		return;
 	}
 
@@ -78,7 +78,7 @@ bool UAdvancedVoiceLibrary::RegisterLocalTalker(UObject* WorldContextObject, uin
 
 	if (!VoiceInterface.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Register Local Talker couldn't get the voice interface!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Register Local Talker couldn't get the voice interface!");
 		return false;
 	}
 
@@ -98,7 +98,7 @@ void UAdvancedVoiceLibrary::RegisterAllLocalTalkers(UObject* WorldContextObject)
 
 	if (!VoiceInterface.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Register Local Talkers couldn't get the voice interface!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Register Local Talkers couldn't get the voice interface!");
 		return;
 	}
 
@@ -119,7 +119,7 @@ void UAdvancedVoiceLibrary::UnRegisterLocalTalker(UObject* WorldContextObject, u
 
 	if (!VoiceInterface.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Unregister Local Talker couldn't get the voice interface!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Unregister Local Talker couldn't get the voice interface!");
 		return;
 	}
 
@@ -139,7 +139,7 @@ void UAdvancedVoiceLibrary::UnRegisterAllLocalTalkers(UObject* WorldContextObjec
 
 	if (!VoiceInterface.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("UnRegister All Local Talkers couldn't get the voice interface!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "UnRegister All Local Talkers couldn't get the voice interface!");
 		return;
 	}
 
@@ -150,7 +150,7 @@ bool UAdvancedVoiceLibrary::RegisterRemoteTalker(UObject* WorldContextObject, co
 {
 	if (!UniqueNetId.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Register Remote Talker was passed an invalid unique net id!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Register Remote Talker was passed an invalid unique net id!");
 		return false;
 	}
 
@@ -164,7 +164,7 @@ bool UAdvancedVoiceLibrary::RegisterRemoteTalker(UObject* WorldContextObject, co
 
 	if (!VoiceInterface.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Register Remote Talker couldn't get the voice interface!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Register Remote Talker couldn't get the voice interface!");
 		return false;
 	}
 
@@ -175,7 +175,7 @@ bool UAdvancedVoiceLibrary::UnRegisterRemoteTalker(UObject* WorldContextObject, 
 {
 	if (!UniqueNetId.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("UnRegister Remote Talker was passed an invalid unique net id!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "UnRegister Remote Talker was passed an invalid unique net id!");
 		return false;
 	}
 
@@ -189,7 +189,7 @@ bool UAdvancedVoiceLibrary::UnRegisterRemoteTalker(UObject* WorldContextObject, 
 
 	if (!VoiceInterface.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("UnRegister Remote Talker couldn't get the voice interface!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "UnRegister Remote Talker couldn't get the voice interface!");
 		return false;
 	}
 
@@ -209,7 +209,7 @@ void UAdvancedVoiceLibrary::RemoveAllRemoteTalkers(UObject* WorldContextObject)
 
 	if (!VoiceInterface.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Remove All Remote Talkers couldn't get the voice interface!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Remove All Remote Talkers couldn't get the voice interface!");
 		return;
 	}
 
@@ -229,7 +229,7 @@ bool UAdvancedVoiceLibrary::IsLocalPlayerTalking(UObject* WorldContextObject, ui
 
 	if (!VoiceInterface.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Is Local Player Talking couldn't get the voice interface!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Is Local Player Talking couldn't get the voice interface!");
 		return false;
 	}
 
@@ -240,7 +240,7 @@ bool UAdvancedVoiceLibrary::IsRemotePlayerTalking(UObject* WorldContextObject, c
 {
 	if (!UniqueNetId.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Is Remote Player Talking was passed an invalid unique net id!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Is Remote Player Talking was passed an invalid unique net id!");
 		return false;
 	}
 
@@ -254,7 +254,7 @@ bool UAdvancedVoiceLibrary::IsRemotePlayerTalking(UObject* WorldContextObject, c
 
 	if (!VoiceInterface.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Is Remote Player Talking couldn't get the voice interface!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Is Remote Player Talking couldn't get the voice interface!");
 		return false;
 	}
 
@@ -265,7 +265,7 @@ bool UAdvancedVoiceLibrary::IsPlayerMuted(UObject* WorldContextObject, uint8 Loc
 {
 	if (!UniqueNetId.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Is Player Muted was passed an invalid unique net id!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Is Player Muted was passed an invalid unique net id!");
 		return false;
 	}
 
@@ -279,7 +279,7 @@ bool UAdvancedVoiceLibrary::IsPlayerMuted(UObject* WorldContextObject, uint8 Loc
 
 	if (!VoiceInterface.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Is Player Muted couldn't get the voice interface!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Is Player Muted couldn't get the voice interface!");
 		return false;
 	}
 
@@ -290,7 +290,7 @@ bool UAdvancedVoiceLibrary::MuteRemoteTalker(UObject* WorldContextObject, uint8 
 {
 	if (!UniqueNetId.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Mute Remote Talker was passed an invalid unique net id!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Mute Remote Talker was passed an invalid unique net id!");
 		return false;
 	}
 
@@ -304,7 +304,7 @@ bool UAdvancedVoiceLibrary::MuteRemoteTalker(UObject* WorldContextObject, uint8 
 
 	if (!VoiceInterface.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Mute Remote Talker couldn't get the voice interface!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Mute Remote Talker couldn't get the voice interface!");
 		return false;
 	}
 
@@ -315,7 +315,7 @@ bool UAdvancedVoiceLibrary::UnMuteRemoteTalker(UObject* WorldContextObject, uint
 {
 	if (!UniqueNetId.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Unmute Remote Talker was passed an invalid unique net id!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Unmute Remote Talker was passed an invalid unique net id!");
 		return false;
 	}
 
@@ -329,7 +329,7 @@ bool UAdvancedVoiceLibrary::UnMuteRemoteTalker(UObject* WorldContextObject, uint
 
 	if (!VoiceInterface.IsValid())
 	{
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Unmute Remote Talker couldn't get the voice interface!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Unmute Remote Talker couldn't get the voice interface!");
 		return false;
 	}
 
@@ -351,7 +351,7 @@ void UAdvancedVoiceLibrary::GetNumLocalTalkers(UObject* WorldContextObject, int3
 	if (!VoiceInterface.IsValid())
 	{
 		NumLocalTalkers = 0;
-		UE_LOG(AdvancedVoiceLog, Warning, TEXT("Unmute Remote Talker couldn't get the voice interface!"));
+		UE_LOGF(AdvancedVoiceLog, Warning, "Unmute Remote Talker couldn't get the voice interface!");
 		return;
 	}
 

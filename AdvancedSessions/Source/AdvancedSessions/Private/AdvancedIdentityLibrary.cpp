@@ -9,7 +9,7 @@ void UAdvancedIdentityLibrary::GetPlayerAuthToken(UObject* WorldContextObject, A
 {
 	if (!PlayerController)
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetPlayerAuthToken was passed a bad player controller!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetPlayerAuthToken was passed a bad player controller!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -18,7 +18,7 @@ void UAdvancedIdentityLibrary::GetPlayerAuthToken(UObject* WorldContextObject, A
 
 	if (!Player)
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetPlayerAuthToken failed to get LocalPlayer!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetPlayerAuthToken failed to get LocalPlayer!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -34,7 +34,7 @@ void UAdvancedIdentityLibrary::GetPlayerAuthToken(UObject* WorldContextObject, A
 
 	if (!IdentityInterface.IsValid())
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetPlayerAuthToken Failed to get identity interface!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetPlayerAuthToken Failed to get identity interface!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -47,7 +47,7 @@ void UAdvancedIdentityLibrary::GetPlayerNickname(UObject* WorldContextObject, co
 { 
 	if (!UniqueNetID.IsValid())
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetPlayerNickname was passed a bad player uniquenetid!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetPlayerNickname was passed a bad player uniquenetid!");
 		return;
 	}
 
@@ -61,7 +61,7 @@ void UAdvancedIdentityLibrary::GetPlayerNickname(UObject* WorldContextObject, co
 
 	if (!IdentityInterface.IsValid())
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetPlayerNickname Failed to get identity interface!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetPlayerNickname Failed to get identity interface!");
 		return;
 	}
 	PlayerNickname = IdentityInterface->GetPlayerNickname(*UniqueNetID.GetUniqueNetId());
@@ -72,7 +72,7 @@ void UAdvancedIdentityLibrary::GetLoginStatus(UObject* WorldContextObject, const
 {
 	if (!UniqueNetID.IsValid())
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetLoginStatus was passed a bad player uniquenetid!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetLoginStatus was passed a bad player uniquenetid!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -88,7 +88,7 @@ void UAdvancedIdentityLibrary::GetLoginStatus(UObject* WorldContextObject, const
 
 	if (!IdentityInterface.IsValid())
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetLoginStatus Failed to get identity interface!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetLoginStatus Failed to get identity interface!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -112,7 +112,7 @@ void UAdvancedIdentityLibrary::GetAllUserAccounts(UObject* WorldContextObject, T
 
 	if (!IdentityInterface.IsValid())
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetAllUserAccounts Failed to get identity interface!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetAllUserAccounts Failed to get identity interface!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -141,14 +141,14 @@ void UAdvancedIdentityLibrary::GetUserAccount(UObject* WorldContextObject, const
 
 	if(!UniqueNetId.IsValid())
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetUserAccount was passed a bad unique net id!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetUserAccount was passed a bad unique net id!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
 	if (!IdentityInterface.IsValid())
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetUserAccount Failed to get identity interface!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetUserAccount Failed to get identity interface!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -157,7 +157,7 @@ void UAdvancedIdentityLibrary::GetUserAccount(UObject* WorldContextObject, const
 
 	if (!accountInfo.IsValid())
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetUserAccount Failed to get the account!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetUserAccount Failed to get the account!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -170,7 +170,7 @@ void UAdvancedIdentityLibrary::GetUserAccountAccessToken(const FBPUserOnlineAcco
 {
 	if (!AccountInfo.UserAccountInfo.IsValid())
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetUserAccountAccessToken was passed an invalid account!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetUserAccountAccessToken was passed an invalid account!");
 		return;
 	}
 
@@ -181,14 +181,14 @@ void UAdvancedIdentityLibrary::GetUserAccountAuthAttribute(const FBPUserOnlineAc
 {
 	if (!AccountInfo.UserAccountInfo.IsValid())
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetUserAccountAuthAttribute was passed an invalid account!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetUserAccountAuthAttribute was passed an invalid account!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
 	if (!AccountInfo.UserAccountInfo->GetAuthAttribute(AttributeName, AuthAttribute))
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetUserAccountAuthAttribute couldn't find the attribute!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetUserAccountAuthAttribute couldn't find the attribute!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -200,14 +200,14 @@ void UAdvancedIdentityLibrary::SetUserAccountAttribute(const FBPUserOnlineAccoun
 {
 	if (!AccountInfo.UserAccountInfo.IsValid())
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("SetUserAccountAuthAttribute was passed an invalid account!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "SetUserAccountAuthAttribute was passed an invalid account!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
 	if (!AccountInfo.UserAccountInfo->SetUserAttribute(AttributeName, NewAttributeValue))
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("SetUserAccountAuthAttribute was unable to set the attribute!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "SetUserAccountAuthAttribute was unable to set the attribute!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -219,7 +219,7 @@ void UAdvancedIdentityLibrary::GetUserID(const FBPUserOnlineAccount & AccountInf
 {
 	if (!AccountInfo.UserAccountInfo.IsValid())
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetUserID was passed an invalid account!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetUserID was passed an invalid account!");
 		return;
 	}
 
@@ -231,7 +231,7 @@ void UAdvancedIdentityLibrary::GetUserAccountRealName(const FBPUserOnlineAccount
 {
 	if (!AccountInfo.UserAccountInfo.IsValid())
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetUserAccountRealName was passed an invalid account!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetUserAccountRealName was passed an invalid account!");
 		return;
 	}
 
@@ -243,7 +243,7 @@ void UAdvancedIdentityLibrary::GetUserAccountDisplayName(const FBPUserOnlineAcco
 {
 	if (!AccountInfo.UserAccountInfo.IsValid())
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetUserAccountDisplayName was passed an invalid account!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetUserAccountDisplayName was passed an invalid account!");
 		return;
 	}
 
@@ -255,14 +255,14 @@ void UAdvancedIdentityLibrary::GetUserAccountAttribute(const FBPUserOnlineAccoun
 {
 	if (!AccountInfo.UserAccountInfo.IsValid())
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetUserAccountAttribute was passed an invalid account!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetUserAccountAttribute was passed an invalid account!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
 	if (!AccountInfo.UserAccountInfo->GetUserAttribute(AttributeName, AttributeValue))
 	{
-		UE_LOG(AdvancedIdentityLog, Warning, TEXT("GetUserAccountAttribute failed to get user attribute!"));
+		UE_LOGF(AdvancedIdentityLog, Warning, "GetUserAccountAttribute failed to get user attribute!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}

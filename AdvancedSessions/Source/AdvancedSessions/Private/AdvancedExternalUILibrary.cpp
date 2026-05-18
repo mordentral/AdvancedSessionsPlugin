@@ -20,7 +20,7 @@ void UAdvancedExternalUILibrary::ShowAccountUpgradeUI(UObject* WorldContextObjec
 
 	if (!ExternalUIInterface.IsValid())
 	{
-		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowAccountUpgradeUI Failed to get External UI interface!"));
+		UE_LOGF(AdvancedExternalUILog, Warning, "ShowAccountUpgradeUI Failed to get External UI interface!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -43,7 +43,7 @@ void UAdvancedExternalUILibrary::ShowProfileUI(UObject* WorldContextObject, cons
 
 	if (!ExternalUIInterface.IsValid())
 	{
-		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowProfileUI Failed to get External UI interface!"));
+		UE_LOGF(AdvancedExternalUILog, Warning, "ShowProfileUI Failed to get External UI interface!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -67,7 +67,7 @@ void UAdvancedExternalUILibrary::ShowWebURLUI(UObject* WorldContextObject, FStri
 
 	if (!ExternalUIInterface.IsValid())
 	{
-		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowWebURLUI Failed to get External UI interface!"));
+		UE_LOGF(AdvancedExternalUILog, Warning, "ShowWebURLUI Failed to get External UI interface!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -101,7 +101,7 @@ void UAdvancedExternalUILibrary::CloseWebURLUI(UObject* WorldContextObject)
 
 	if (!ExternalUIInterface.IsValid())
 	{
-		UE_LOG(AdvancedExternalUILog, Warning, TEXT("CloseWebURLUI Failed to get External UI interface!"));
+		UE_LOGF(AdvancedExternalUILog, Warning, "CloseWebURLUI Failed to get External UI interface!");
 		return;
 	}
 
@@ -121,7 +121,7 @@ void UAdvancedExternalUILibrary::ShowLeaderBoardUI(UObject* WorldContextObject, 
 
 	if (!ExternalUIInterface.IsValid())
 	{
-		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowLeaderboardsUI Failed to get External UI interface!"));
+		UE_LOGF(AdvancedExternalUILog, Warning, "ShowLeaderboardsUI Failed to get External UI interface!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -136,7 +136,7 @@ void UAdvancedExternalUILibrary::ShowInviteUI(UObject* WorldContextObject, APlay
 {
 	if (!PlayerController)
 	{
-		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowInviteUI Had a bad Player Controller!"));
+		UE_LOGF(AdvancedExternalUILog, Warning, "ShowInviteUI Had a bad Player Controller!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -152,7 +152,7 @@ void UAdvancedExternalUILibrary::ShowInviteUI(UObject* WorldContextObject, APlay
 
 	if (!ExternalUIInterface.IsValid())
 	{
-		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowInviteUI Failed to get External UI interface!"));
+		UE_LOGF(AdvancedExternalUILog, Warning, "ShowInviteUI Failed to get External UI interface!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -161,7 +161,7 @@ void UAdvancedExternalUILibrary::ShowInviteUI(UObject* WorldContextObject, APlay
 
 	if (!Player)
 	{
-		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowInviteUI Failed to get ULocalPlayer for the given PlayerController!"));
+		UE_LOGF(AdvancedExternalUILog, Warning, "ShowInviteUI Failed to get ULocalPlayer for the given PlayerController!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -174,7 +174,7 @@ void UAdvancedExternalUILibrary::ShowFriendsUI(UObject* WorldContextObject, APla
 {
 	if (!PlayerController)
 	{
-		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowFriendsUI Had a bad Player Controller!"));
+		UE_LOGF(AdvancedExternalUILog, Warning, "ShowFriendsUI Had a bad Player Controller!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -190,7 +190,7 @@ void UAdvancedExternalUILibrary::ShowFriendsUI(UObject* WorldContextObject, APla
 
 	if (!ExternalUIInterface.IsValid())
 	{
-		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowFriendsUI Failed to get External UI interface!"));
+		UE_LOGF(AdvancedExternalUILog, Warning, "ShowFriendsUI Failed to get External UI interface!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -199,7 +199,7 @@ void UAdvancedExternalUILibrary::ShowFriendsUI(UObject* WorldContextObject, APla
 
 	if (!Player)
 	{
-		UE_LOG(AdvancedExternalUILog, Warning, TEXT("ShowFriendsUI Failed to get ULocalPlayer for the given PlayerController!"));
+		UE_LOGF(AdvancedExternalUILog, Warning, "ShowFriendsUI Failed to get ULocalPlayer for the given PlayerController!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}

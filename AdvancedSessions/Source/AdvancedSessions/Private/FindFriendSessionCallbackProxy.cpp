@@ -26,7 +26,7 @@ void UFindFriendSessionCallbackProxy::Activate()
 	if (!cUniqueNetId.IsValid())
 	{
 		// Fail immediately
-		UE_LOG(AdvancedFindFriendSessionLog, Warning, TEXT("FindFriendSession Failed received a bad UniqueNetId!"));
+		UE_LOGF(AdvancedFindFriendSessionLog, Warning, "FindFriendSession Failed received a bad UniqueNetId!");
 		TArray<FBlueprintSessionResult> EmptyResult;
 		OnFailure.Broadcast(EmptyResult);
 		return;
@@ -35,7 +35,7 @@ void UFindFriendSessionCallbackProxy::Activate()
 	if (!PlayerControllerWeakPtr.IsValid())
 	{
 		// Fail immediately
-		UE_LOG(AdvancedFindFriendSessionLog, Warning, TEXT("FindFriendSession Failed received a bad playercontroller!"));
+		UE_LOGF(AdvancedFindFriendSessionLog, Warning, "FindFriendSession Failed received a bad playercontroller!");
 		TArray<FBlueprintSessionResult> EmptyResult;
 		OnFailure.Broadcast(EmptyResult);
 		return;
@@ -61,7 +61,7 @@ void UFindFriendSessionCallbackProxy::Activate()
 		if (!Player)
 		{
 			// Fail immediately
-			UE_LOG(AdvancedFindFriendSessionLog, Warning, TEXT("FindFriendSession Failed couldn't cast to ULocalPlayer!"));
+			UE_LOGF(AdvancedFindFriendSessionLog, Warning, "FindFriendSession Failed couldn't cast to ULocalPlayer!");
 			TArray<FBlueprintSessionResult> EmptyResult;
 			OnFailure.Broadcast(EmptyResult);
 			return;
@@ -118,20 +118,20 @@ void UFindFriendSessionCallbackProxy::OnFindFriendSessionCompleted(int32 LocalPl
 				OnSuccess.Broadcast(Result);
 			else
 			{
-				UE_LOG(AdvancedFindFriendSessionLog, Warning, TEXT("FindFriendSession Failed, returned an invalid session."));
+				UE_LOGF(AdvancedFindFriendSessionLog, Warning, "FindFriendSession Failed, returned an invalid session.");
 				OnFailure.Broadcast(Result);
 			}
 		}
 		else
 		{
-			UE_LOG(AdvancedFindFriendSessionLog, Warning, TEXT("FindFriendSession Failed"));
+			UE_LOGF(AdvancedFindFriendSessionLog, Warning, "FindFriendSession Failed");
 			TArray<FBlueprintSessionResult> EmptyResult;
 			OnFailure.Broadcast(EmptyResult);
 		}
 	}
 	else
 	{
-		UE_LOG(AdvancedFindFriendSessionLog, Warning, TEXT("FindFriendSession Failed"));
+		UE_LOGF(AdvancedFindFriendSessionLog, Warning, "FindFriendSession Failed");
 		TArray<FBlueprintSessionResult> EmptyResult;
 		OnFailure.Broadcast(EmptyResult);
 	}

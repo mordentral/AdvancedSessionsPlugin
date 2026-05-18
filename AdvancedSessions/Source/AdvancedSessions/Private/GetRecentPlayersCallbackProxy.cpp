@@ -26,7 +26,7 @@ void UGetRecentPlayersCallbackProxy::Activate()
 	if (!cUniqueNetId.IsValid())
 	{
 		// Fail immediately
-		UE_LOG(AdvancedGetRecentPlayersLog, Warning, TEXT("GetRecentPlayers Failed received a bad UniqueNetId!"));
+		UE_LOGF(AdvancedGetRecentPlayersLog, Warning, "GetRecentPlayers Failed received a bad UniqueNetId!");
 		TArray<FBPOnlineRecentPlayer> EmptyArray;
 		OnFailure.Broadcast(EmptyArray);
 		return;

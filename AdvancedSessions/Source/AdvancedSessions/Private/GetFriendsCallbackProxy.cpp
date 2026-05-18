@@ -28,7 +28,7 @@ void UGetFriendsCallbackProxy::Activate()
 	if (!PlayerControllerWeakPtr.IsValid())
 	{
 		// Fail immediately
-		UE_LOG(AdvancedGetFriendsLog, Warning, TEXT("GetFriends Failed received a bad player controller!"));
+		UE_LOGF(AdvancedGetFriendsLog, Warning, "GetFriends Failed received a bad player controller!");
 		TArray<FBPFriendInfo> EmptyArray;
 		OnFailure.Broadcast(EmptyArray);
 		return;
