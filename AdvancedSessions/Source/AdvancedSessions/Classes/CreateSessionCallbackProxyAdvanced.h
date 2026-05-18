@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/Engine.h"
+#include "Net/OnlineBlueprintCallProxyBase.h"
 #include "BlueprintDataDefinitions.h"
 #include "CreateSessionCallbackProxyAdvanced.generated.h"
 
