@@ -11,6 +11,7 @@
 #include "OnlineSubsystemImpl.h"
 #include "OnlineSubsystemUtils.h"
 #include "OnlineSubsystemUtilsModule.h"
+#include "FindSessionsCallbackProxy.h"
 #include "GameFramework/PlayerController.h"
 #include "Modules/ModuleManager.h"
 #include "net/OnlineBlueprintCallProxyBase.h"
