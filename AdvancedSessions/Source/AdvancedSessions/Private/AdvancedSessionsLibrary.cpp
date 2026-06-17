@@ -68,7 +68,7 @@ void UAdvancedSessionsLibrary::GetCurrentSessionID_AsString(UObject* WorldContex
 
 	if (!SessionInterface.IsValid()) 
 	{
-		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetCurrentSessionID_AsString couldn't get the session interface!"));
+		UE_LOGF(AdvancedSessionsLog, Warning, "GetCurrentSessionID_AsString couldn't get the session interface!");
 		SessionID.Empty();
 		return;
 	}
@@ -170,7 +170,7 @@ void UAdvancedSessionsLibrary::GetSessionState(UObject* WorldContextObject, EBPO
 
 	if (!SessionInterface.IsValid())
 	{
-		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetSessionState couldn't get the session interface!"));
+		UE_LOGF(AdvancedSessionsLog, Warning, "GetSessionState couldn't get the session interface!");
 		return;
 	}
 
@@ -184,7 +184,7 @@ void UAdvancedSessionsLibrary::GetSessionSettings(UObject* WorldContextObject, i
 
 	if (!SessionInterface.IsValid())
 	{
-		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetSessionSettings couldn't get the session interface!"));
+		UE_LOGF(AdvancedSessionsLog, Warning, "GetSessionSettings couldn't get the session interface!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -192,7 +192,7 @@ void UAdvancedSessionsLibrary::GetSessionSettings(UObject* WorldContextObject, i
 	FOnlineSessionSettings* settings = SessionInterface->GetSessionSettings(NAME_GameSession);
 	if (!settings)
 	{
-		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetSessionSettings couldn't get the session settings!"));
+		UE_LOGF(AdvancedSessionsLog, Warning, "GetSessionSettings couldn't get the session settings!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -225,7 +225,7 @@ void UAdvancedSessionsLibrary::IsPlayerInSession(UObject* WorldContextObject, co
 
 	if (!SessionInterface.IsValid())
 	{
-		UE_LOG(AdvancedSessionsLog, Warning, TEXT("IsPlayerInSession couldn't get the session interface!"));
+		UE_LOGF(AdvancedSessionsLog, Warning, "IsPlayerInSession couldn't get the session interface!");
 		bIsInSession = false;
 		return;
 	}
@@ -409,7 +409,7 @@ void UAdvancedSessionsLibrary::GetNetPlayerIndex(APlayerController *PlayerContro
 {
 	if (!PlayerController)
 	{
-		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetNetPlayerIndex received a bad PlayerController!"));
+		UE_LOGF(AdvancedSessionsLog, Warning, "GetNetPlayerIndex received a bad PlayerController!");
 		NetPlayerIndex = 0;
 		return;
 	}
@@ -424,7 +424,7 @@ void UAdvancedSessionsLibrary::UniqueNetIdToString(const FBPUniqueNetId& UniqueN
 
 	if ( !ID )
 	{
-		UE_LOG(AdvancedSessionsLog, Warning, TEXT("UniqueNetIdToString received a bad UniqueNetId!"));
+		UE_LOGF(AdvancedSessionsLog, Warning, "UniqueNetIdToString received a bad UniqueNetId!");
 		String = "ERROR, BAD UNIQUE NET ID";
 	}
 	else
@@ -436,7 +436,7 @@ void UAdvancedSessionsLibrary::GetUniqueNetID(APlayerController *PlayerControlle
 {
 	if (!PlayerController)
 	{
-		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetUniqueNetIdFromController received a bad PlayerController!"));
+		UE_LOGF(AdvancedSessionsLog, Warning, "GetUniqueNetIdFromController received a bad PlayerController!");
 		return;
 	}
 
@@ -445,7 +445,7 @@ void UAdvancedSessionsLibrary::GetUniqueNetID(APlayerController *PlayerControlle
 		UniqueNetId.SetUniqueNetId(PlayerState->GetUniqueId().GetUniqueNetId());
 		if (!UniqueNetId.IsValid())
 		{
-			UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetUniqueNetIdFromController couldn't get the player uniquenetid!"));
+			UE_LOGF(AdvancedSessionsLog, Warning, "GetUniqueNetIdFromController couldn't get the player uniquenetid!");
 		}
 		return;
 	}
@@ -466,14 +466,14 @@ void UAdvancedSessionsLibrary::GetUniqueNetIDFromPlayerState(APlayerState *Playe
 {
 	if (!PlayerState)
 	{
-		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetUniqueNetIdFromPlayerState received a bad PlayerState!"));
+		UE_LOGF(AdvancedSessionsLog, Warning, "GetUniqueNetIdFromPlayerState received a bad PlayerState!");
 		return;
 	}
 
 	UniqueNetId.SetUniqueNetId(PlayerState->GetUniqueId().GetUniqueNetId());
 	if (!UniqueNetId.IsValid())
 	{
-		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetUniqueNetIdFromPlayerState couldn't get the player uniquenetid!"));
+		UE_LOGF(AdvancedSessionsLog, Warning, "GetUniqueNetIdFromPlayerState couldn't get the player uniquenetid!");
 	}
 	return;
 }
@@ -497,7 +497,7 @@ void UAdvancedSessionsLibrary::SetPlayerName(APlayerController *PlayerController
 {
 	if (!PlayerController)
 	{
-		UE_LOG(AdvancedSessionsLog, Warning, TEXT("SetLocalPlayerNameFromController Bad Player Controller!"));
+		UE_LOGF(AdvancedSessionsLog, Warning, "SetLocalPlayerNameFromController Bad Player Controller!");
 		return;
 	}
 
@@ -508,7 +508,7 @@ void UAdvancedSessionsLibrary::SetPlayerName(APlayerController *PlayerController
 	}
 	else
 	{
-		UE_LOG(AdvancedSessionsLog, Warning, TEXT("SetLocalPlayerNameFromController had a bad player state!"));
+		UE_LOGF(AdvancedSessionsLog, Warning, "SetLocalPlayerNameFromController had a bad player state!");
 	}
 }
 
@@ -516,7 +516,7 @@ void UAdvancedSessionsLibrary::GetPlayerName(APlayerController *PlayerController
 {
 	if (!PlayerController)
 	{
-		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetLocalPlayerNameFromController Bad Player Controller!"));
+		UE_LOGF(AdvancedSessionsLog, Warning, "GetLocalPlayerNameFromController Bad Player Controller!");
 		return;
 	}
 
@@ -527,7 +527,7 @@ void UAdvancedSessionsLibrary::GetPlayerName(APlayerController *PlayerController
 	}
 	else
 	{
-		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetLocalPlayerNameFromController had a bad player state!"));
+		UE_LOGF(AdvancedSessionsLog, Warning, "GetLocalPlayerNameFromController had a bad player state!");
 	}
 }
 
@@ -538,7 +538,7 @@ void UAdvancedSessionsLibrary::GetNumberOfNetworkPlayers(UObject* WorldContextOb
 
 	if (!TheWorld)
 	{
-		UE_LOG(AdvancedSessionsLog, Warning, TEXT("GetNumberOfNetworkPlayers Failed to get World()!"));
+		UE_LOGF(AdvancedSessionsLog, Warning, "GetNumberOfNetworkPlayers Failed to get World()!");
 		return;
 	}
 

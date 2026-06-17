@@ -13,7 +13,7 @@
 #include "OnlineSubsystemUtilsModule.h"
 #include "GameFramework/PlayerController.h"
 #include "Modules/ModuleManager.h"
-#include "net/OnlineBlueprintCallProxyBase.h"
+#include "Net/OnlineBlueprintCallProxyBase.h"
 //#include "OnlineSubsystemUtilsClasses.h"
 #include "BlueprintDataDefinitions.generated.h"	
 

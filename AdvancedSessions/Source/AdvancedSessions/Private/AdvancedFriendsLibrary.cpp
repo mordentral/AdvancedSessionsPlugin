@@ -12,14 +12,14 @@ void UAdvancedFriendsLibrary::SendSessionInviteToFriends(APlayerController *Play
 {
 	if (!PlayerController)
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("SendSessionInviteToFriend Had a bad Player Controller!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "SendSessionInviteToFriend Had a bad Player Controller!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
 	if (Friends.Num() < 1)
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("SendSessionInviteToFriend Had no friends in invitation array!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "SendSessionInviteToFriend Had no friends in invitation array!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -28,7 +28,7 @@ void UAdvancedFriendsLibrary::SendSessionInviteToFriends(APlayerController *Play
 
 	if (!SessionInterface.IsValid())
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("SendSessionInviteToFriend Failed to get session interface!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "SendSessionInviteToFriend Failed to get session interface!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -37,7 +37,7 @@ void UAdvancedFriendsLibrary::SendSessionInviteToFriends(APlayerController *Play
 
 	if (!Player)
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("SendSessionInviteToFriend failed to get LocalPlayer!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "SendSessionInviteToFriend failed to get LocalPlayer!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -64,14 +64,14 @@ void UAdvancedFriendsLibrary::SendSessionInviteToFriend(APlayerController *Playe
 {
 	if (!PlayerController)
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("SendSessionInviteToFriend Had a bad Player Controller!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "SendSessionInviteToFriend Had a bad Player Controller!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
 
 	if (!FriendUniqueNetId.IsValid())
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("SendSessionInviteToFriend Had a bad UniqueNetId!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "SendSessionInviteToFriend Had a bad UniqueNetId!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -80,7 +80,7 @@ void UAdvancedFriendsLibrary::SendSessionInviteToFriend(APlayerController *Playe
 
 	if (!SessionInterface.IsValid())
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("SendSessionInviteToFriend Failed to get session interface!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "SendSessionInviteToFriend Failed to get session interface!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -89,7 +89,7 @@ void UAdvancedFriendsLibrary::SendSessionInviteToFriend(APlayerController *Playe
 
 	if (!Player)
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("SendSessionInviteToFriend failed to get LocalPlayer!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "SendSessionInviteToFriend failed to get LocalPlayer!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -109,13 +109,13 @@ void UAdvancedFriendsLibrary::GetFriend(APlayerController *PlayerController, con
 
 	if (!PlayerController)
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetFriend Had a bad Player Controller!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "GetFriend Had a bad Player Controller!");
 		return;
 	}
 
 	if (!FriendUniqueNetId.IsValid())
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetFriend Had a bad UniqueNetId!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "GetFriend Had a bad UniqueNetId!");
 		return;
 	}
 
@@ -123,7 +123,7 @@ void UAdvancedFriendsLibrary::GetFriend(APlayerController *PlayerController, con
 
 	if (!FriendsInterface.IsValid())
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetFriend Failed to get friends interface!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "GetFriend Failed to get friends interface!");
 		return;
 	}
 
@@ -131,7 +131,7 @@ void UAdvancedFriendsLibrary::GetFriend(APlayerController *PlayerController, con
 
 	if (!Player)
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetFriend failed to get LocalPlayer!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "GetFriend failed to get LocalPlayer!");
 		return;
 	}
 
@@ -162,13 +162,13 @@ void UAdvancedFriendsLibrary::IsAFriend(APlayerController *PlayerController, con
 {
 	if (!PlayerController)
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Had a bad Player Controller!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "IsAFriend Had a bad Player Controller!");
 		return;
 	}
 
 	if (!UniqueNetId.IsValid())
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Had a bad UniqueNetId!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "IsAFriend Had a bad UniqueNetId!");
 		return;
 	}
 
@@ -176,7 +176,7 @@ void UAdvancedFriendsLibrary::IsAFriend(APlayerController *PlayerController, con
 
 	if (!FriendsInterface.IsValid())
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Failed to get friends interface!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "IsAFriend Failed to get friends interface!");
 		return;
 	}
 
@@ -184,7 +184,7 @@ void UAdvancedFriendsLibrary::IsAFriend(APlayerController *PlayerController, con
 
 	if (!Player)
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("IsAFriend Failed to get LocalPlayer!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "IsAFriend Failed to get LocalPlayer!");
 		return;
 	}
 
@@ -197,13 +197,13 @@ void UAdvancedFriendsLibrary::GetStoredRecentPlayersList(FBPUniqueNetId UniqueNe
 	
 	if (!FriendsInterface.IsValid())
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetRecentPlayersList Failed to get friends interface!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "GetRecentPlayersList Failed to get friends interface!");
 		return;
 	}
 
 	if (!UniqueNetId.IsValid())
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetRecentPlayersList Failed was given an invalid UniqueNetId!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "GetRecentPlayersList Failed was given an invalid UniqueNetId!");
 		return;
 	}
 
@@ -228,7 +228,7 @@ void UAdvancedFriendsLibrary::GetStoredFriendsList(APlayerController *PlayerCont
 
 	if (!PlayerController)
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetFriendsList Had a bad Player Controller!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "GetFriendsList Had a bad Player Controller!");
 		return;
 	}
 
@@ -236,7 +236,7 @@ void UAdvancedFriendsLibrary::GetStoredFriendsList(APlayerController *PlayerCont
 	
 	if (!FriendsInterface.IsValid())
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetFriendsList Failed to get friends interface!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "GetFriendsList Failed to get friends interface!");
 		return;
 	}
 
@@ -244,7 +244,7 @@ void UAdvancedFriendsLibrary::GetStoredFriendsList(APlayerController *PlayerCont
 
 	if (!Player)
 	{
-		UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetFriendsList Failed to get LocalPlayer!"));
+		UE_LOGF(AdvancedFriendsLog, Warning, "GetFriendsList Failed to get LocalPlayer!");
 		return;
 	}
 
@@ -279,6 +279,6 @@ void UAdvancedFriendsLibrary::GetStoredFriendsList(APlayerController *PlayerCont
 		return;
 	}
 
-	UE_LOG(AdvancedFriendsLog, Warning, TEXT("GetFriendsList Failed to get any friends!"));
+	UE_LOGF(AdvancedFriendsLog, Warning, "GetFriendsList Failed to get any friends!");
 	return;
 }

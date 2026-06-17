@@ -18,7 +18,7 @@ DEFINE_LOG_CATEGORY(AdvancedSteamFriendsLog);
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid() || UniqueNetId.UniqueNetId->GetType() != STEAM_SUBSYSTEM)
 	{
-		UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("IsAFriend Had a bad UniqueNetId!"));
+		UE_LOGF(AdvancedSteamFriendsLog, Warning, "IsAFriend Had a bad UniqueNetId!");
 		return 0;
 	}
 
@@ -98,7 +98,7 @@ void UAdvancedSteamFriendsLibrary::GetSteamFriendGamePlayed(const FBPUniqueNetId
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid() || UniqueNetId.UniqueNetId->GetType() != STEAM_SUBSYSTEM)
 	{
-		UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("GetSteamFriendGamePlayed Had a bad UniqueNetId!"));
+		UE_LOGF(AdvancedSteamFriendsLog, Warning, "GetSteamFriendGamePlayed Had a bad UniqueNetId!");
 		Result = EBlueprintResultSwitch::OnFailure;
 		return;
 	}
@@ -140,7 +140,7 @@ int32 UAdvancedSteamFriendsLibrary::GetFriendSteamLevel(const FBPUniqueNetId Uni
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid() || UniqueNetId.UniqueNetId->GetType() != STEAM_SUBSYSTEM)
 	{
-		UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("IsAFriend Had a bad UniqueNetId!"));
+		UE_LOGF(AdvancedSteamFriendsLog, Warning, "IsAFriend Had a bad UniqueNetId!");
 		return 0;
 	}
 
@@ -161,7 +161,7 @@ FString UAdvancedSteamFriendsLibrary::GetSteamPersonaName(const FBPUniqueNetId U
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid() || UniqueNetId.UniqueNetId->GetType() != STEAM_SUBSYSTEM)
 	{
-		UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("GetSteamPersonaName Had a bad UniqueNetId!"));
+		UE_LOGF(AdvancedSteamFriendsLog, Warning, "GetSteamPersonaName Had a bad UniqueNetId!");
 		return FString(TEXT(""));
 	}
 
@@ -183,7 +183,7 @@ FBPUniqueNetId UAdvancedSteamFriendsLibrary::CreateSteamIDFromString(const FStri
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 	if (!(SteamID64.Len() > 0))
 	{
-		UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("CreateSteamIDFromString Had a bad UniqueNetId!"));
+		UE_LOGF(AdvancedSteamFriendsLog, Warning, "CreateSteamIDFromString Had a bad UniqueNetId!");
 		return netId;
 	}
 
@@ -221,7 +221,7 @@ bool UAdvancedSteamFriendsLibrary::RequestSteamFriendInfo(const FBPUniqueNetId U
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid() || UniqueNetId.UniqueNetId->GetType() != STEAM_SUBSYSTEM)
 	{
-		UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("RequestSteamFriendInfo Had a bad UniqueNetId!"));
+		UE_LOGF(AdvancedSteamFriendsLog, Warning, "RequestSteamFriendInfo Had a bad UniqueNetId!");
 		return false;
 	}
 
@@ -233,7 +233,7 @@ bool UAdvancedSteamFriendsLibrary::RequestSteamFriendInfo(const FBPUniqueNetId U
 	}
 #endif
 
-	UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("RequestSteamFriendInfo Couldn't init steamAPI!"));
+	UE_LOGF(AdvancedSteamFriendsLog, Warning, "RequestSteamFriendInfo Couldn't init steamAPI!");
 	return false;
 }
 
@@ -243,7 +243,7 @@ bool UAdvancedSteamFriendsLibrary::OpenSteamUserOverlay(UObject* WorldContextObj
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid() || UniqueNetId.UniqueNetId->GetType() != STEAM_SUBSYSTEM)
 	{
-		UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("OpenSteamUserOverlay Had a bad UniqueNetId!"));
+		UE_LOGF(AdvancedSteamFriendsLog, Warning, "OpenSteamUserOverlay Had a bad UniqueNetId!");
 		return false;
 	}
 
@@ -274,7 +274,7 @@ bool UAdvancedSteamFriendsLibrary::OpenSteamUserOverlay(UObject* WorldContextObj
 	}
 #endif
 
-	UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("OpenSteamUserOverlay Couldn't init steamAPI!"));
+	UE_LOGF(AdvancedSteamFriendsLog, Warning, "OpenSteamUserOverlay Couldn't init steamAPI!");
 	return false;
 }
 
@@ -287,7 +287,7 @@ bool UAdvancedSteamFriendsLibrary::IsOverlayEnabled()
 	}
 #endif
 
-	UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("OpenSteamUserOverlay Couldn't init steamAPI!"));
+	UE_LOGF(AdvancedSteamFriendsLog, Warning, "OpenSteamUserOverlay Couldn't init steamAPI!");
 	return false;
 }
 
@@ -296,7 +296,7 @@ UTexture2D * UAdvancedSteamFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueN
 #if (PLATFORM_WINDOWS || PLATFORM_MAC || PLATFORM_LINUX) && STEAM_SDK_INSTALLED
 	if (!UniqueNetId.IsValid() || !UniqueNetId.UniqueNetId->IsValid() || UniqueNetId.UniqueNetId->GetType() != STEAM_SUBSYSTEM)
 	{
-		UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("GetSteamFriendAvatar Had a bad UniqueNetId!"));
+		UE_LOGF(AdvancedSteamFriendsLog, Warning, "GetSteamFriendAvatar Had a bad UniqueNetId!");
 		Result = EBlueprintAsyncResultSwitch::OnFailure;
 		return nullptr;
 	}
@@ -378,7 +378,7 @@ UTexture2D * UAdvancedSteamFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueN
 		}
 		else
 		{
-			UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("Bad Height / Width with steam avatar!"));
+			UE_LOGF(AdvancedSteamFriendsLog, Warning, "Bad Height / Width with steam avatar!");
 		}
 
 		Result = EBlueprintAsyncResultSwitch::OnFailure;
@@ -386,7 +386,7 @@ UTexture2D * UAdvancedSteamFriendsLibrary::GetSteamFriendAvatar(const FBPUniqueN
 	}
 #endif
 
-	UE_LOG(AdvancedSteamFriendsLog, Warning, TEXT("STEAM Couldn't be verified as initialized"));
+	UE_LOGF(AdvancedSteamFriendsLog, Warning, "STEAM Couldn't be verified as initialized");
 	Result = EBlueprintAsyncResultSwitch::OnFailure;
 	return nullptr;
 }

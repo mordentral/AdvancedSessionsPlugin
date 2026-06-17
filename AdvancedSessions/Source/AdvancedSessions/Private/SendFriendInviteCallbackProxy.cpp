@@ -27,7 +27,7 @@ void USendFriendInviteCallbackProxy::Activate()
 	if (!cUniqueNetId.IsValid())
 	{
 		// Fail immediately
-		UE_LOG(AdvancedSendFriendInviteLog, Warning, TEXT("SendFriendInvite Failed received a bad UniqueNetId!"));
+		UE_LOGF(AdvancedSendFriendInviteLog, Warning, "SendFriendInvite Failed received a bad UniqueNetId!");
 		OnFailure.Broadcast();
 		return;
 	}
@@ -35,7 +35,7 @@ void USendFriendInviteCallbackProxy::Activate()
 	if (!PlayerControllerWeakPtr.IsValid())
 	{
 		// Fail immediately
-		UE_LOG(AdvancedSendFriendInviteLog, Warning, TEXT("SendFriendInvite Failed received a bad playercontroller!"));
+		UE_LOGF(AdvancedSendFriendInviteLog, Warning, "SendFriendInvite Failed received a bad playercontroller!");
 		OnFailure.Broadcast();
 		return;
 	}
@@ -56,7 +56,7 @@ void USendFriendInviteCallbackProxy::Activate()
 		if (!Player)
 		{
 			// Fail immediately
-			UE_LOG(AdvancedSendFriendInviteLog, Warning, TEXT("SendFriendInvite Failed couldn't cast to ULocalPlayer!"));
+			UE_LOGF(AdvancedSendFriendInviteLog, Warning, "SendFriendInvite Failed couldn't cast to ULocalPlayer!");
 			OnFailure.Broadcast();
 			return;
 		}
@@ -76,7 +76,7 @@ void USendFriendInviteCallbackProxy::OnSendInviteComplete(int32 LocalPlayerNum, 
 	}
 	else
 	{
-		UE_LOG(AdvancedSendFriendInviteLog, Warning, TEXT("SendFriendInvite Failed with error: %s"), *ErrorString);
+		UE_LOGF(AdvancedSendFriendInviteLog, Warning, "SendFriendInvite Failed with error: %ls", *ErrorString);
 		OnFailure.Broadcast();
 	}
 }
