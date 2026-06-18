@@ -1,8 +1,8 @@
 {
 	"FileVersion": 3,
 	"FriendlyName": "Advanced Sessions",
-	"Version": 5.7,
-	"VersionName": "5.7",
+	"Version": 5.8,
+	"VersionName": "5.8",
 	"Description": "Adds new blueprint functions to handle more advanced session operations.",
 	"Category": "Advanced Sessions Plugin",
 	"CreatedBy": "Joshua Statzer",
