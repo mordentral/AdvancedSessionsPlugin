@@ -321,11 +321,11 @@ bool UFindSessionsCallbackProxyAdvanced::CompareVariants(const FVariantData &A, 
 		switch (Comparator)
 		{
 		case EOnlineComparisonOpRedux::Equals:
-			return bA == bB; break;
+			return bA == bB; //break;
 		case EOnlineComparisonOpRedux::NotEquals:
-			return bA != bB; break;
+			return bA != bB; //break;
 		default:
-			return false;break;
+			return false;//break;
 		}
 	}
 	case EOnlineKeyValuePairDataType::Double:
@@ -336,19 +336,19 @@ bool UFindSessionsCallbackProxyAdvanced::CompareVariants(const FVariantData &A, 
 		switch (Comparator)
 		{
 		case EOnlineComparisonOpRedux::Equals:
-			return bA == bB; break;
+			return bA == bB; //break;
 		case EOnlineComparisonOpRedux::NotEquals:
-			return bA != bB; break;
+			return bA != bB; //break;
 		case EOnlineComparisonOpRedux::GreaterThanEquals:
-			return (bA == bB || bA > bB); break;
+			return (bA == bB || bA > bB); //break;
 		case EOnlineComparisonOpRedux::LessThanEquals:
-			return (bA == bB || bA < bB); break;
+			return (bA == bB || bA < bB); //break;
 		case EOnlineComparisonOpRedux::GreaterThan:
-			return bA > bB; break;
+			return bA > bB; //break;
 		case EOnlineComparisonOpRedux::LessThan:
-			return bA < bB; break;
+			return bA < bB; //break;
 		default:
-			return false; break;
+			return false;// break;
 		}
 	}
 	case EOnlineKeyValuePairDataType::Float:
@@ -362,19 +362,19 @@ bool UFindSessionsCallbackProxyAdvanced::CompareVariants(const FVariantData &A, 
 		switch (Comparator)
 		{
 		case EOnlineComparisonOpRedux::Equals:
-			return bA == bB; break;
+			return bA == bB; //break;
 		case EOnlineComparisonOpRedux::NotEquals:
-			return bA != bB; break;
+			return bA != bB; //break;
 		case EOnlineComparisonOpRedux::GreaterThanEquals:
-			return (bA == bB || bA > bB); break;
+			return (bA == bB || bA > bB); //break;
 		case EOnlineComparisonOpRedux::LessThanEquals:
-			return (bA == bB || bA < bB); break;
+			return (bA == bB || bA < bB); //break;
 		case EOnlineComparisonOpRedux::GreaterThan:
-			return bA > bB; break;
+			return bA > bB; //break;
 		case EOnlineComparisonOpRedux::LessThan:
-			return bA < bB; break;
+			return bA < bB; //break;
 		default:
-			return false; break;
+			return false; //break;
 		}
 	}
 	case EOnlineKeyValuePairDataType::Int32:
@@ -385,19 +385,19 @@ bool UFindSessionsCallbackProxyAdvanced::CompareVariants(const FVariantData &A, 
 		switch (Comparator)
 		{
 		case EOnlineComparisonOpRedux::Equals:
-			return bA == bB; break;
+			return bA == bB; //break;
 		case EOnlineComparisonOpRedux::NotEquals:
-			return bA != bB; break;
+			return bA != bB; //break;
 		case EOnlineComparisonOpRedux::GreaterThanEquals:
-			return (bA == bB || bA > bB); break;
+			return (bA == bB || bA > bB); //break;
 		case EOnlineComparisonOpRedux::LessThanEquals:
-			return (bA == bB || bA < bB); break;
+			return (bA == bB || bA < bB); //break;
 		case EOnlineComparisonOpRedux::GreaterThan:
-			return bA > bB; break;
+			return bA > bB; //break;
 		case EOnlineComparisonOpRedux::LessThan:
-			return bA < bB; break;
+			return bA < bB; //break;
 		default:
-			return false; break;
+			return false; //break;
 		}
 	}
 	case EOnlineKeyValuePairDataType::Int64:
@@ -408,19 +408,19 @@ bool UFindSessionsCallbackProxyAdvanced::CompareVariants(const FVariantData &A, 
 		switch (Comparator)
 		{
 		case EOnlineComparisonOpRedux::Equals:
-			return bA == bB; break;
+			return bA == bB; //break;
 		case EOnlineComparisonOpRedux::NotEquals:
-			return bA != bB; break;
+			return bA != bB; //break;
 		case EOnlineComparisonOpRedux::GreaterThanEquals:
-			return (bA == bB || bA > bB); break;
+			return (bA == bB || bA > bB); //break;
 		case EOnlineComparisonOpRedux::LessThanEquals:
-			return (bA == bB || bA < bB); break;
+			return (bA == bB || bA < bB); //break;
 		case EOnlineComparisonOpRedux::GreaterThan:
-			return bA > bB; break;
+			return bA > bB; //break;
 		case EOnlineComparisonOpRedux::LessThan:
-			return bA < bB; break;
+			return bA < bB; //break;
 		default:
-			return false; break;
+			return false; //break;
 		}
 	}
 
@@ -432,18 +432,18 @@ bool UFindSessionsCallbackProxyAdvanced::CompareVariants(const FVariantData &A, 
 		switch (Comparator)
 		{
 		case EOnlineComparisonOpRedux::Equals:
-			return bA == bB; break;
+			return bA == bB; //break;
 		case EOnlineComparisonOpRedux::NotEquals:
-			return bA != bB; break;
+			return bA != bB; //break;
 		default:
-			return false; break;
+			return false; //break;
 		}
 	}
 
 	case EOnlineKeyValuePairDataType::Empty:
 	case EOnlineKeyValuePairDataType::Blob:
 	default:
-		return false; break;
+		return false; //break;
 	}
 
 
